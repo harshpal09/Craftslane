@@ -1,12 +1,22 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity,ImageBackground ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity,RefreshControl ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
+import Icon from 'react-native-ionicons';
+import FavouriteScreen from '../FavouriteScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import axios from 'axios';
-import { portraitStyles } from '../../Style/globleCss';
+import { SelectCountry } from 'react-native-element-dropdown';
 
+import { Axios } from 'axios';
+import axios from 'axios';
+import UseNet from './UseNet';
+import { portraitStyles } from '../../Style/globleCss';
+import * as Animatable from 'react-native-animatable';
 
 // MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
 
@@ -116,6 +126,12 @@ class HomeAccent extends UiOrientation {
       selected_id: 0,
       size_id: 0,
       liked: false,
+      isLoading:false,
+      countries:[
+        {
+
+        }
+      ],
       select_color:[
         {
           id: 0,
@@ -198,7 +214,7 @@ class HomeAccent extends UiOrientation {
       data: data
 
     });
-    // console.warn(resp);
+    console.warn(resp);
   }
   isLoaded() {
     if (this.state.traystyle == []) {
@@ -457,17 +473,24 @@ class HomeAccent extends UiOrientation {
   isLiked(flag) {
     flag ? this.setState({ liked: false }) : this.setState({ liked: true });
   }
-
+  onRefresh()
+    {
+        this.getData();    
+    }
+    onLoadMore()
+    {
+        this.setState({isLoading:true});
+        this.getData();
+    }
 
   render() {
     // console.warn(this.state.traystyle);
-    // console.log(this.state.index,this.state.image)
+    console.log(this.state.index,this.state.image)
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
         {this.state.traystyle.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
-        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
-          <ScrollView style={this.getStyle().profileContainer} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+          <ScrollView style={this.getStyle().container} nestedScrollEnabled={true}>
 
 
             <View style={this.getStyle().homeAccentContainer}>
@@ -484,16 +507,16 @@ class HomeAccent extends UiOrientation {
                                   <Image style={this.getStyle().homeAccentImage} source={{ uri: this.state.image }} />
                                 </View>
                               </TouchableOpacity>
-                              <ScrollView horizontal={true}  showsHorizontalScrollIndicator={false}>
+                              <ScrollView horizontal={true}>
                                 {
                                   this.state.select_color.map((data,i)=>(
                                     <TouchableOpacity key={i} style={{width:50,height:50,margin:20,justifyContent:'center',alignItems:'center',borderRadius:50,backgroundColor:data.value}} onPress={()=> this.setState({ image: this.state.items_image[data.id][0].value,index: data.id})} >
-                                      <Text style={{color:'white',fontWeight:'500',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
+                                      <Text style={{color:'white',fontWeight:'550',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
                                     </TouchableOpacity>
                                   ))
                                 }
                               </ScrollView>
-                              <ScrollView horizontal={true} style={{ width: "100%" }}  showsHorizontalScrollIndicator={false}>
+                              <ScrollView horizontal={true} style={{ width: "80%" }}>
                                 {this.state.items_image[this.state.index].map((data, i) => (
                                   <TouchableOpacity onPress={() => this.setState({image: this.state.items_image[this.state.index][data.id].value })} key={i}>
                                     <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
@@ -512,8 +535,43 @@ class HomeAccent extends UiOrientation {
                   ))}
                 </View>
               ))}
+              <View style={{padding:10}}>
+                  <SelectCountry
+                    style={styless.dropdown}
+                    selectedTextStyle={styless.selectedTextStyle}
+                    placeholderStyle={styless.placeholderStyle}
+                    imageStyle={styless.imageStyle}
+                    inputSearchStyle={styless.inputSearchStyle}
+                    iconStyle={styless.iconStyle}
+                    maxHeight={200}
+                    // search
+                    data={this.state.items_image}
+                    valueField="id"
+                    labelField="value"
+                    // imageField="image"
+                    placeholder="Select Country"
+                    searchPlaceholder="Search..."
+                    itemContainerStyle={styless.itemContainerStyle}
+                    containerStyle={{backgroundColor:'#f2ebd5'}}
+                    onChange={e => 
+                    {
+                        console.log(e)
+                    }
+                  }
 
-              {this.state.traystyle.map((data, i) => (
+                    keyboardAvoiding={false}
+                    activeColor='#d4b58a'
+                    flatListProps={{
+                        ListEmptyComponent:<EmptyList />,
+                        ListFooterComponent: <RenderFooter isLoading={this.state.isLoading} />,
+                        refreshControl:(<RefreshControl refreshing={false} onRefresh={()=> this.onRefresh()} />),
+                        onEndReachedThreshold:0.5,
+                        onEndReached:()=> this.onLoadMore(),
+
+                    }}                       
+                  />  
+              </View>
+              {/* {this.state.traystyle.map((data, i) => (
                 <View style={this.getStyle().trayStyleContainer} key={i}>
                   <Text style={this.getStyle().headerTrayStyle}>Select tray style: {this.state.value}</Text>
                   {data.traystyle.map((item, j) => (
@@ -537,7 +595,7 @@ class HomeAccent extends UiOrientation {
                   <Text style={this.getStyle().headerTrayStyle}>Select a Size: {this.state.size}</Text>
                   {this.function1()}
                 </View>
-              ))}
+              ))} */}
             </View>
             {/* <View style={this.getStyle().selectContainer}>
                 <Text style={this.getStyle().selectListHeader}>How would you like us to Personalize it for you?</Text>
@@ -563,14 +621,14 @@ class HomeAccent extends UiOrientation {
               <Pressable style={this.getStyle().cartbutton} onPress={() => this.addToCart()}>
                 <Text style={this.getStyle().buttonText}>Add to Basket</Text>
               </Pressable>
-              <Pressable style={{padding:5}} onPress={() => this.isLiked(this.state.liked)}>
+              <Pressable onPress={() => this.isLiked(this.state.liked)}>
                 <MaterialCommunityIcons
                   name={this.state.liked ? "heart" : "heart-outline"}
                   size={32}
                   color={this.state.liked ? "red" : "black"}
                 />
               </Pressable>
-              <Pressable style={{padding:5}} >
+              <Pressable >
                 <MaterialCommunityIcons
                   name="share-variant"
                   size={32}
@@ -598,7 +656,6 @@ class HomeAccent extends UiOrientation {
             </View>
             {/* </View> */}
           </ScrollView>
-          </ImageBackground>
         }
       </SafeAreaView>
     );
@@ -608,3 +665,76 @@ class HomeAccent extends UiOrientation {
 
 
 export default HomeAccent;
+const styless = StyleSheet.create({
+  dropdown: {
+      borderBottomColor: 'grey',
+      borderBottomWidth: 1,
+      width: '90%',
+      left: 15,
+      margin: 2,
+      color:'black',
+      height:60,
+      backgroundColor:'#f2ebd5'
+  },
+  imageStyle: {
+    width: 24,
+    height: 24,
+  },
+  placeholderStyle: {
+    fontSize: 14,
+    color:'grey'
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    marginLeft: 8,
+    color:'grey',
+  //   backgroundColor:'red',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color:'grey',
+  },
+});
+
+const EmptyList =()=>{
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <Text style={{color:'black'}}>Please Wait!</Text>
+      </View>
+  )
+}
+const EmptyList_1 =()=>{
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <Text style={{color:'black'}}>Please Wait!</Text>
+      </View>
+  )
+}
+const RenderFooter = (isLoading) =>{
+  if(!isLoading)
+  {
+      return null;
+  }
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <ActivityIndicator color={'grey'} size={'large'}  />
+      </View>
+  )
+}
+const RenderFooter_2 = (isLoading) =>{
+  if(!isLoading)
+  {
+      return null;
+  }
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <ActivityIndicator color={'grey'} size={'large'}  />
+      </View>
+  )
+}
+

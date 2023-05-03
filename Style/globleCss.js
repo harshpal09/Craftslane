@@ -18,6 +18,7 @@ export const portraitStyles = StyleSheet.create({
   },
   IntroSliderText: {
     color: 'white',
+    // fontFamily: 'r',
     textAlign: "center",
     textAlignVertical: "center",
     fontSize: 30,
@@ -32,8 +33,8 @@ export const portraitStyles = StyleSheet.create({
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f9f0df',
-    
+    backgroundColor:'#f2ebd5',
+    // backgroundColor:'green',
     
   },
   screenBackgroundTab: {
@@ -41,15 +42,18 @@ export const portraitStyles = StyleSheet.create({
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f9f0df',
+    backgroundColor:'#f2ebd5',
+    // backgroundColor:'green',
+    // paddingBottom:'20%',
   },
   screenBackgroundStackTab: {
-    height: '100%',
+    height: "100%",
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f9f0df',
-    // backgroundColor: 'red'
+    backgroundColor:'#f2ebd5',
+    // backgroundColor:'green',
+    // paddingBottom:'33%',
   },
   splashLogo: {
     width: 300,
@@ -58,20 +62,13 @@ export const portraitStyles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
+    backgroundColor:'#f2ebd5',
+    // backgroundColor:'skyblue',
     padding:2,
-    paddingBottom:80,
-    // backgroundColor: 'red'
-  },
-
-  profileContainer:{
-    height: Dimensions.get("screen").height,
-    width: Dimensions.get("screen").width,
-    padding:10,
     paddingBottom:80,
   },
   selectDropdownContainer:{
-    // backgroundColor:'#f9f0df',
-    backgroundColor:'red',
+    backgroundColor:'#f2ebd5',
     width:'100%',
     justifyContent:'center',
     alignItems:'center',
@@ -79,7 +76,7 @@ export const portraitStyles = StyleSheet.create({
    
   },
   selectDropdown:{
-    backgroundColor:'#f9f0df',
+    backgroundColor:'#f2ebd5',
     borderRadius:15,
     borderWidth:1,
     borderColor:'grey',
@@ -87,6 +84,9 @@ export const portraitStyles = StyleSheet.create({
   },
   logoContainer: {
     width: '100%',
+
+
+    // backgroundColor:'yellow',
     justifyContent:'center',
     alignItems:'center',
     padding:20,
@@ -95,25 +95,28 @@ export const portraitStyles = StyleSheet.create({
   logo: {
     width: 165,
     height: 110,
-    // backgroundColor: '#f9f0df',
+    backgroundColor: '#f2ebd5',
   },
 
   bgColor: {
+    // marginTop:10,
     backgroundColor: '#f2ebd5',
+    // backgroundColor:'red',
     height: '100%',
+    // marginBottom:65,
   },
 
   bgColorForStackNavigation: {
+    // marginTop:10,
     backgroundColor: '#f2ebd5',
+    // backgroundColor:'skyblue',
     height: '100%',
     marginBottom:130,
   },
   containLabelAndInput: {
     marginTop: 5,
     height: 60,
-    // backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center'
+    // backgroundColor:'lightgreen'
   },
   
   label: {
@@ -123,83 +126,83 @@ export const portraitStyles = StyleSheet.create({
   input: {
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
-    height:50,
     width: '90%',
-    // left: 15,
-    // top: 2,
-    color:'black',
-    // backgroundColor: 'red'
+    left: 15,
+    top: 2,
+    color:'black'
   },
   passwordInput: {
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
-    height:50,
     width: '90%',
-    // left: 15,
-    // top: 2,
+    left: 15,
+    top: 2,
     color:'black',
   },
-  passwordEyeIcon:{position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 },
   termsAndConditionContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent:'center',
     alignItems:'center',
+    // height: 140,
     padding: 15,
     width:'100%',
-    // backgroundColor: 'green'
-    
+    // backgroundColor:'red'
   },
   termsAndCondition: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
+    width: '90%',
+    // marginLeft: 30,
     marginTop: 10,
-    // backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center'
+    //  backgroundColor:'green'
   },
   terms: {
+    // marginLeft: 10,
     color: '#3d3d3d',
     alignItems: 'center',
     width: '90%',
-    // backgroundColor: 'lightgreen',
-    justifyContent:'center'
-  },
-
-  checkboxContainer:{
-    padding: 8, 
-    // backgroundColor: 'white'
+    //backgroundColor:'black'
   },
   checkbox: {
-    // top: -5,
-    // padding:10,
-    // backgroundColor: 'skyblue'
+    top: -5,
   },
   buttonContainer: {
     justifyContent: 'space-around',
     alignItems: 'center',
     margin: 10,
     padding: 10,
+    // marginBottom:80,
+    // backgroundColor:'lightgreen'
+    
+
   },
   logoutButtonContainer: {
+    // justifyContent: 'space-around',
     alignItems: 'center',
     width:'100%',
     marginTop:20,
+    
     padding: 10,
     marginBottom:200,
-
+    // backgroundColor:'green'
   },
   creatButtonContainer: {
+    // justifyContent: 'space-around',
     alignItems: 'center',
     width:'100%',
+    // marginTop:20,
+    
     padding: 10,
     marginBottom:200,
+    // backgroundColor:'green'
   },
   button: {
     backgroundColor: '#B48D56',
     width: "100%",
     justifyContent: 'center',
+    // display:'flex',
+    // flexDirection:'row',
     alignItems: 'center',
     height: 50,
     borderRadius: 20,
@@ -236,7 +239,7 @@ export const portraitStyles = StyleSheet.create({
     // margin:10,
     padding:10,
   
-    backgroundColor:'#f9f0df',
+    backgroundColor:'#f2ebd5',
     // backgroundColor:'skyblue',
   },
 
@@ -248,9 +251,14 @@ export const portraitStyles = StyleSheet.create({
   },
 
   headerText: {
-    fontFamily: 'Baskerville-Italic',
+    //  margin:10,
+    // paddingLeft:10,
+    // height: 25,
+    // left: 23.95,
+    fontFamily: 'LibreBaskerville-Italic',
+    fontSize: "italic",
     fontWeight: "400",
-    fontSize: 23,
+    fontSize: 20,
     color: '#6D6D6D',
     //  backgroundColor:'green',         
   },
@@ -272,7 +280,7 @@ export const portraitStyles = StyleSheet.create({
     // width:'100%'
   },
   headerMiddleText: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -289,7 +297,7 @@ export const portraitStyles = StyleSheet.create({
 
   allText: {
     marginRight: 10,
-    fontFamily: 'Baskerville',
+    fontFamily: 'LibreBaskerville-Regular',
     fontWeight: "400",
     fontSize: 20,
     color: '#6D6D6D',
@@ -345,7 +353,7 @@ export const portraitStyles = StyleSheet.create({
     height: 25,
     left: 23.95,
     marginTop: 20,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -369,7 +377,7 @@ export const portraitStyles = StyleSheet.create({
 
   //-------------------------------------------START SIGN_UP CSS--------------------------------------
   welcomeText: {
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
     fontSize: 26,
     color: '#3D3D3D',
     //  backgroundColor:'skyblue',
@@ -394,7 +402,7 @@ export const portraitStyles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    // fontFamily: 'PlayfairDisplay-Italic',
+    fontFamily: 'PlayfairDisplay-Italic',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     textAlign:'center',
@@ -404,7 +412,7 @@ export const portraitStyles = StyleSheet.create({
   },
   normal2text: {
     fontSize: 16,
-    // fontFamily: 'PlayfairDisplay-Italic',
+    fontFamily: 'PlayfairDisplay-Italic',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     textAlign:'center',
@@ -414,7 +422,7 @@ export const portraitStyles = StyleSheet.create({
   },
   normalText: {
     fontSize: 14,
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     color: 'grey',
@@ -518,11 +526,10 @@ export const portraitStyles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     padding: 5,
-    fontFamily: 'Georgia',
-    fontFamily: 'Baskerville',
+    fontFamily: 'LibreBaskerville-Regular',
     color: 'black',
     fontWeight: '400',
-    fontSize: 14,
+    fontSize: 12,
     width: '100%',
     // height: 40,
     // backgroundColor:'grey',
@@ -545,7 +552,8 @@ export const portraitStyles = StyleSheet.create({
 
   },
   categoryHeaderText: {
-    fontFamily: 'Baskerville',
+    fontFamily: 'LibreBaskerville-Italic',
+    fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
     color: '#839D3C',
@@ -564,7 +572,7 @@ export const portraitStyles = StyleSheet.create({
     flexWrap: 'wrap',
     marginVertical: 10,
     justifyContent:'space-evenly',
-    paddingLeft: 10,
+    // marginLeft: 10,
     width: "100%",
     // backgroundColor:'green',
   },
@@ -577,7 +585,6 @@ export const portraitStyles = StyleSheet.create({
     justifyContent:'center',
     // marginLeft: 10,
     // marginBottom:120,
-    paddingLeft: 10,
     paddingBottom:DeviceInfo.isTablet() ? 180:100,
     width: "100%",
     // backgroundColor:'green',
@@ -605,7 +612,7 @@ export const portraitStyles = StyleSheet.create({
   productHeaderText: {
     margin: 5,
     padding: 5,
-    fontFamily: 'Baskerville',
+    fontFamily: 'LibreBaskerville-Regular',
     fontWeight: "400",
     fontSize: 20,
     color: '#839D3C',
@@ -653,8 +660,9 @@ export const portraitStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    height: 30,
-    width: 30,
+    padding:5,
+    // height: 30,
+    // width: 30,
   },
   priceText: {
     fontSize: 14,
@@ -662,13 +670,13 @@ export const portraitStyles = StyleSheet.create({
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
-    fontFamily: 'Baskerville'
+    fontFamily: 'LibreBaskerville-Regular'
   },
   productText: {
     justifyContent: 'center',
     textAlign: 'center',
     padding: 5,
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
     color: 'black',
     fontWeight: '400',
     fontSize: 16,
@@ -680,9 +688,9 @@ export const portraitStyles = StyleSheet.create({
     textAlign: 'center',
     alignContent: 'center',
     color: 'white',
-    height: 30,
-    width: 30,
-    lineHeight: 30,
+    // height: 30,
+    // width: 30,
+    // lineHeight: 30,
     borderRadius: 10
   },
   //-------------------------------------------------------end product page ----------------------------------------------------------------------
@@ -715,7 +723,7 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical: 'center',
     color: 'black',
     fontSize: 15,
-    fontFamily: 'Georgia'
+    fontFamily: 'PlayfairDisplay-Regular'
 
   },
   homeAccentContainer: {
@@ -743,7 +751,7 @@ export const portraitStyles = StyleSheet.create({
     width: '100%',
     fontSize: 14,
     padding:3,
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
     marginLeft: 0,
     textAlignVertical: 'center',
     color: 'black',
@@ -754,7 +762,7 @@ export const portraitStyles = StyleSheet.create({
     fontSize: 16,
     // marginLeft: 0,
     padding: 3,
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
     textAlignVertical: 'center',
     color: '#801426',
     fontWeight: '500',
@@ -872,7 +880,7 @@ export const portraitStyles = StyleSheet.create({
     color: 'black',
     fontSize:11,
    
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
   },
   cartButtonContainer: {
     // position:'relative',
@@ -888,7 +896,7 @@ export const portraitStyles = StyleSheet.create({
   },
   cartbutton: {
     backgroundColor: '#B48D56',
-    width: Dimensions.get("screen").width/1.4,
+    width: Dimensions.get("screen").width/1.3,
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
@@ -931,7 +939,7 @@ export const portraitStyles = StyleSheet.create({
     width: '85%',
     height: 35,
     textAlignVertical: 'center',
-    fontFamily: 'Georgia',
+    fontFamily: 'PlayfairDisplay-Regular',
   },
   pText: {
     // backgroundColor:'white',
@@ -961,15 +969,15 @@ export const portraitStyles = StyleSheet.create({
   },
   loadingTextStyle: {
     color: '#B48D56',
-    // fontFamily: 'PlayfairDisplay-Italic'
+    fontFamily: 'PlayfairDisplay-Italic'
   },
   loadingScreen: {
-    backgroundColor: '#f9f0df',
+    backgroundColor: '#f2ebd5',
     // backgroundColor:'skyblue',
     // height: Dimensions.get("screen").height,
     // width: Dimensions.get("screen").width,
-    // justifyContent:'center',
-    // alignItems: 'center',
+    justifyContent:'center',
+    alignItems: 'center',
   },
   stackNavigationLoadingScreen: {
     backgroundColor: '#f2ebd5',
@@ -1019,7 +1027,7 @@ cartProductContainer: {
   display: 'flex',
   flexDirection: 'row',
   borderBottomWidth: 1,
-  // paddingHorizontal:15,
+  paddingHorizontal:15,
   
   // paddingBottom:200,
   borderBottomColor: '#bba890'
@@ -1027,15 +1035,15 @@ cartProductContainer: {
 cartImageContainer: {
   // backgroundColor:'green',
   width: Dimensions.get("screen").width/4,
-  height: Dimensions.get("screen").height/8,
-  // paddingVertical: 10,
-  // paddingHorizontal: 5,
+  height: Dimensions.get("screen").height/7.3,
+  paddingVertical: 10,
+  paddingHorizontal: 5,
   justifyContent:'center',
   alignItems:'center'
 },
 cartImage: {
-  width: Dimensions.get("screen").width/4.4,
-  height: Dimensions.get("screen").height/9,
+  width: Dimensions.get("screen").width/5,
+  height: Dimensions.get("screen").height/8.3,
   borderRadius: 10,
 },
 contentContainer: {
@@ -1046,18 +1054,17 @@ contentContainer: {
   width: Dimensions.get("screen").width/1.42,
 },
 navContainer: {
-  width: '90%',
+  // backgroundColor:'grey',
   display: 'flex',
   flexDirection: 'column',
   marginVertical: 10,
-  // backgroundColor: 'red',
   // width: DeviceInfo.isTablet() ? Dimensions.get("screen").width/1.42:Dimensions.get("screen").width/1.7,
   padding:10
 },
 navParentContainer:{
   // backgroundColor:'red',
   padding:2,
-  width: DeviceInfo.isTablet() ? Dimensions.get("screen").width/1.41:Dimensions.get("screen").width/1.5,
+  width: DeviceInfo.isTablet() ? Dimensions.get("screen").width/1.42:Dimensions.get("screen").width/1.7,
   display:'flex',
   flexDirection:'row',
   justifyContent:'space-between',
@@ -1071,17 +1078,22 @@ cartTextContainer: {
   alignItems: 'center'
 },
 cartText: {
+  // margin: 2,
+  // marginLeft: 2,
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'Baskerville',
+  fontFamily: 'LibreBaskerville-Regular',
   fontSize:13,
   width: '100%',
+  // height:70,
+  // textAlign:"center",
   textAlignVertical: "center",
+  // backgroundColor:'white',
 },
 wishlistPriceText:{
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'Baskerville',
+  fontFamily: 'LibreBaskerville-Regular',
   textAlignVertical: "center",
 },
 addressText: {
@@ -1089,7 +1101,7 @@ addressText: {
   // marginLeft: 2,
   padding:5,
   color: 'black',
-  fontFamily: 'Georgia',
+  // fontFamily: 'PlayfairDisplay-Regular',
 
   // width: '30%',
   // height:70,
@@ -1099,20 +1111,11 @@ addressText: {
 },
 helpText:{
   color:'black',
-  fontFamily:'Georgia'
+  fontFamily:'PlayfairDisplay-Regular'
 },
-
-myOrderModelText: {
-  width:'100%',
-  padding: 5,
-   color: '#6D6D6D',
-   fontSize: 15,
-   textAlignVertical: "center",
-   fontFamily: 'Baskerville',
- },
 contactUs:{
   color:'black',
-  fontFamily:'Georgia'
+  fontFamily:'PlayfairDisplay-Regular'
 },
 cartModelText: {
   // margin: 2,
@@ -1151,7 +1154,7 @@ cartPriceText: {
   color: 'black',
   textAlign: 'center',
   textAlignVertical: 'center',
-  fontFamily: 'Baskerville'
+  fontFamily: 'LibreBaskerville-Regular'
 },
 
 cartIncDecArea: {
@@ -1206,6 +1209,7 @@ incDecButtonContainer: {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
+  marginVertical:5,
   // backgroundColor: 'red'
 },
 incDecButtonContainerProfile: {
@@ -1277,7 +1281,7 @@ cartIncDecContainer: {
   profileUserName:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'Baskerville',
+    fontFamily:'LibreBaskerville-Regular',
     fontSize:23,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1291,7 +1295,7 @@ cartIncDecContainer: {
   profileEmailText:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'Baskerville',
+    fontFamily:'LibreBaskerville-Regular',
     fontSize:14,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1302,29 +1306,22 @@ cartIncDecContainer: {
     // backgroundColor:'white',
     margin:3
   },
-  gestureIcon:{
-    // backgroundColor: 'lightgreen',
-    width:Dimensions.get('screen').width/13.1,
-  },
   
   profileHeadings:{
-    width:'100%',
     alignItems:'center',
     flexDirection:'row',
     display:'flex',
   },
   profileHeadingText:{
     textAlignVertical:'center',
-    paddingLeft:15,
+    marginLeft:15,
     color:'#6D6D6D',
-    width:Dimensions.get('screen').width/2.6,
-    fontFamily:'Baskerville',
+    width:150,
+    fontFamily:'LibreBaskerville-Regular',
     fontSize:16,
     // backgroundColor:'red'
   },
   rowStyles:{
-    width:'100%',
-    // backgroundColor:'red',
     borderBottomColor:'#bba890',
     borderBottomWidth:1
   },
@@ -1334,15 +1331,14 @@ cartIncDecContainer: {
     borderBottomWidth:1
   },
   profileIcons:{
-    paddingLeft: Dimensions.get('screen').width/2.5,
-    // backgroundColor: 'skyblue'
+    marginLeft:DeviceInfo.isTablet() ? 330 : 100
     
   },
   profileHeaderMiddleText: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
-    fontSize: 20,
+    fontSize: 15,
     color: '#6D6D6D',
   },
   dataTable:{
@@ -1382,16 +1378,17 @@ cartIncDecContainer: {
     color:'#3d3d3d',
     fontSize:15,
     fontWeight:'600',
-    width: Dimensions.get('screen').width/2.2
+    width:Dimensions.get('screen').width/2.2,
+    // backgroundColor:'red'
   },
   tableColumnTextInput:{
     color:'#5c5858',
     fontSize:11,
-    // borderWidth:.5,
-    width: Dimensions.get('screen').width/2.2,
+    borderWidth:0,
+    width:Dimensions.get('screen').width/2.2,
     height:35,
     borderRadius:15,
-    borderColor:'lightgrey'
+    // borderColor:'lightgrey'
     // lineHeight:40
   },
   tableDoubleColumnDecoratedText:{
@@ -1414,12 +1411,12 @@ cartIncDecContainer: {
   },
   aboutText:{
     color:'white',
-    fontFamily:'Georgia'
+    fontFamily:'PlayfairDisplay-Regular'
   },
   aboutHeaderMiddleText:{
     color:'black',
     textAlign:'center',
-    fontFamily:"Baskerville",
+    fontFamily:"LibreBaskerville-Regular",
     fontSize:14,
   },
   aboutHeaderMiddleTextContainer:{
@@ -1478,7 +1475,7 @@ cartIncDecContainer: {
     alignItems: 'center'
   },
   info_text: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
     fontSize: 20
   },
   centre_heading_container: {
@@ -1490,7 +1487,7 @@ cartIncDecContainer: {
   },
   mail_text: {
     fontSize: 18,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
 
   },
   verfyCode: {
@@ -1522,7 +1519,7 @@ cartIncDecContainer: {
   new_text: {
     marginTop: 8,
     fontSize: 18,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'LibreBaskerville-Italic',
     textAlign:'center'
   },
 //---------------------------------------------------------------------order list page
@@ -1533,10 +1530,23 @@ cartIncDecContainer: {
   paddingHorizontal: 5,
   justifyContent:'center',
   alignItems:'center',
-  backgroundColor:'lightgrey',
-  borderRadius: 7,
+  backgroundColor:'lightgrey'
    
     
+  },
+  orderHeadingText: {
+    // margin: 2,
+    // marginLeft: 2,
+    padding:5,
+    color: '#3d3d3d',
+    fontFamily: 'LibreBaskerville-Regular',
+    fontSize:13,
+    width: '100%',
+    fontWeight:"700",
+    // height:70,
+    // textAlign:"center",
+    textAlignVertical: "center",
+    // backgroundColor:'white',
   },
   orderText: {
     margin: 2,
@@ -1545,20 +1555,9 @@ cartIncDecContainer: {
    fontWeight:'bold',
     fontSize:18,
     width: 200,
-  //  backgroundColor: 'blue',
+   
     textAlignVertical: "center",
     
-  },
-
-  myOrderText: {
-    color: 'black',
-    fontWeight: 'bold',
-    padding: 5,
-    fontSize: 16,
-    width: '100%',
-    fontFamily: 'Georgia',
-    textAlignVertical: "center",
-
   },
   invoiceTableView:{ 
     justifyContent: 'center',
@@ -1581,6 +1580,7 @@ cartIncDecContainer: {
     marginVertical:20,
     // backgroundColor:'green'
 },
+
 addressParentContainer:{
   width: "100%",
   // backgroundColor:'green',
@@ -1589,11 +1589,19 @@ addressParentContainer:{
   padding: 20,
   // paddingBottom:Dimensions.get('screen').height/3,
 },
+trackOrderContainer:{
+  width: "100%",
+  borderWidth: 1,
+  borderColor: '#c59a6a',
+  
+  marginVertical:20,
+  // backgroundColor:'green'
+},
 addressButton:{
-  // textDecorationLine:'underline',
+  textDecorationLine:'underline',
   textAlign:'center',
-  color:'#fff',
-  fontSize:16,
+  color:'#c59a6a',
+  fontSize:18,
   fontWeight:'600'
 },
 creditsText:{
@@ -1612,17 +1620,27 @@ creditsTableText:{
   // margin:2,
   textAlignVertical:'center',
   fontSize:13,
-  fontFamily:"Baskerville",
-  // backgroundColor:'red'
+  fontFamily:"LibreBaskerville-Regular",
 },
-creditsTableHeadetText:{
+trackOrderTableText:{
+  color:'#3d3d3d',
+  width:Dimensions.get('screen').width/4.2,
+  textAlign:'center',
+  // margin:2,
+  textAlignVertical:'center',
+  fontSize:13,
+  fontFamily:"LibreBaskerville-Regular",
+},
+creditsTableHeaderText:{
   color:'black',
   width:Dimensions.get('screen').width/3.2,fontWeight:'bold',
   textAlign:'center',
   textAlignVertical:'center',
+  // backgroundColor:'red',
 },
 creditTableRow:
   {
+    // backgroundColor:'grey',
     borderBottomColor:"#BBA890",
     // borderTopColor:'#BBA890',
     // borderTopWidth:1,
@@ -1630,7 +1648,7 @@ creditTableRow:
     height:70
  },
  creditTableRowView:{
-  
+    // backgroundColor:'green',
     display:'flex',
     flexDirection:'row',
     alignItems:'center'
@@ -1644,10 +1662,10 @@ creditTableRow:
 },
 //-------------------------------------------------------------------Add address page------------------------------------------------
  radioButtons:{
-  color:'black',
+  color:'#6d6d6d',
  },
  defaultAddress:{
-    color:'black',
+    color:'#6d6d6d',
     fontSize:13,
 
  }

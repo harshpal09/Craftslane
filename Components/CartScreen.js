@@ -1,18 +1,21 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert,RefreshControl,ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator,RefreshControl, FlatList } from 'react-native';
+// import UiOrientation from './UiOrientation';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import EmptyCart from './screens/EmptyCart';
 import ImageLazyLoading from "react-native-image-lazy-loading";
-import TabRoutes from './TabRoutes';
-
-
+// import Image from 'react-native-image-lazy-loading';
 
 class CartScreen extends Component {
 
@@ -69,10 +72,7 @@ class CartScreen extends Component {
     this.setState({ cart_total: resp2.data })
     this.setState({ len: resp2.data.cart })
 
-    // console.warn(this.state.cart_total.total_items);
-    AsyncStorage.setItem('badge', JSON.stringify(this.state.cart_total.total_items));
-    // let badge = await AsyncStorage.getItem('badge');
-    // console.log(JSON.parse(badge))
+    // console.warn(resp2.data);
 
 
 
@@ -92,7 +92,6 @@ class CartScreen extends Component {
     await axios.post(this.state.data.url + "customcart/remove&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header).
       then((response) => {
         this.setState({ cart: response.data.products, cart_total: response.data, len: response.data.cart }),
-        
 
           showMessage({
             message: 'Product deleted successfully',
@@ -106,13 +105,6 @@ class CartScreen extends Component {
 
 
       })
-
-      AsyncStorage.setItem('badge', JSON.stringify(this.state.cart_total.total_items));
-      // console.log(this.state.cart_total.total_items)
-      //   let badge = await AsyncStorage.getItem('badge');
-      //   console.log(JSON.parse(badge))
-      return this.props.navigation.replace('Tab');
-
 
   }
 
@@ -187,6 +179,7 @@ class CartScreen extends Component {
 
 
   render() {
+    // console.log(this.state.cart)
     if (this.state.cart_total.total_items == 0) {
       return (
         <EmptyCart />
@@ -198,8 +191,8 @@ class CartScreen extends Component {
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
           // <SafeAreaView style={portraitStyles.screenBackground}>
-          <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" >
-          <ScrollView showsVerticalScrollIndicator={false} style={portraitStyles.container}
+
+          <ScrollView style={portraitStyles.container}
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}
@@ -207,7 +200,7 @@ class CartScreen extends Component {
           >
             {/* <View style={portraitStyles.parentContainer}> */}
 
-              {/* <TabRoutes /> */}
+
 
               <View style={portraitStyles.warpContainer} >
                 {this.state.cart.map((item, j) => (
@@ -230,7 +223,6 @@ class CartScreen extends Component {
                       <View style={portraitStyles.cartTextContainer}>
                         <Text style={portraitStyles.cartModelText}> Total Price: {item.subtotal}</Text>
                       </View>
-
                       <View style={portraitStyles.incDecButtonContainer}>
 
                         <View style={portraitStyles.cartIncDecContainer}>
@@ -239,7 +231,7 @@ class CartScreen extends Component {
                           <TouchableOpacity style={portraitStyles.incBtn} onPress={() => this.incFunction(item.product_id, item.quantity)}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
                         </View>
                         <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                          <EvilIcons name="trash" size={30} color={'grey'} onPress={() => this.deleteCart(item.product_id)} />
+                          <FontAwesome name="trash" size={30} color={'#5A5A5A'} onPress={() => this.deleteCart(item.product_id)} />
                         </TouchableOpacity>
                       </View>
 
@@ -279,7 +271,6 @@ class CartScreen extends Component {
             {/* </View> */}
 
           </ScrollView>
-          </ImageBackground>
 
           // </SafeAreaView>
 

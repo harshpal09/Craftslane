@@ -1,5 +1,5 @@
 import React, { Component, useEffect,useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl,ImageBackground, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { LogBox } from 'react-native';
-
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 
 
@@ -53,6 +53,8 @@ export default class Product extends Component {
 
         let r = await axios.get(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
 
+        console.log(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
+
         this.setState({ response_data: r.data })
 
         if (this.state.response_data.success == 0) {
@@ -94,6 +96,7 @@ export default class Product extends Component {
             })
 
 
+        // console.warn(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token,"pro=> ",d)
         return this.props.navigation.navigate('Cart')
     }
 
@@ -104,9 +107,9 @@ export default class Product extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
-
+                    <ScrollView style={portraitStyles.container} >
+                        {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={portraitStyles.loadingTextStyle} /> */}
+                        {/* <View style={portraitStyles.parentContainer}> */}
 
                         <View style={portraitStyles.categoryHeaderContainer} >
                             <Text style={portraitStyles.productHeaderText} >{this.state.name}</Text>
@@ -129,7 +132,7 @@ export default class Product extends Component {
                                         </TouchableOpacity>
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
-                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><Text style={portraitStyles.addButtonText}>+</Text></TouchableOpacity>
+                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialIcons name='add-shopping-cart' size={25} /></TouchableOpacity>
                                         </View>
                                     </View>
                                 ))}
@@ -140,7 +143,6 @@ export default class Product extends Component {
                         {/* </View> */}
 
                     </ScrollView>
-                    </ImageBackground>
                 }
             </SafeAreaView>
         );

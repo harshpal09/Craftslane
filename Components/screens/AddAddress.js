@@ -16,7 +16,7 @@ import {
     StyleSheet,
     Text,
     ScrollView,
-    ImageBackground,
+    Image,
     Dimensions,
     TextInput,
     Button,
@@ -202,12 +202,12 @@ class AddAddress extends Component {
         this.setState({isLoadingState:true});
     }
     render() {
+        console.log(this.state.s_state);
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
-                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
 
-                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
+                    <ScrollView style={portraitStyles.container}  >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
                             <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
@@ -234,10 +234,6 @@ class AddAddress extends Component {
                             <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} defaultValue={this.state.postal_code} />
                         </View>
 
-                        <View style={portraitStyles.containLabelAndInput}>
-                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
-                        </View>
-                        <KeyboardAvoidingView>
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -248,7 +244,6 @@ class AddAddress extends Component {
                             maxHeight={200}
                             // search
                             data={this.state.countries}
-                            
                             valueField="country_id"
                             labelField="name"
                             // imageField="image"
@@ -261,7 +256,7 @@ class AddAddress extends Component {
                                 console.log(e),
                                 this.selectCountry(e);
                             }} 
-                            keyboardAvoiding={true}
+                            keyboardAvoiding={false}
                             activeColor='#d4b58a'
                             flatListProps={{
                                 ListEmptyComponent:<EmptyList />,
@@ -291,7 +286,6 @@ class AddAddress extends Component {
                             onChange={(e) => {
                                 this.setState({s_state:e});
                             }}
-                            keyboardAvoiding
                             activeColor='#d4b58a'
                             flatListProps={{
                                 ListEmptyComponent:<EmptyList_1 />,
@@ -302,9 +296,9 @@ class AddAddress extends Component {
                             }}           
                         />
 
-                    </KeyboardAvoidingView>
-
-                        
+                        <View style={{marginTop:10,height:60}}>
+                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
+                        </View>
                         <View style={{width:'100%',paddingHorizontal:30,paddingVertical:10}}>
                             <Text style={portraitStyles.defaultAddress}>Default Address</Text>
                             <RadioGroup
@@ -318,13 +312,12 @@ class AddAddress extends Component {
 
                             <View style={portraitStyles.button} >
                                 {/* <Text style={portraitStyles.buttonText}>Continue</Text> */}
-                                {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Save</Text>}
+                                {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Continue</Text>}
                             </View>
                         </TouchableOpacity>
 
 
                     </ScrollView>
-                    </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
 
@@ -339,11 +332,10 @@ const styless = StyleSheet.create({
         borderBottomWidth: 1,
         width: '90%',
         left: 15,
-        marginBottom: 10,
+        marginBottom: 1,
         color:'black',
         height:60,
-        backgroundColor:'#f9f0df'
-        // backgroundColor: 'red'
+        backgroundColor:'#f2ebd5'
     },
     imageStyle: {
       width: 24,
