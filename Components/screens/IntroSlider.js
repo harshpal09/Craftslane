@@ -7,6 +7,7 @@ import { LogInPage } from '../../export';
 import { portraitStyles } from '../../Style/globleCss';
 // import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import SplashScreen from 'react-native-splash-screen';
 
 export default class IntroSlider extends Component {
   constructor(props) {
@@ -20,10 +21,13 @@ export default class IntroSlider extends Component {
     }
 
   }
+  
 
   componentDidMount() {
     this.getImage();
   }
+
+  
 
   onSkip = async () => {
 
@@ -31,7 +35,7 @@ export default class IntroSlider extends Component {
     let parsed = JSON.parse(user);
     this.setState({ data: parsed })
 
-    console.warn(parsed);
+    // console.warn(parsed);
 
     if (this.state.data == null) {
       return this.props.navigation.replace('login')
@@ -68,7 +72,10 @@ export default class IntroSlider extends Component {
       ];
       
       return(
+      
+            
             <AppIntroSlider renderItem={this._renderItem} data={item} onDone={()=> this.onSkip()} onSkip={()=> this.onSkip()} showSkipButton={true}/>
+        
         )
       }
     }

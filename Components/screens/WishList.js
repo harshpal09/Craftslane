@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, TouchableOpacity,RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView,ImageBackground, TouchableOpacity,RefreshControl } from 'react-native';
 import UiOrientation from '../UiOrientation';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import { portraitStyles } from '../../Style/globleCss';
@@ -86,9 +86,10 @@ class WishList extends Component {
   render() {
     console.log(this.state.refreshing)
     return (
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundTab}>
         {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-          <ScrollView style={portraitStyles.container}
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+          <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}
@@ -117,7 +118,7 @@ class WishList extends Component {
                             <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
                           </View>
                           <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                            <FontAwesome name="trash" size={30} color={'black'} onPress={() => this.deleteCart(item.product_id)} />
+                            <EvilIcons name="trash" size={30} color={'grey'} onPress={() => this.deleteCart(item.product_id)} />
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -134,6 +135,7 @@ class WishList extends Component {
             </View>
 
           </ScrollView>
+          </ImageBackground>
         }
       </SafeAreaView>
 

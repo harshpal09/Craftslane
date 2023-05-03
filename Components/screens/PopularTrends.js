@@ -9,7 +9,7 @@ class PopularTrends extends UiOrientation {
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {
                     this.state.alldata.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
-                        <ScrollView style={portraitStyles.container}>
+                        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
                             <View >
                                 {this.state.alldata.map((data, idx) => (
                                     <View style={this.getStyle().warpContainer} key={idx}>

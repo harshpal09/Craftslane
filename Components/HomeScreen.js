@@ -14,18 +14,63 @@ import axios from "axios";
 import ImageLazyLoading from "react-native-image-lazy-loading";
 // import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 // import DeviceInfo from "react-native-device-info";
+import SearchFilter from "./SearchFilter";
+
+
 
 class HomeScreen extends UiOrientation {
 
   state = {
     refreshing: false,
     alldata:[],
+    input:"",
+    words: [
+      {
+        name:"C",
+        id: "1",
+      },
+      {
+        name:"python",
+        id: "2",
+      },
+      {
+        name:"java",
+        id: "3",
+      },
+      {
+        name:"php",
+        id: "4",
+      },
+      {
+        name:"react",
+        id: "5",
+      },
+      {
+        name:"kotlin",
+        id: "6",
+      },
+      {
+        name:"ruby",
+        id: "7",
+      },
+      {
+        name:"swift",
+        id: "8",
+      },
+      {
+        name:"AI",
+        id: "9",
+      }, {
+        name:"Blockchain",
+        id: "10",
+      }
+    ]
   };
   componentDidMount(){
     this.getData();
   }
   async getData(){
-    let resp = await axios.get('https://echoit.in/craftslane-apis/cart.php')
+    let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
     this.setState({ alldata: resp.data.data })
   }
   _onRefresh = () => {
@@ -37,13 +82,13 @@ class HomeScreen extends UiOrientation {
   }
 
   render() {
-    // console.warn("name",this.state.item )
+    // console.log("name",this.state.input);
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
         {this.state.alldata.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
-            <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} refreshControl={<RefreshControl
+            <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={()=> this._onRefresh()}
             />}>
@@ -51,13 +96,16 @@ class HomeScreen extends UiOrientation {
 
               <View style={this.getStyle().searchBar}>
                 <Feather name="search" color="#000" size={18} />
-                <TextInput style={this.getStyle().textField} placeholder='Search' placeholderTextColor={'grey'} />
+                <TextInput style={this.getStyle().textField} placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})}/>
               </View>
+
+              <SearchFilter data={this.state.words} input={this.state.input} />
+
               <View style={this.getStyle().headerTextContainer}>
                 <Text style={this.getStyle().headerText}>Categories</Text>
               </View>
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide}>
+                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false}>
                   {this.state.alldata.map((data, idx) => (
                     <View style={this.getStyle().categoryImageContainer} key={idx}>
                       {data.categories.map((item, ind) => {
@@ -85,7 +133,7 @@ class HomeScreen extends UiOrientation {
               </View>
 
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide}>
+                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false} >
                   {this.state.alldata.map((data, idx) => (
                     <View style={this.getStyle().categoryImageContainer} key={idx}>
                       {data.new_arrivals.map((item, ind) => {

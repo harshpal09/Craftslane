@@ -35,9 +35,9 @@ class ApiCall extends Component {
           catch (error) {
             Alert.alert(error)
           }
-        let resp = await axios.get('https://echoit.in/craftslane-apis/cart.php')
+        let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
         let resp2 = await axios.get('https://echoit.in/craftslane-apis/categories.php')
-        let resp3 = await axios.get('https://echoit.in/craftslane-apis/homeaccent.php')
+        let resp3 = await axios.get('https://echoit.in/craftslane-apis/productprofile.php')
         // let resp4 = await axios.get('https://staging.shivikaspottery.com/index.php?route=api/customhome/index&key=U9XLFvnjCiOTIf3JIhPntVuhhAwpjczjuVvTpbs3cxNzUOq7ph9XCt3OfxuiUvCpFiNB8EHsvrfcfZ8uESKeJNazqaDosjVXz7DmJvksWp8yBIJMGFHX3agUTVByMS3IURBcYLMUyf8bNnIm4Xtu5vOKyPgVTDWXiS13IfdP4E3bMt79GXT1lnFXvYqkfvcv1PbGLlIJ6K4otiJ8O5rE7mW7KixetI2MHUHctmlpK6uCCLMIphE0mBndSWroyWEX')
         let resp5 = await axios.get('https://echoit.in/craftslane-apis/cart_product.php')
         let resp6 = await axios.get('https://demo.craftslane.com/index.php?route=api/customorderlist/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&token=jP6w3Bh3W9fUf4hVQdNT8H0I5BGjWv0M')

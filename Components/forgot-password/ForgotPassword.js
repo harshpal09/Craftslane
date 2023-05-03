@@ -1,5 +1,5 @@
 // In App.js in a new project
-import { View, Text, Button, ScrollView, Image, TextInput, Pressable, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { View, Text, Button, ScrollView, Image, TextInput, ImageBackground, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import React, { Component } from 'react';
@@ -29,8 +29,9 @@ class ForgotPassword extends Component {
   render() {
     // console.warn(this.state.data);
     return (
-      <SafeAreaView>
-        <ScrollView style={portraitStyles.container}>
+      <SafeAreaView style={portraitStyles.screenBackground}>
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
           <View style={portraitStyles.logoContainer}>
             <Image style={portraitStyles.logo} source={require('../../assets/Craftslane_logo.png')} />
           </View>
@@ -59,6 +60,7 @@ class ForgotPassword extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        </ImageBackground>
       </SafeAreaView>
     );
   }

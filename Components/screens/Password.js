@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, SafeAreaView, Pressabl, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, SafeAreaView,ImageBackground, Pressabl, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import UiOrientation from '../UiOrientation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -85,19 +85,20 @@ hideAndShow1() {
   render() {
     // console.warn(this.state.help)
     return (
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundTab}>
         {/* {this.state.notifications.length == false ? <View style={portraitStyles.navigationLoadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> : */}
-        <ScrollView style={portraitStyles.container}>
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
           <View style={portraitStyles.headerMiddleTextContainer}>
             <Text style={portraitStyles.profileHeaderMiddleText}>Manage your Personal Information and change your password Settings</Text>
           </View>
           <View style={portraitStyles.containLabelAndInput}>
             <TextInput style={portraitStyles.passwordInput} secureTextEntry={this.state.hide_and_show1} placeholder="Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ password: text })} />
-            <FontAwesome name={this.state.hide_and_show_icon_name1} size={20} style={{ padding: 10, position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow()} />
+            <FontAwesome name={this.state.hide_and_show_icon_name1} size={20} style={{ position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow()} />
           </View>
           <View style={portraitStyles.containLabelAndInput}>
             <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show2} placeholder="Confirm Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ confirm_password: text })} />
-            <FontAwesome name={this.state.hide_and_show_icon_name2} size={20} style={{ padding: 10, position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow1()} />
+            <FontAwesome name={this.state.hide_and_show_icon_name2} size={20} style={{ position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow1()} />
           </View>
           <TouchableOpacity activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.submitFrom()} disabled={this.state.toggle == false ? true : false}>
 
@@ -106,6 +107,7 @@ hideAndShow1() {
             </View>
           </TouchableOpacity>
         </ScrollView>
+        </ImageBackground>
         {/* } */}
       </SafeAreaView>
     );

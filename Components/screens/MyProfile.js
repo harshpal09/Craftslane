@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet,Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput, KeyboardAvoidingView,Image,RefreshControl} from 'react-native';
+import {View, StyleSheet,Text, SafeAreaView, ScrollView, TouchableOpacity,ImageBackground, TextInput, KeyboardAvoidingView,Image,RefreshControl} from 'react-native';
 // import UiOrientation from '../UiOrientation';
 
 import { DataTable } from 'react-native-paper';
@@ -7,6 +7,9 @@ import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 
 class MyProfile extends Component {
     constructor()
@@ -53,14 +56,15 @@ class MyProfile extends Component {
         .then((resp) => this.setState({info:resp.data.body}))
         .catch((error)=>console.warn(error));
         this.setState({refreshing:false})
-        // console.warn(this.state.data);
+        // console.warn(this.state.info);
     }
     render() {
-        console.warn(this.state.info)
+        // console.warn(this.state.info)
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                  {this.state.info.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-                <ScrollView style={portraitStyles.container} 
+                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl
                     refreshing={this.state.refreshing}
                     onRefresh={() => this._onRefresh()}
@@ -93,7 +97,7 @@ class MyProfile extends Component {
                                 <Text style={portraitStyles.tableDoubleColumnLable}>Date of Birth:</Text>
                             </View>
                             <View style={portraitStyles.tableColumnInput}>
-                                <Text style={portraitStyles.tableDoubleColumnText}>{item.dob}</Text>
+                                <Text style={portraitStyles.tableDoubleColumnText}>24/02/2002</Text>
                             </View>
                         </DataTable.Row>
                         <DataTable.Row style={portraitStyles.tableRow}>
@@ -101,7 +105,7 @@ class MyProfile extends Component {
                                 <Text style={portraitStyles.tableDoubleColumnLable}>Company Name:</Text>
                             </View>
                             <View style={portraitStyles.tableColumnInput}>
-                                <TextInput style={portraitStyles.tableColumnTextInput} placeholder= 'Not filled' placeholderTextColor={'darkgrey'} />
+                            <Text style={portraitStyles.tableDoubleColumnText}>EchoIT Solutions</Text>
                             </View>
                             {/* <View style={portraitStyles.tableColumnInput}>
                                 <TouchableOpacity style={portraitStyles.opacityText} onPress={() => this.props.navigation.replace('editprofile')}>
@@ -114,7 +118,7 @@ class MyProfile extends Component {
                                 <Text style={portraitStyles.tableDoubleColumnLable}>GSTN:</Text>
                             </View>
                             <View style={portraitStyles.tableColumnInput}>
-                                <TextInput style={portraitStyles.tableColumnTextInput} placeholder= 'Not filled' defaultValue='fdttrd' placeholderTextColor={''} />
+                            <Text style={portraitStyles.tableDoubleColumnText}>{item.fax}</Text>
                             </View>
                             {/* <View style={portraitStyles.tableColumnInput}>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.opacityText} onPress={() => this.props.navigation.replace('editprofile')}>
@@ -127,7 +131,7 @@ class MyProfile extends Component {
                                 <Text style={portraitStyles.tableDoubleColumnLable}>Contact Number:</Text>
                             </View>
                             <View style={portraitStyles.tableColumnInput}>
-                                <TextInput style={portraitStyles.tableColumnTextInput} value={item.telephone}  />
+                            <Text style={portraitStyles.tableDoubleColumnText}>{item.telephone}</Text>
                             </View>
                             {/* <View style={portraitStyles.tableColumnInput}>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.opacityText} onPress={() => this.props.navigation.replace('editprofile')}>
@@ -140,7 +144,7 @@ class MyProfile extends Component {
                                 <Text style={portraitStyles.tableDoubleColumnLable}>Email:</Text>
                             </View>
                             <View style={portraitStyles.tableColumnInput}>
-                                <TextInput style={portraitStyles.tableColumnTextInput} defaultValue ={this.state.text} onChangeText={ text => this.setText(text)} value={item.email} />
+                            <Text style={portraitStyles.tableDoubleColumnText}>{item.email}</Text>
                             </View>
                             {/* <View style={portraitStyles.tableColumnInput}>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.opacityText} onPress={() => this.props.navigation.replace('editprofile')}>
@@ -167,6 +171,7 @@ class MyProfile extends Component {
                     ))}
                     </KeyboardAvoidingView>
                 </ScrollView>
+                </ImageBackground>
     }
             </SafeAreaView>
         );

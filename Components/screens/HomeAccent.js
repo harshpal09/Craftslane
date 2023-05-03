@@ -1,21 +1,12 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity,ImageBackground ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
-import Icon from 'react-native-ionicons';
-import FavouriteScreen from '../FavouriteScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
-import { Axios } from 'axios';
 import axios from 'axios';
-import UseNet from './UseNet';
 import { portraitStyles } from '../../Style/globleCss';
-import * as Animatable from 'react-native-animatable';
+
 
 // MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
 
@@ -125,51 +116,66 @@ class HomeAccent extends UiOrientation {
       selected_id: 0,
       size_id: 0,
       liked: false,
+      select_color:[
+        {
+          id: 0,
+          value: 'green',
+        },
+        {
+          id: 1,
+          value: 'red',
+        },
+        {
+          id: 2,
+          value: 'grey',
+        },
+      ],
+      index:0,
       items_image: [
         [
           {
-            id: 1,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/DGRDE0716L_7/DGRDE0716L_7-200x200.png',
           },
           {
-            id: 2,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HHMRCH0002L_1/HHMRCH0002L_1-400x400.png',
           },
           {
-            id: 3,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HJCRSE0007L_4/HJCRSE0007L_4-400x400.png',
           },
           {
-            id: 4,
+            id: 3,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HLRSE0006AG_1/HLRSE0006AG_2-400x400.png',
           },
          
         ],
         [
           {
-            id: 5,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
           },
           {
-            id: 6,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
           },
           {
-            id: 7,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
           }
         ],
         [
           {
-            id: 8,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
           },
           {
-            id: 9,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
           },
           {
-            id: 10,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
           }
         ]
@@ -192,7 +198,7 @@ class HomeAccent extends UiOrientation {
       data: data
 
     });
-    console.warn(resp);
+    // console.warn(resp);
   }
   isLoaded() {
     if (this.state.traystyle == []) {
@@ -438,9 +444,8 @@ class HomeAccent extends UiOrientation {
     }
   }
   imageCalling(id) {
-    // console.warn(this.state.items_image[id - 1].value);
-    this.setState({ image: this.state.items_image[0][id - 1].value })
-
+    // console.warn(id);
+    this.setState({ image: this.state.items_image[this.state.index][id - 1].value })
   }
 
   selected() {
@@ -456,11 +461,13 @@ class HomeAccent extends UiOrientation {
 
   render() {
     // console.warn(this.state.traystyle);
+    // console.log(this.state.index,this.state.image)
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
         {this.state.traystyle.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
-          <ScrollView style={this.getStyle().container} nestedScrollEnabled={true}>
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
+          <ScrollView style={this.getStyle().profileContainer} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
 
 
             <View style={this.getStyle().homeAccentContainer}>
@@ -477,12 +484,18 @@ class HomeAccent extends UiOrientation {
                                   <Image style={this.getStyle().homeAccentImage} source={{ uri: this.state.image }} />
                                 </View>
                               </TouchableOpacity>
-                              <ScrollView horizontal={true}>
-
+                              <ScrollView horizontal={true}  showsHorizontalScrollIndicator={false}>
+                                {
+                                  this.state.select_color.map((data,i)=>(
+                                    <TouchableOpacity key={i} style={{width:50,height:50,margin:20,justifyContent:'center',alignItems:'center',borderRadius:50,backgroundColor:data.value}} onPress={()=> this.setState({ image: this.state.items_image[data.id][0].value,index: data.id})} >
+                                      <Text style={{color:'white',fontWeight:'500',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
+                                    </TouchableOpacity>
+                                  ))
+                                }
                               </ScrollView>
-                              <ScrollView horizontal={true} style={{ width: "80%" }}>
-                                {this.state.items_image[0].map((data, i) => (
-                                  <TouchableOpacity onPress={() => this.imageCalling(data.id)} key={i}>
+                              <ScrollView horizontal={true} style={{ width: "100%" }}  showsHorizontalScrollIndicator={false}>
+                                {this.state.items_image[this.state.index].map((data, i) => (
+                                  <TouchableOpacity onPress={() => this.setState({image: this.state.items_image[this.state.index][data.id].value })} key={i}>
                                     <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
                                   </TouchableOpacity>
                                 ))}
@@ -550,14 +563,14 @@ class HomeAccent extends UiOrientation {
               <Pressable style={this.getStyle().cartbutton} onPress={() => this.addToCart()}>
                 <Text style={this.getStyle().buttonText}>Add to Basket</Text>
               </Pressable>
-              <Pressable onPress={() => this.isLiked(this.state.liked)}>
+              <Pressable style={{padding:5}} onPress={() => this.isLiked(this.state.liked)}>
                 <MaterialCommunityIcons
                   name={this.state.liked ? "heart" : "heart-outline"}
                   size={32}
                   color={this.state.liked ? "red" : "black"}
                 />
               </Pressable>
-              <Pressable >
+              <Pressable style={{padding:5}} >
                 <MaterialCommunityIcons
                   name="share-variant"
                   size={32}
@@ -585,6 +598,7 @@ class HomeAccent extends UiOrientation {
             </View>
             {/* </View> */}
           </ScrollView>
+          </ImageBackground>
         }
       </SafeAreaView>
     );
