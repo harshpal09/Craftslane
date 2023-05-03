@@ -108,7 +108,7 @@ class MainNavigation extends Component {
         <Stack.Screen name="Checkout" component={CheckOut}
           options={{
             headerShown: true, headerTitle: 'checkout',
-            headerStyle: { backgroundColor: '#f2ebd5' },
+            headerStyle: { backgroundColor: '#fffaec' },
             headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
           }}
         />

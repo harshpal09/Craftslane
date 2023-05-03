@@ -5,27 +5,28 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { showMessage } from 'react-native-flash-message';
+import { DataTable } from 'react-native-paper';
 // import UiOrientation from '../UiOrientation';
 
 class TrackOrders extends Component {
-    constructor()
-    {
+    constructor() {
         super();
         this.state = {
             toggle: undefined,
             item: [],
-            info:undefined,
+            info: undefined,
             status: "",
             placed_on: "",
+            comment: "",
             order_id: undefined
         }
 
     }
-    
+
     async submitFrom() {
         this.setState({ toggle: false })
 
-        if(this.state.order_id != undefined) {
+        if (this.state.order_id != undefined) {
 
             try {
                 let user = await AsyncStorage.getItem('user');
@@ -48,8 +49,7 @@ class TrackOrders extends Component {
             this.setState({ toggle: true })
 
             // console.warn(this.state.data.url + "customtrackorder/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
-            if(this.state.info == 'Data not available')
-            {   
+            if (this.state.info == 'Data not available') {
                 showMessage({
                     message: 'Data not available',
                     // duration: 4000,
@@ -59,17 +59,16 @@ class TrackOrders extends Component {
                     titleStyle: { fontSize: 18 }
                 })
             }
-            else
-            {
-                this.setState({item:this.state.info})
+            else {
+                this.setState({ item: this.state.info })
                 this.state.item.map((val) => {
-                    this.setState({  placed_on: val.date_added ,status:val.name})
+                    this.setState({ placed_on: val.date_added, status: val.name, comment: val.comment })
                 })
             }
-            
-        }  
-        else{
-             
+
+        }
+        else {
+
             showMessage({
                 message: "please enter the order id",
                 // duration: 4000,
@@ -78,7 +77,7 @@ class TrackOrders extends Component {
                 icon: props => <MaterialIcons name="error-outline" size={16} color={'white'} {...props} />,
                 titleStyle: { fontSize: 18 }
             })
-            this.setState({toggle:true});
+            this.setState({ toggle: true });
         }
 
 
@@ -104,15 +103,61 @@ class TrackOrders extends Component {
                             </TouchableOpacity>
                         </View>
                         :
-                        <View style={portraitStyles.addressParentContainer} >
+                        // <View style={portraitStyles.addressParentContainer} >
 
-                            <View style={portraitStyles.addressChildContainer}  >
-                               
-                                <Text style={portraitStyles.cartText}>Status: {this.state.status}</Text>
-                                <Text style={portraitStyles.cartText}>Placed On :{this.state.placed_on}</Text>
-                            </View>
+                        //     <View style={portraitStyles.addressChildContainer}>
+                        //         <View style={{display:'flex',flexDirection:'row'}}>
+                        //             <Text style={portraitStyles.orderHeadingText}>
+                        //                 Order Id: <Text style={portraitStyles.cartText}>#{this.state.order_id}</Text>
+                        //             </Text>
+                        //             <Text style={portraitStyles.orderHeadingText}>
+                        //                 Status: <Text style={portraitStyles.cartText}>{this.state.status}</Text>
+                        //             </Text>
+                        //             <Text style={portraitStyles.orderHeadingText}>
+                        //                 Date: <Text style={portraitStyles.cartText}>{this.state.placed_on}</Text>
+                        //             </Text>
+                        //         </View>
+                        //         <Text style={portraitStyles.orderHeadingText}>
+                        //             Comment: <Text style={portraitStyles.cartText}>{this.state.comment}</Text>
+                        //         </Text>
+                        //     </View>
 
-                        </View>
+                        // </View>
+
+
+                        <DataTable>
+                            <DataTable.Row style={{
+                                borderBottomColor: "#BBA890",
+                                borderTopColor: '#BBA890',
+                                borderTopWidth: 2,
+                                borderBottomWidth: 2
+                            }} >
+                                <View style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-around'
+                                }}
+                                >
+                                    <Text style={portraitStyles.creditsTableHeaderText}>Order Id</Text>
+                                    <Text style={portraitStyles.creditsTableHeaderText}>status</Text>
+                                    <Text style={portraitStyles.creditsTableHeaderText}>Comment</Text>
+                                    <Text style={portraitStyles.creditsTableHeaderText}>Date Added</Text>
+                                </View>
+                            </DataTable.Row>
+
+                            <DataTable.Row style={portraitStyles.creditTableRow}>
+                                <View style={portraitStyles.creditTableRowView}>         
+                                    <Text style={portraitStyles.trackOrderTableText}>#{this.state.order_id}</Text>
+                                    <Text style={portraitStyles.trackOrderTableText}>{this.state.status}</Text>
+                                    <Text style={portraitStyles.trackOrderTableText}>{this.state.comment}</Text>
+                                    <Text style={portraitStyles.trackOrderTableText}>{this.state.placed_on}</Text>
+
+                                </View>
+                            </DataTable.Row>
+
+                        </DataTable>
+
                     }
                 </ScrollView>
 

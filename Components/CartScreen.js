@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator,RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator,RefreshControl, FlatList } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
@@ -179,6 +179,7 @@ class CartScreen extends Component {
 
 
   render() {
+    // console.log(this.state.cart)
     if (this.state.cart_total.total_items == 0) {
       return (
         <EmptyCart />
@@ -222,7 +223,6 @@ class CartScreen extends Component {
                       <View style={portraitStyles.cartTextContainer}>
                         <Text style={portraitStyles.cartModelText}> Total Price: {item.subtotal}</Text>
                       </View>
-
                       <View style={portraitStyles.incDecButtonContainer}>
 
                         <View style={portraitStyles.cartIncDecContainer}>
@@ -231,7 +231,7 @@ class CartScreen extends Component {
                           <TouchableOpacity style={portraitStyles.incBtn} onPress={() => this.incFunction(item.product_id, item.quantity)}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
                         </View>
                         <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                          <FontAwesome name="trash" size={30} color={'black'} onPress={() => this.deleteCart(item.product_id)} />
+                          <FontAwesome name="trash" size={30} color={'#5A5A5A'} onPress={() => this.deleteCart(item.product_id)} />
                         </TouchableOpacity>
                       </View>
 

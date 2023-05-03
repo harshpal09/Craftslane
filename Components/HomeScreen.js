@@ -25,7 +25,7 @@ class HomeScreen extends UiOrientation {
     this.getData();
   }
   async getData(){
-    let resp = await axios.get('https://echoit.in/craftslane-apis/cart.php')
+    let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
     this.setState({ alldata: resp.data.data })
   }
   _onRefresh = () => {
@@ -37,7 +37,7 @@ class HomeScreen extends UiOrientation {
   }
 
   render() {
-    // console.warn("name",this.state.item )
+    // console.warn(this.s )
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 

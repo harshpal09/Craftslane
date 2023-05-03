@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity,RefreshControl ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
@@ -10,6 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { SelectCountry } from 'react-native-element-dropdown';
 
 import { Axios } from 'axios';
 import axios from 'axios';
@@ -125,51 +126,72 @@ class HomeAccent extends UiOrientation {
       selected_id: 0,
       size_id: 0,
       liked: false,
+      isLoading:false,
+      countries:[
+        {
+
+        }
+      ],
+      select_color:[
+        {
+          id: 0,
+          value: 'green',
+        },
+        {
+          id: 1,
+          value: 'red',
+        },
+        {
+          id: 2,
+          value: 'grey',
+        },
+      ],
+      index:0,
       items_image: [
         [
           {
-            id: 1,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/DGRDE0716L_7/DGRDE0716L_7-200x200.png',
           },
           {
-            id: 2,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HHMRCH0002L_1/HHMRCH0002L_1-400x400.png',
           },
           {
-            id: 3,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HJCRSE0007L_4/HJCRSE0007L_4-400x400.png',
           },
           {
-            id: 4,
+            id: 3,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HLRSE0006AG_1/HLRSE0006AG_2-400x400.png',
           },
          
         ],
         [
           {
-            id: 5,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
           },
           {
-            id: 6,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
           },
           {
-            id: 7,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
           }
         ],
         [
           {
-            id: 8,
+            id: 0,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
           },
           {
-            id: 9,
+            id: 1,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
           },
           {
-            id: 10,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
           }
         ]
@@ -438,9 +460,8 @@ class HomeAccent extends UiOrientation {
     }
   }
   imageCalling(id) {
-    // console.warn(this.state.items_image[id - 1].value);
-    this.setState({ image: this.state.items_image[0][id - 1].value })
-
+    // console.warn(id);
+    this.setState({ image: this.state.items_image[this.state.index][id - 1].value })
   }
 
   selected() {
@@ -452,10 +473,19 @@ class HomeAccent extends UiOrientation {
   isLiked(flag) {
     flag ? this.setState({ liked: false }) : this.setState({ liked: true });
   }
-
+  onRefresh()
+    {
+        this.getData();    
+    }
+    onLoadMore()
+    {
+        this.setState({isLoading:true});
+        this.getData();
+    }
 
   render() {
     // console.warn(this.state.traystyle);
+    console.log(this.state.index,this.state.image)
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
@@ -478,11 +508,17 @@ class HomeAccent extends UiOrientation {
                                 </View>
                               </TouchableOpacity>
                               <ScrollView horizontal={true}>
-
+                                {
+                                  this.state.select_color.map((data,i)=>(
+                                    <TouchableOpacity key={i} style={{width:50,height:50,margin:20,justifyContent:'center',alignItems:'center',borderRadius:50,backgroundColor:data.value}} onPress={()=> this.setState({ image: this.state.items_image[data.id][0].value,index: data.id})} >
+                                      <Text style={{color:'white',fontWeight:'550',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
+                                    </TouchableOpacity>
+                                  ))
+                                }
                               </ScrollView>
                               <ScrollView horizontal={true} style={{ width: "80%" }}>
-                                {this.state.items_image[0].map((data, i) => (
-                                  <TouchableOpacity onPress={() => this.imageCalling(data.id)} key={i}>
+                                {this.state.items_image[this.state.index].map((data, i) => (
+                                  <TouchableOpacity onPress={() => this.setState({image: this.state.items_image[this.state.index][data.id].value })} key={i}>
                                     <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
                                   </TouchableOpacity>
                                 ))}
@@ -499,8 +535,43 @@ class HomeAccent extends UiOrientation {
                   ))}
                 </View>
               ))}
+              <View style={{padding:10}}>
+                  <SelectCountry
+                    style={styless.dropdown}
+                    selectedTextStyle={styless.selectedTextStyle}
+                    placeholderStyle={styless.placeholderStyle}
+                    imageStyle={styless.imageStyle}
+                    inputSearchStyle={styless.inputSearchStyle}
+                    iconStyle={styless.iconStyle}
+                    maxHeight={200}
+                    // search
+                    data={this.state.items_image}
+                    valueField="id"
+                    labelField="value"
+                    // imageField="image"
+                    placeholder="Select Country"
+                    searchPlaceholder="Search..."
+                    itemContainerStyle={styless.itemContainerStyle}
+                    containerStyle={{backgroundColor:'#f2ebd5'}}
+                    onChange={e => 
+                    {
+                        console.log(e)
+                    }
+                  }
 
-              {this.state.traystyle.map((data, i) => (
+                    keyboardAvoiding={false}
+                    activeColor='#d4b58a'
+                    flatListProps={{
+                        ListEmptyComponent:<EmptyList />,
+                        ListFooterComponent: <RenderFooter isLoading={this.state.isLoading} />,
+                        refreshControl:(<RefreshControl refreshing={false} onRefresh={()=> this.onRefresh()} />),
+                        onEndReachedThreshold:0.5,
+                        onEndReached:()=> this.onLoadMore(),
+
+                    }}                       
+                  />  
+              </View>
+              {/* {this.state.traystyle.map((data, i) => (
                 <View style={this.getStyle().trayStyleContainer} key={i}>
                   <Text style={this.getStyle().headerTrayStyle}>Select tray style: {this.state.value}</Text>
                   {data.traystyle.map((item, j) => (
@@ -524,7 +595,7 @@ class HomeAccent extends UiOrientation {
                   <Text style={this.getStyle().headerTrayStyle}>Select a Size: {this.state.size}</Text>
                   {this.function1()}
                 </View>
-              ))}
+              ))} */}
             </View>
             {/* <View style={this.getStyle().selectContainer}>
                 <Text style={this.getStyle().selectListHeader}>How would you like us to Personalize it for you?</Text>
@@ -594,3 +665,76 @@ class HomeAccent extends UiOrientation {
 
 
 export default HomeAccent;
+const styless = StyleSheet.create({
+  dropdown: {
+      borderBottomColor: 'grey',
+      borderBottomWidth: 1,
+      width: '90%',
+      left: 15,
+      margin: 2,
+      color:'black',
+      height:60,
+      backgroundColor:'#f2ebd5'
+  },
+  imageStyle: {
+    width: 24,
+    height: 24,
+  },
+  placeholderStyle: {
+    fontSize: 14,
+    color:'grey'
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    marginLeft: 8,
+    color:'grey',
+  //   backgroundColor:'red',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color:'grey',
+  },
+});
+
+const EmptyList =()=>{
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <Text style={{color:'black'}}>Please Wait!</Text>
+      </View>
+  )
+}
+const EmptyList_1 =()=>{
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <Text style={{color:'black'}}>Please Wait!</Text>
+      </View>
+  )
+}
+const RenderFooter = (isLoading) =>{
+  if(!isLoading)
+  {
+      return null;
+  }
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <ActivityIndicator color={'grey'} size={'large'}  />
+      </View>
+  )
+}
+const RenderFooter_2 = (isLoading) =>{
+  if(!isLoading)
+  {
+      return null;
+  }
+  return(
+      <View style={{padding:16,alignItems:'center'}}>
+          <ActivityIndicator color={'grey'} size={'large'}  />
+      </View>
+  )
+}
+

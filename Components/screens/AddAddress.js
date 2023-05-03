@@ -52,7 +52,7 @@ class AddAddress extends Component {
         postal_code: '',
         postcode_required: 1,
         s_country: '',
-        s_state: '',
+        s_state: {},
         password: '',
         confirm_password: '',
         agree: 0,
@@ -153,8 +153,8 @@ class AddAddress extends Component {
             'address_2': this.state.address_2,
             'postcode': this.state.postal_code,
             'city': this.state.city,
-            'zone_id': this.state.s_state,
-            'country_id': this.state.s_country,
+            'zone_id': this.state.s_state.zone_id,
+            'country_id': this.state.s_state.country_id,
             'contact_number': this.state.contact_number,
         }
         const header = {
@@ -202,6 +202,7 @@ class AddAddress extends Component {
         this.setState({isLoadingState:true});
     }
     render() {
+        console.log(this.state.s_state);
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
@@ -283,7 +284,7 @@ class AddAddress extends Component {
                             searchPlaceholder="Search..."
                             containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={(e) => {
-                                this.setState({s_state:e.zone_id});
+                                this.setState({s_state:e});
                             }}
                             activeColor='#d4b58a'
                             flatListProps={{
@@ -311,7 +312,7 @@ class AddAddress extends Component {
 
                             <View style={portraitStyles.button} >
                                 {/* <Text style={portraitStyles.buttonText}>Continue</Text> */}
-                                {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Save</Text>}
+                                {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Continue</Text>}
                             </View>
                         </TouchableOpacity>
 

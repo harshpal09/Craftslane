@@ -660,8 +660,9 @@ export const portraitStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    height: 30,
-    width: 30,
+    padding:5,
+    // height: 30,
+    // width: 30,
   },
   priceText: {
     fontSize: 14,
@@ -687,9 +688,9 @@ export const portraitStyles = StyleSheet.create({
     textAlign: 'center',
     alignContent: 'center',
     color: 'white',
-    height: 30,
-    width: 30,
-    lineHeight: 30,
+    // height: 30,
+    // width: 30,
+    // lineHeight: 30,
     borderRadius: 10
   },
   //-------------------------------------------------------end product page ----------------------------------------------------------------------
@@ -1208,6 +1209,7 @@ incDecButtonContainer: {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
+  marginVertical:5,
   // backgroundColor: 'red'
 },
 incDecButtonContainerProfile: {
@@ -1375,16 +1377,18 @@ cartIncDecContainer: {
   tableDoubleColumnText:{
     color:'#3d3d3d',
     fontSize:15,
-    fontWeight:'600'
+    fontWeight:'600',
+    width:Dimensions.get('screen').width/2.2,
+    // backgroundColor:'red'
   },
   tableColumnTextInput:{
     color:'#5c5858',
     fontSize:11,
-    borderWidth:.5,
-    // width:,
+    borderWidth:0,
+    width:Dimensions.get('screen').width/2.2,
     height:35,
     borderRadius:15,
-    borderColor:'lightgrey'
+    // borderColor:'lightgrey'
     // lineHeight:40
   },
   tableDoubleColumnDecoratedText:{
@@ -1530,6 +1534,20 @@ cartIncDecContainer: {
    
     
   },
+  orderHeadingText: {
+    // margin: 2,
+    // marginLeft: 2,
+    padding:5,
+    color: '#3d3d3d',
+    fontFamily: 'LibreBaskerville-Regular',
+    fontSize:13,
+    width: '100%',
+    fontWeight:"700",
+    // height:70,
+    // textAlign:"center",
+    textAlignVertical: "center",
+    // backgroundColor:'white',
+  },
   orderText: {
     margin: 2,
     marginLeft: 2,
@@ -1562,6 +1580,7 @@ cartIncDecContainer: {
     marginVertical:20,
     // backgroundColor:'green'
 },
+
 addressParentContainer:{
   width: "100%",
   // backgroundColor:'green',
@@ -1569,6 +1588,14 @@ addressParentContainer:{
   alignItems:'center',
   padding: 20,
   // paddingBottom:Dimensions.get('screen').height/3,
+},
+trackOrderContainer:{
+  width: "100%",
+  borderWidth: 1,
+  borderColor: '#c59a6a',
+  
+  marginVertical:20,
+  // backgroundColor:'green'
 },
 addressButton:{
   textDecorationLine:'underline',
@@ -1594,16 +1621,26 @@ creditsTableText:{
   textAlignVertical:'center',
   fontSize:13,
   fontFamily:"LibreBaskerville-Regular",
-  // backgroundColor:'red'
 },
-creditsTableHeadetText:{
+trackOrderTableText:{
+  color:'#3d3d3d',
+  width:Dimensions.get('screen').width/4.2,
+  textAlign:'center',
+  // margin:2,
+  textAlignVertical:'center',
+  fontSize:13,
+  fontFamily:"LibreBaskerville-Regular",
+},
+creditsTableHeaderText:{
   color:'black',
   width:Dimensions.get('screen').width/3.2,fontWeight:'bold',
   textAlign:'center',
   textAlignVertical:'center',
+  // backgroundColor:'red',
 },
 creditTableRow:
   {
+    // backgroundColor:'grey',
     borderBottomColor:"#BBA890",
     // borderTopColor:'#BBA890',
     // borderTopWidth:1,
@@ -1611,7 +1648,7 @@ creditTableRow:
     height:70
  },
  creditTableRowView:{
-  
+    // backgroundColor:'green',
     display:'flex',
     flexDirection:'row',
     alignItems:'center'
@@ -1625,10 +1662,10 @@ creditTableRow:
 },
 //-------------------------------------------------------------------Add address page------------------------------------------------
  radioButtons:{
-  color:'black',
+  color:'#6d6d6d',
  },
  defaultAddress:{
-    color:'black',
+    color:'#6d6d6d',
     fontSize:13,
 
  }

@@ -78,9 +78,9 @@ class MyCredits extends Component {
                                                 justifyContent: 'space-around'
                                             }}
                                             >
-                                                <Text style={portraitStyles.creditsTableHeadetText}>Date Added</Text>
-                                                <Text style={portraitStyles.creditsTableHeadetText}>Description</Text>
-                                                <Text style={portraitStyles.creditsTableHeadetText}>Amount (INR)</Text>
+                                                <Text style={portraitStyles.creditsTableHeaderText}>Date Added</Text>
+                                                <Text style={portraitStyles.creditsTableHeaderText}>Description</Text>
+                                                <Text style={portraitStyles.creditsTableHeaderText}>Amount (INR)</Text>
                                             </View>
                                         </DataTable.Row>
                                         {this.state.credits.map((val, i) => (

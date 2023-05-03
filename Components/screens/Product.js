@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { LogBox } from 'react-native';
-
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 
 
@@ -52,6 +52,8 @@ export default class Product extends Component {
         //   console.warn(this.state.data)
 
         let r = await axios.get(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
+
+        console.log(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
 
         this.setState({ response_data: r.data })
 
@@ -130,7 +132,7 @@ export default class Product extends Component {
                                         </TouchableOpacity>
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
-                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><Text style={portraitStyles.addButtonText}>+</Text></TouchableOpacity>
+                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialIcons name='add-shopping-cart' size={25} /></TouchableOpacity>
                                         </View>
                                     </View>
                                 ))}

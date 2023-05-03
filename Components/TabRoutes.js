@@ -17,7 +17,7 @@ const TabRoutes = () => {
             headerShown: false,
             tabBarActiveTintColor: '#B48D56',
             tabBarInactiveTintColor: 'black',
-        }}>
+        }} sceneContainerStyle={{backgroundColor:'red'}}>
             <Tab.Screen name="Home" component={AuthNavigator} options={{
                 tabBarIcon: ({ focused }) => {
                     return (
@@ -31,8 +31,10 @@ const TabRoutes = () => {
                         return (
                             <Icon name="cart" size={25} color={focused ? '#B48D56' : '#666666'} />
                         )
-                    }
-                }} />
+                    },
+                    tabBarBadge:4   
+                }
+                }  />
             <Tab.Screen name="Favourite" component={WishList}
                 options={{
                     tabBarIcon: ({ focused }) => {

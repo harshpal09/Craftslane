@@ -1,16 +1,31 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,Alert, RefreshControl } from 'react-native';
 import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { showMessage } from 'react-native-flash-message';
+import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
+
 
 class AddressBook extends Component {
     state = {
         address: [],
         refreshing: false,
-        all_data: {}
+        all_data: {},
+        radioButtons: [
+            {
+                id: '1', // acts as primary key, should be unique and non-empty string
+                label: 'Make Default',
+                value: 'option1',
+                color:'#B48D56',
+                borderSize:1,
+                borderColor:'#B48D56',
+                labelStyle:portraitStyles.radioButtons
+
+            },
+            
+        ],
     }
     componentDidMount() {
         this.getData();
@@ -35,6 +50,16 @@ class AddressBook extends Component {
             this.setState({ message: this.state.all_data.body })
         }
     }
+    deleteConfirmation(id){
+        Alert.alert(
+            'Delete',
+            'Do you really want to delete this address ?',
+            [   {text: "Not Now"},
+                { text: "Delete", onPress: () => this.deleteAddress(id) }
+            ],
+            { cancelable: false }
+        )
+    }
     async deleteAddress(id) {
         const d = {
             address_id: id
@@ -49,44 +74,54 @@ class AddressBook extends Component {
             then((response) => {
                 this.setState({ all_data: response.data })
             })
-            console.log(this.state.all_data);
-            if (this.state.all_data.status == 200) {
-                this.setState({ address: this.state.all_data.body })
-                showMessage({
-                    message: 'Address deleted successfully',
-                    duration: 4000,
-                    type: 'success',
-                    color: 'white',
-                    icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-                    backgroundColor: 'green',
-                    titleStyle: { fontSize: 18 }
-                })
-            }
-            else if(this.state.all_data.status == 204)  {
-                this.setState({ message: this.state.all_data.body })
-                    
-            }
-            
-            // .catch((error) => {
-            //     showMessage({
-            //         message: error,
-            //         duration: 4000,
-            //         type: 'danger',
-            //         color: 'white',
-            //         icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-            //         backgroundColor: 'green',
-            //         titleStyle: { fontSize: 18 }
-            //     })
-            // })
+        console.log(this.state.all_data);
+        if (this.state.all_data.status == 200) {
+            this.setState({ address: this.state.all_data.body })
+            showMessage({
+                message: 'Address deleted successfully',
+                duration: 4000,
+                type: 'success',
+                color: 'white',
+                icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                backgroundColor: 'green',
+                titleStyle: { fontSize: 18 }
+            })
+        }
+        else if (this.state.all_data.status == 204) {
+            this.setState({ message: this.state.all_data.body })
+
+        }
+
+        // .catch((error) => {
+        //     showMessage({
+        //         message: error,
+        //         duration: 4000,
+        //         type: 'danger',
+        //         color: 'white',
+        //         icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+        //         backgroundColor: 'green',
+        //         titleStyle: { fontSize: 18 }
+        //     })
+        // })
 
     }
     _onRefresh = () => {
-
+        this.getData();
         this.setState({ refreshing: true });
         if (this.state.address.length > 0) {
             this.setState({ refreshing: false });
         }
     }
+    setRadioButtons(arr)
+    {
+        
+        this.setState({radioButtons:arr});       
+    }
+
+    onPressRadioButton(radioButtonsArray) {
+        console.warn(radioButtonsArray);
+    }
+
 
     render() {
         // console.log(this.state.all_data);
@@ -108,6 +143,13 @@ class AddressBook extends Component {
                                 <View style={portraitStyles.addressParentContainer} >
                                     {this.state.address.map((item, i) => (
                                         <View style={portraitStyles.addressChildContainer} key={i}>
+                                            <View style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }}>
+                                                <RadioGroup
+                                                    radioButtons={this.state.radioButtons}
+                                                    onPress={() => this.onPressRadioButton(this.state.radioButtons)}
+                                                    layout='row'
+                                                />
+                                            </View>
                                             <Text style={portraitStyles.addressText}> {item.firstname} {item.lastname} </Text>
                                             <Text style={portraitStyles.addressText}>{item.company}</Text>
                                             <Text style={portraitStyles.addressText}>{item.address_1}</Text>
@@ -120,13 +162,13 @@ class AddressBook extends Component {
                                                     <Text style={portraitStyles.addressButton}>Edit</Text>
                                                 </TouchableOpacity>
                                                 {this.state.address.length > 0 ?
-                                                <TouchableOpacity activeOpacity={0.9} style={{ width: '50%' }} onPressIn={() => this.deleteAddress(item.address_id)}>
-                                                    <Text style={portraitStyles.addressButton}>Delete</Text>
-                                                </TouchableOpacity>
-                                                :
-                                                <>
-                                                </>
-    }
+                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '50%' }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
+                                                        <Text style={portraitStyles.addressButton}>Delete</Text>
+                                                    </TouchableOpacity>
+                                                    :
+                                                    <>
+                                                    </>
+                                                }
                                             </View>
                                         </View>
                                     ))}
