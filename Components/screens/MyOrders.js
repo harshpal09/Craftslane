@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, Pressable, TouchableOpacity,RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image,FlatList,ImageBackground, ScrollView, Pressable,Alert, TouchableOpacity,RefreshControl } from 'react-native';
 import UiOrientation from '../UiOrientation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { portraitStyles } from '../../Style/globleCss';
@@ -27,9 +27,10 @@ class MyOrders extends Component {
       this.setState({ data: parsed })
     }
     catch (error) {
-      Alert.alert(error)
+    //   Alert.alert(error)
     }
-    await axios.get(this.state.data.url + "customorderlist/index&key=" + this.state.data.key + "&token=" + this.state.data.token).then((resp) => this.setState({ all_data: resp.data }));
+    let res = await axios.get(this.state.data.url + "customorderlist/index&key=" + this.state.data.key + "&token=" + this.state.data.token).then((resp) => this.setState({ all_data: resp.data }));
+    console.warn(res)
     if (this.state.all_data.status == 200) {
       this.setState({ all_orders: this.state.all_data.body });
     }
@@ -48,8 +49,9 @@ class MyOrders extends Component {
   render() {
     // console.warn(this.state.all_data.body);
     return (
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundTab}>
         {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
           <ScrollView style={portraitStyles.container} 
           refreshControl={<RefreshControl
             refreshing={this.state.refreshing}
@@ -59,20 +61,20 @@ class MyOrders extends Component {
             {/* <View style={portraitStyles.parentContainer}> */}
               {
                 this.state.all_orders.length > 0 ?
-                <View style={portraitStyles.warpContainer}>
+                <View style={portraitStyles.warpProductContainer}>
                   {this.state.all_orders.map((data, i) => (
                     <TouchableOpacity activeOpacity={0.9} style={portraitStyles.cartProductContainer} onPress={() => this.props.navigation.navigate('myorderprofile', { item: data.order_id })} key={i} >
                       <View style={portraitStyles.orderContainer} >
                         <Text style={{ color: 'black' }}>order</Text>
                         <View >
-                          <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'black' }}>#{data.order_id}</Text>
+                          <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'black' }}>#{data.order_id}</Text>
                         </View>
 
                       </View>
                       <View style={portraitStyles.navParentContainer}>
                         <View style={portraitStyles.navContainer}>
                           <View style={portraitStyles.cartTextContainer}>
-                            <Text style={portraitStyles.cartText}>Name: {data.name}  </Text>
+                            <Text style={portraitStyles.myOrderText}>{data.name}  </Text>
                           </View>
                           <View style={portraitStyles.cartTextContainer}>
                             <Text style={portraitStyles.cartText}>Email: {data.email}</Text>
@@ -105,6 +107,7 @@ class MyOrders extends Component {
               }
             {/* </View> */}
           </ScrollView>
+          </ImageBackground>
         }
       </SafeAreaView>
 

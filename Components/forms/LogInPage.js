@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TextInput, Pressable, Dimensions, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, TextInput, Pressable, ImageBackground, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 // import styles from '../../Style/globleCss';
 import { portraitStyles, landscapeStyles } from '../../Style/globleCss';
@@ -96,7 +96,8 @@ class LogInPage extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
-                    <ScrollView style={portraitStyles.mainContainer} >
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+                    <ScrollView style={portraitStyles.container} >
                         <View style={portraitStyles.logoContainer} >
                             <Image style={portraitStyles.logo} source={require('../../assets/Craftslane_logo.png')} />
                         </View>
@@ -115,7 +116,7 @@ class LogInPage extends Component {
                             <View style={portraitStyles.containLabelAndInput}>
                                 
                                 <TextInput style={portraitStyles.passwordInput} secureTextEntry={this.state.hide_and_show} placeholderTextColor={'grey'} placeholder="Password" onChangeText={(text) => this.setState({ password: text })} />
-                                <FontAwesome name={this.state.hide_and_show_icon_name} size={20}  style={{padding:10,position:'absolute',left:DeviceInfo.isTablet() ? Dimensions.get('screen').width/1.2: Dimensions.get('screen').width/1.3}}  color={'grey'} onPress={() => this.hideAndShow()}/>
+                                <FontAwesome name={this.state.hide_and_show_icon_name} size={20}  style={portraitStyles.passwordEyeIcon}  color={'grey'} onPress={() => this.hideAndShow()}/>
                             </View>
                             <View style={portraitStyles.hyperlink}>
                                 <Text
@@ -142,6 +143,7 @@ class LogInPage extends Component {
                         </TouchableOpacity>
 
                     </ScrollView>
+                    </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );

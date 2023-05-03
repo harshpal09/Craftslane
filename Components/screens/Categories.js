@@ -23,7 +23,7 @@ class Categories extends UiOrientation {
             <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
                 {this.state.categories.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover">
-                        <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} >
+                        <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
                             {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={this.getStyle().loadingTextStyle} /> */}
                             <View>
                                 {this.state.categories.map((data, idx) => (
@@ -32,7 +32,7 @@ class Categories extends UiOrientation {
                                     </View>
                                 ))}
                             </View>
-                            <View style={this.getStyle().underline}></View>
+                            <View style={this .getStyle().underline}></View>
 
                             {
                                 this.state.categories.map((data, idx) => (

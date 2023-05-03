@@ -9,7 +9,7 @@ import {
     Text,
     ScrollView,
     Image,
-    Dimensions,
+    ImageBackground,
     TextInput,
     SafeAreaView,
     KeyboardAvoidingView,
@@ -185,7 +185,8 @@ class SignUpPage extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
-                    <ScrollView style={portraitStyles.container}  >
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
                         <View style={portraitStyles.logoContainer}>
                             <Image style={portraitStyles.logo} source={require('../../assets/Craftslane_logo.png')} />
                         </View>
@@ -238,7 +239,8 @@ class SignUpPage extends Component {
                         </View>
                         <View style={portraitStyles.containLabelAndInput}>
                             <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} />
-                        </View>                       
+                        </View>  
+                        <KeyboardAvoidingView>                     
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -258,7 +260,7 @@ class SignUpPage extends Component {
                             containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={e => 
                             {
-                                console.log(e),
+                                // console.log(e),
                                 this.selectCountry(e);
                             }} 
                             keyboardAvoiding={false}
@@ -287,7 +289,7 @@ class SignUpPage extends Component {
                             // imageField="image"
                             placeholder="Select State"
                             searchPlaceholder="Search..."
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            containerStyle={{backgroundColor:'#f9f0df'}}
                             onChange={(e) => {
                                 this.setState({s_state:e.zone_id});
                             }}
@@ -300,18 +302,20 @@ class SignUpPage extends Component {
                                 onEndReached:()=> this.onLoadMoreStates(),
                             }}           
                         />
+                    </KeyboardAvoidingView>
                         
                         
                         <View style={portraitStyles.containLabelAndInput}>
-                            <TextInput style={portraitStyles.passwordInput} secureTextEntry={this.state.hide_and_show1} placeholder="Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ password: text })} />
-                            <FontAwesome name={this.state.hide_and_show_icon_name1} size={20} style={{ padding: 10, position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow()} />
+                            <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show1} placeholder="Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ password: text })} />
+                            <FontAwesome name={this.state.hide_and_show_icon_name1} size={20} style={portraitStyles.passwordEyeIcon} color={'grey'} onPress={() => this.hideAndShow()} />
                         </View>
                         <View style={portraitStyles.containLabelAndInput}>
                             <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show2} placeholder="Confirm Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ confirm_password: text })} />
-                            <FontAwesome name={this.state.hide_and_show_icon_name2} size={20} style={{ padding: 10, position: 'absolute', left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 }} color={'grey'} onPress={() => this.hideAndShow1()} />
+                            <FontAwesome name={this.state.hide_and_show_icon_name2} size={20} style={portraitStyles.passwordEyeIcon} color={'grey'} onPress={() => this.hideAndShow1()} />
                         </View>
                         <View style={portraitStyles.termsAndConditionContainer}>
                             <View style={portraitStyles.termsAndCondition}>
+                            <View style={portraitStyles.checkboxContainer}>
                                 <CheckBox
                                     tintColors={{ true: '#B48D56', false: 'black' }}
                                     disabled={false}
@@ -319,9 +323,11 @@ class SignUpPage extends Component {
                                     onValueChange={(newValue) => this.setToggleCheckBox1(newValue)}
                                     style={portraitStyles.checkbox}
                                 />
+                                </View>
                                 <Text style={portraitStyles.terms}>Please agree to the <Text style={portraitStyles.hyperlinkText} onPress={()=> this.termAndConditions('terms')}>Terms & Conditions </Text></Text>
                             </View>
                             <View style={portraitStyles.termsAndCondition} >
+                                <View style={portraitStyles.checkboxContainer}>
                                 <CheckBox
                                     tintColors={{ true: '#B48D56', false: 'black' }}
                                     disabled={false}
@@ -329,6 +335,7 @@ class SignUpPage extends Component {
                                     onValueChange={(newValue) => this.setToggleCheckBox2(newValue)}
                                     style={portraitStyles.checkbox}
                                 />
+                                </View>
                                 <Text style={portraitStyles.terms}>I agree to receiving emails, calls, and text messages for service related information. (To know more about how we keep your data safe, please refer to our<Text style={portraitStyles.hyperlinkText}  onPress={()=> this.termAndConditions('policy')}> Privacy Policy </Text>)</Text>
                             </View>
                         </View>
@@ -338,6 +345,7 @@ class SignUpPage extends Component {
                             </View>
                         </TouchableOpacity>
                     </ScrollView>
+                    </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );
@@ -356,7 +364,7 @@ const styless = StyleSheet.create({
         margin: 2,
         color:'black',
         height:60,
-        backgroundColor:'#f2ebd5'
+     
     },
     imageStyle: {
       width: 24,

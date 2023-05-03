@@ -184,7 +184,7 @@ class EditAddress extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
-                    <ScrollView style={portraitStyles.container}  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
                             <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
@@ -240,7 +240,7 @@ class EditAddress extends Component {
                                 buttonTextStyle={{}}
                                 dropdownStyle={portraitStyles.selectDropdown}
                                 dropdownOverlayColor={'rgba(0,0,0,0.58)'}
-                                dropdownBackgroundColor={'green'}
+                                // dropdownBackgroundColor={'green'}
                                 // selectedRowTextStyle={portraitStyles.selectedText}
                                 selectedRowStyle={portraitStyles.selectedText}
                                 search={true}

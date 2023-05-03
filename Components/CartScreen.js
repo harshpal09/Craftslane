@@ -1,21 +1,18 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator,RefreshControl } from 'react-native';
-// import UiOrientation from './UiOrientation';
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert,RefreshControl,ImageBackground } from 'react-native';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import EmptyCart from './screens/EmptyCart';
 import ImageLazyLoading from "react-native-image-lazy-loading";
-// import Image from 'react-native-image-lazy-loading';
+import TabRoutes from './TabRoutes';
+
+
 
 class CartScreen extends Component {
 
@@ -72,7 +69,10 @@ class CartScreen extends Component {
     this.setState({ cart_total: resp2.data })
     this.setState({ len: resp2.data.cart })
 
-    // console.warn(resp2.data);
+    // console.warn(this.state.cart_total.total_items);
+    AsyncStorage.setItem('badge', JSON.stringify(this.state.cart_total.total_items));
+    // let badge = await AsyncStorage.getItem('badge');
+    // console.log(JSON.parse(badge))
 
 
 
@@ -92,6 +92,7 @@ class CartScreen extends Component {
     await axios.post(this.state.data.url + "customcart/remove&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header).
       then((response) => {
         this.setState({ cart: response.data.products, cart_total: response.data, len: response.data.cart }),
+        
 
           showMessage({
             message: 'Product deleted successfully',
@@ -105,6 +106,13 @@ class CartScreen extends Component {
 
 
       })
+
+      AsyncStorage.setItem('badge', JSON.stringify(this.state.cart_total.total_items));
+      // console.log(this.state.cart_total.total_items)
+      //   let badge = await AsyncStorage.getItem('badge');
+      //   console.log(JSON.parse(badge))
+      return this.props.navigation.replace('Tab');
+
 
   }
 
@@ -190,8 +198,8 @@ class CartScreen extends Component {
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
           // <SafeAreaView style={portraitStyles.screenBackground}>
-
-          <ScrollView style={portraitStyles.container}
+          <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" >
+          <ScrollView showsVerticalScrollIndicator={false} style={portraitStyles.container}
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}
@@ -199,7 +207,7 @@ class CartScreen extends Component {
           >
             {/* <View style={portraitStyles.parentContainer}> */}
 
-
+              {/* <TabRoutes /> */}
 
               <View style={portraitStyles.warpContainer} >
                 {this.state.cart.map((item, j) => (
@@ -231,7 +239,7 @@ class CartScreen extends Component {
                           <TouchableOpacity style={portraitStyles.incBtn} onPress={() => this.incFunction(item.product_id, item.quantity)}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
                         </View>
                         <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                          <FontAwesome name="trash" size={30} color={'black'} onPress={() => this.deleteCart(item.product_id)} />
+                          <EvilIcons name="trash" size={30} color={'grey'} onPress={() => this.deleteCart(item.product_id)} />
                         </TouchableOpacity>
                       </View>
 
@@ -271,6 +279,7 @@ class CartScreen extends Component {
             {/* </View> */}
 
           </ScrollView>
+          </ImageBackground>
 
           // </SafeAreaView>
 

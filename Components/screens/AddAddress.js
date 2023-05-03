@@ -16,7 +16,7 @@ import {
     StyleSheet,
     Text,
     ScrollView,
-    Image,
+    ImageBackground,
     Dimensions,
     TextInput,
     Button,
@@ -52,7 +52,7 @@ class AddAddress extends Component {
         postal_code: '',
         postcode_required: 1,
         s_country: '',
-        s_state: '',
+        s_state: {},
         password: '',
         confirm_password: '',
         agree: 0,
@@ -153,8 +153,8 @@ class AddAddress extends Component {
             'address_2': this.state.address_2,
             'postcode': this.state.postal_code,
             'city': this.state.city,
-            'zone_id': this.state.s_state,
-            'country_id': this.state.s_country,
+            'zone_id': this.state.s_state.zone_id,
+            'country_id': this.state.s_state.country_id,
             'contact_number': this.state.contact_number,
         }
         const header = {
@@ -205,8 +205,9 @@ class AddAddress extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
 
-                    <ScrollView style={portraitStyles.container}  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
                             <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
@@ -233,6 +234,10 @@ class AddAddress extends Component {
                             <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} defaultValue={this.state.postal_code} />
                         </View>
 
+                        <View style={portraitStyles.containLabelAndInput}>
+                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
+                        </View>
+                        <KeyboardAvoidingView>
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -243,6 +248,7 @@ class AddAddress extends Component {
                             maxHeight={200}
                             // search
                             data={this.state.countries}
+                            
                             valueField="country_id"
                             labelField="name"
                             // imageField="image"
@@ -255,7 +261,7 @@ class AddAddress extends Component {
                                 console.log(e),
                                 this.selectCountry(e);
                             }} 
-                            keyboardAvoiding={false}
+                            keyboardAvoiding={true}
                             activeColor='#d4b58a'
                             flatListProps={{
                                 ListEmptyComponent:<EmptyList />,
@@ -283,8 +289,9 @@ class AddAddress extends Component {
                             searchPlaceholder="Search..."
                             containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={(e) => {
-                                this.setState({s_state:e.zone_id});
+                                this.setState({s_state:e});
                             }}
+                            keyboardAvoiding
                             activeColor='#d4b58a'
                             flatListProps={{
                                 ListEmptyComponent:<EmptyList_1 />,
@@ -295,9 +302,9 @@ class AddAddress extends Component {
                             }}           
                         />
 
-                        <View style={{marginTop:10,height:60}}>
-                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
-                        </View>
+                    </KeyboardAvoidingView>
+
+                        
                         <View style={{width:'100%',paddingHorizontal:30,paddingVertical:10}}>
                             <Text style={portraitStyles.defaultAddress}>Default Address</Text>
                             <RadioGroup
@@ -317,6 +324,7 @@ class AddAddress extends Component {
 
 
                     </ScrollView>
+                    </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
 
@@ -331,10 +339,11 @@ const styless = StyleSheet.create({
         borderBottomWidth: 1,
         width: '90%',
         left: 15,
-        marginBottom: 1,
+        marginBottom: 10,
         color:'black',
         height:60,
-        backgroundColor:'#f2ebd5'
+        backgroundColor:'#f9f0df'
+        // backgroundColor: 'red'
     },
     imageStyle: {
       width: 24,
