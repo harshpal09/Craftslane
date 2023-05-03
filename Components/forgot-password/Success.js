@@ -7,7 +7,7 @@ class Success extends Component {
     render() {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
-                <ScrollView style={portraitStyles.container}>
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
                     <View style={portraitStyles.icon}>
                         <MaterialCommunityIcons name="check-decagram-outline" color={'#B48D56'} size={150} />
                     </View>

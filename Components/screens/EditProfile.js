@@ -15,7 +15,8 @@ import {
     KeyboardAvoidingView,
     TouchableOpacity,
     ActivityIndicator,
-    RefreshControl
+    RefreshControl,
+    ImageBackground
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -119,9 +120,10 @@ class EditProfile extends Component {
     render() {
         // console.warn(this.state.notifications)
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 { this.state.info.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-                <ScrollView style={portraitStyles.container} 
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl
                     refreshing={this.state.refreshing}
                     onRefresh={() => this._onRefresh()}
@@ -177,6 +179,7 @@ class EditProfile extends Component {
                     </TouchableOpacity>
 
                 </ScrollView>
+                </ImageBackground>
                  } 
             </SafeAreaView>
 

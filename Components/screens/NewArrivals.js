@@ -9,7 +9,7 @@ export default class NewArrivals extends UiOrientation {
             <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
                 {this.state.alldata.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover">
-                        <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} >
+                        <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                             {this.state.alldata.map((data, idx) => (
                                 <View style={this.getStyle().warpContainer} key={idx}>
                                     {data.new_arrivals.map((item, ind) => (

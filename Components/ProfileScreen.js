@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity,ActivityIndicator, TouchableHighlightBase } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity,ActivityIndicator,ImageBackground, TouchableHighlightBase, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -51,9 +51,11 @@ class ProfileScreen extends Component {
     //     return this.props.navigation.replace('login');
     // }
     render() {
+        // console.warn(Dimensions.get('screen').width/2.5);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
-                <ScrollView style={portraitStyles.container}>
+                <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" >
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
                     <View style={portraitStyles.headerMiddleTextContainer}>
                         {/* <View style={portraitStyles.profileIconContainer}>
                             <MaterialCommunityIcons name='account-circle-outline' size={70} color={'#CEBCA3'} style={{ backgroundColor: '#f2ebd5' }} />
@@ -70,9 +72,9 @@ class ProfileScreen extends Component {
                     </View>
                     <DataTable style={portraitStyles.dataTable_2}>
                     <DataTable.Row style={portraitStyles.rowStyles}>
-                            <DataTable.Cell>
+                            <DataTable.Cell >
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('myprofile')}>
-                                    <AntDesign name='profile' size={21} color={'#6D6D6D'} />
+                                    <AntDesign style={portraitStyles.gestureIcon} name='profile' size={21} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>My Profile</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -81,7 +83,7 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('editprofile')}>
-                                    <MaterialCommunityIcons name='account-edit' size={23} color={'#6D6D6D'} />
+                                    <MaterialCommunityIcons style={portraitStyles.gestureIcon} name='account-edit' size={23} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>Edit profile</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -90,7 +92,7 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('password')}>
-                                    <MaterialCommunityIcons name='form-textbox-password' size={23} color={'#6D6D6D'} />
+                                    <MaterialCommunityIcons style={portraitStyles.gestureIcon} name='form-textbox-password' size={23} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>Password</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -99,7 +101,7 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('addressbook')}>
-                                    <FontAwesome name='address-book' size={23} color={'#6D6D6D'} />
+                                    <FontAwesome style={portraitStyles.gestureIcon} name='address-book' size={23} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>Address Book</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -108,7 +110,7 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('wishlist')} >
-                                    <MaterialIcons name='favorite-border' size={23} color={'#6D6D6D'} />
+                                    <MaterialIcons style={portraitStyles.gestureIcon} name='favorite-border' size={23} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>Wish List</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -117,18 +119,18 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStyles} >
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('myorder')}>
-                                    <FontAwesome name='first-order' size={23} color={'#6D6D6D'} />
+                                    <FontAwesome style={portraitStyles.gestureIcon} name='first-order' size={23} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>My Orders</Text>
-                                    <View style={portraitStyles.profileIcons} >
-                                    <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25}  />
-                                    </View>
+                                    
+                                    <MaterialIcons style={portraitStyles.profileIcons} name='navigate-next' color={'#6D6D6D'} size={25}  />
+                                    
                                 </TouchableOpacity>
                             </DataTable.Cell>
                         </DataTable.Row >
                         <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('trackorders')}>
-                                    <FontAwesome5 name='shipping-fast' size={18} color={'#6D6D6D'} />
+                                    <FontAwesome5 style={portraitStyles.gestureIcon} name='shipping-fast' size={18} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>Track Orders</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -139,7 +141,7 @@ class ProfileScreen extends Component {
                         <DataTable.Row style={portraitStyles.rowStylesBottom}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('mycredits')} >
-                                    <Fontisto name='credit-card' size={15} color={'#6D6D6D'} />
+                                    <Fontisto style={portraitStyles.gestureIcon} name='credit-card' size={15} color={'#6D6D6D'} />
                                     <Text style={portraitStyles.profileHeadingText}>My credits</Text>
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
@@ -153,6 +155,7 @@ class ProfileScreen extends Component {
                     </TouchableOpacity> */}
 
                 </ScrollView>
+                </ImageBackground>
             </SafeAreaView>
         );
     }

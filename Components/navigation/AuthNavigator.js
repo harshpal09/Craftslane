@@ -20,8 +20,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Home Accents',
-              headerStyle: { backgroundColor: '#f2ebd5' },
-              headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular'}
+              // headerStyle: { backgroundColor: '#f9f0df' }
+              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular'}
             }
           } />     
           <Stack.Screen name="usenet" component={UseNet} options={{ headerShown: false }} />
@@ -30,8 +30,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Products',
-              headerStyle: { backgroundColor: '#f2ebd5' },
-              headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              // headerStyle: { backgroundColor: '#f2ebd5' },
+              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
             }
           } />
         <Stack.Screen name="homeaccent" component={HomeAccent}
@@ -39,8 +39,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Product Profile',
-              headerStyle: { backgroundColor: '#f2ebd5' },
-              headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              // headerStyle: { backgroundColor: '#f2ebd5' },
+              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
             }
           } />
 
@@ -49,16 +49,16 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'New Arrivals',
-              headerStyle: { backgroundColor: '#f2ebd5' },
-              headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              // headerStyle: { backgroundColor: '#f2ebd5' },
+              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
             }
           }/>
           <Stack.Screen name="populartrends" component={PopularTrends}  options={
             {
               headerShown: true,
               headerTitle: 'Popular Trends',
-              headerStyle: { backgroundColor: '#f2ebd5' },
-              headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              // headerStyle: { backgroundColor: '#f2ebd5' },
+              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
             }
           }/>
       </Stack.Navigator>

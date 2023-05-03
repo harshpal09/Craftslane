@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, SafeAreaView, ActivityIndicator, ScrollView, TouchableOpacity, Image, Alert, Text ,RefreshControl} from 'react-native';
+import { View, StyleSheet, SafeAreaView,ImageBackground, ScrollView, TouchableOpacity, Image, Alert, Text ,RefreshControl} from 'react-native';
 import { portraitStyles } from '../../Style/globleCss';
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,19 +58,19 @@ class MyOrderProfile extends Component {
     render() {
         // console.warn(this.state.products)
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab} >
+            <SafeAreaView style={portraitStyles.screenBackgroundTab} >
                 {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                     // <SafeAreaView style={portraitStyles.screenBackground}>
-
-                    <ScrollView style={portraitStyles.container}
+                    <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+                    <ScrollView style={portraitStyles.profileContainer} 
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this._onRefresh()}
                         />}
                     >
-                        <View style={portraitStyles.underline}></View>
+                       
                         <ScrollView nestedScrollEnabled={true} style={portraitStyles.newView}>
-
+ 
                             <View style={portraitStyles.warpContainer} >
                                 {this.state.products.map((item, j) => (
                                     <View style={portraitStyles.cartProductContainer} key={j}>
@@ -140,7 +140,7 @@ class MyOrderProfile extends Component {
                                     </DataTable.Row>
                                 </DataTable>
                             ))}
-                            <View style={portraitStyles.buttonContainer}>
+                            <View style={portraitStyles.logoutButtonContainer}>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.initiateWhatsApp()}>
                                     <Text style={portraitStyles.buttonText} >Share </Text>
                                 </TouchableOpacity>
@@ -152,6 +152,7 @@ class MyOrderProfile extends Component {
 
                         {/* </View> */}
                     </ScrollView>
+                    </ImageBackground>
 
                     // </SafeAreaView>
                 }
