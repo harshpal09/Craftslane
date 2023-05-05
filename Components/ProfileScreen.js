@@ -21,35 +21,7 @@ class ProfileScreen extends Component {
         response_data:{},
         toggle:undefined,
     }
-    // async logout(){
-        
-    //     this.setState({toggle:false})
-    //     try {
-    //         let user = await AsyncStorage.getItem('user');
-    //         let parsed = JSON.parse(user);
-    //         this.setState({ data: parsed })
-
-    //         // console.warn(this.state.data)
-    //     }
-    //     catch (error) {
-    //         Alert.alert(error)
-    //     }
-    //     await axios.get(this.state.data.url+"customlogout/index&key="+this.state.data.key+'&token='+this.state.data.token).then((resp)=>(this.setState({response_data:resp.data}))).catch((erro)=>console.warn(erro))
-    //     this.setState({toggle:true})
-    //     // console.warn(this.state.response_data);
-        
-    //         showMessage({
-    //             message: this.state.response_data.body,
-    //             duration: 4000,
-    //             type: 'success',
-    //             color: 'white',
-    //             icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
-    //             titleStyle: { fontSize: 18 }
-    //         })
-
-    //     await AsyncStorage.removeItem('user');  
-    //     return this.props.navigation.replace('login');
-    // }
+   
     render() {
         // console.warn(Dimensions.get('screen').width/2.5);
         return (

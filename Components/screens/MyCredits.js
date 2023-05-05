@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, Dimensions, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, ImageBackground, RefreshControl } from 'react-native';
 import UiOrientation from '../UiOrientation';
 import { DataTable } from 'react-native-paper';
 import { portraitStyles } from '../../Style/globleCss';
@@ -49,6 +49,7 @@ class MyCredits extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                     <ScrollView style={portraitStyles.container}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
@@ -100,6 +101,7 @@ class MyCredits extends Component {
                                 </View>
                         }
                     </ScrollView>
+                    </ImageBackground>
                 }
             </SafeAreaView>
         );

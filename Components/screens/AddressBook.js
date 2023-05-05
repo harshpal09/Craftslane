@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,Alert, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,Alert,ImageBackground, RefreshControl } from 'react-native';
 import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -129,7 +129,7 @@ class AddressBook extends Component {
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {
                     this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-
+                    <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                         <ScrollView style={portraitStyles.container}
                             refreshControl={<RefreshControl
                                 refreshing={this.state.refreshing}
@@ -185,6 +185,7 @@ class AddressBook extends Component {
                                 </View>
                             </TouchableOpacity>
                         </ScrollView>
+                        </ImageBackground>
                 }
             </SafeAreaView>
         );

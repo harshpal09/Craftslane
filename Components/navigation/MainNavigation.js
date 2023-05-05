@@ -29,54 +29,45 @@ class MainNavigation extends Component {
         <Stack.Screen name="Tab" component={TabRoutes} options={{ headerShown: false }} />
         <Stack.Screen name="myprofile" component={MyProfile} options={{
           headerShown: true, headerTitle: 'My Profile',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+        
         }} />
         <Stack.Screen name="myorder" component={MyOrders} options={{
           headerShown: true, headerTitle: 'My Orders',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+         
         }} />
         <Stack.Screen name="mycredits" component={MyCredits} options={{
           headerShown: true, headerTitle: 'My Credits',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+         
         }} />
         <Stack.Screen name="addressbook" component={AddressBook} options={{
           headerShown: true, headerTitle: 'Manage Your Addresses',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+       
         }} />
         <Stack.Screen name="wishlist" component={WishList} options={{
           headerShown: true, headerTitle: 'My Wish List',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+         
         }} />
         <Stack.Screen name="editprofile" component={EditProfile} options={{
           headerShown: true, headerTitle: 'Edit Profile',
-          headerStyle: { backgroundColor: '#f2ebd5' },
-          headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+          
         }} />
         <Stack.Screen name="password" component={Password}
           options={{
             headerShown: true, headerTitle: 'Change Password',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+            
           }}
         />
         <Stack.Screen name="trackorders" component={TrackOrders}
           options={{
             headerShown: true, headerTitle: 'Track Orders',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+           
           }}
         />
         <Stack.Screen name="np" component={NewProduct} options={{ headerShown: true }} />
         <Stack.Screen name="forgot" component={ForgotPassword} 
           options={{
             headerShown: true, headerTitle: 'Forgot Password',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+           
           }}
         />
         <Stack.Screen name="success" component={Success} options={{ headerShown: true }} />
@@ -87,36 +78,31 @@ class MainNavigation extends Component {
         <Stack.Screen name="myorderprofile" component={MyOrderProfile}
           options={{
             headerShown: true, headerTitle: 'Order Profile',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+         
           }}
         />
         <Stack.Screen name="editaddress" component={EditAddress}
           options={{
             headerShown: true, headerTitle: 'Manage Your Addresses',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+          
           }}
         />
         <Stack.Screen name="addaddress" component={AddAddress}
           options={{
             headerShown: true, headerTitle: 'Manage Your Addresses',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+           
           }}
         />
         <Stack.Screen name="Checkout" component={CheckOut}
           options={{
             headerShown: true, headerTitle: 'checkout',
-            headerStyle: { backgroundColor: '#fffaec' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+        
           }}
         />
          <Stack.Screen name="placeorder" component={PlaceOrder}
           options={{
             headerShown: true, headerTitle: 'checkout',
-            headerStyle: { backgroundColor: '#f2ebd5' },
-            headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+         
           }}
         />
 

@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TextInput, ViewComponent, TouchableOpacity,RefreshControl ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TouchableOpacity,RefreshControl ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
@@ -16,7 +16,7 @@ import { Axios } from 'axios';
 import axios from 'axios';
 import UseNet from './UseNet';
 import { portraitStyles } from '../../Style/globleCss';
-import * as Animatable from 'react-native-animatable';
+// import * as Animatable from 'react-native-animatable';
 
 // MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
 
@@ -490,7 +490,8 @@ class HomeAccent extends UiOrientation {
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
         {this.state.traystyle.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
-          <ScrollView style={this.getStyle().container} nestedScrollEnabled={true}>
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+          <ScrollView style={portraitStyles.container} nestedScrollEnabled={true}>
 
 
             <View style={this.getStyle().homeAccentContainer}>
@@ -511,10 +512,10 @@ class HomeAccent extends UiOrientation {
                                 {
                                   this.state.select_color.map((data,i)=>(
                                     <TouchableOpacity key={i} style={{width:50,height:50,margin:20,justifyContent:'center',alignItems:'center',borderRadius:50,backgroundColor:data.value}} onPress={()=> this.setState({ image: this.state.items_image[data.id][0].value,index: data.id})} >
-                                      <Text style={{color:'white',fontWeight:'550',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
+                                      <Text style={{color:'white',fontWeight:'500',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
                                     </TouchableOpacity>
                                   ))
-                                }
+                                } 
                               </ScrollView>
                               <ScrollView horizontal={true} style={{ width: "80%" }}>
                                 {this.state.items_image[this.state.index].map((data, i) => (
@@ -656,6 +657,7 @@ class HomeAccent extends UiOrientation {
             </View>
             {/* </View> */}
           </ScrollView>
+          </ImageBackground>
         }
       </SafeAreaView>
     );

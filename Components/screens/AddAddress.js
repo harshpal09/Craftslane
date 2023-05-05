@@ -1,7 +1,4 @@
 import React, { Component, useState } from 'react';
-import CheckBox from '@react-native-community/checkbox';
-import DatePicker from 'react-native-date-picker';
-// import React, { useState } from 'react';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import SelectDropdown from 'react-native-select-dropdown'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,8 +16,7 @@ import {
     Image,
     Dimensions,
     TextInput,
-    Button,
-    Pressable,
+    ImageBackground,
     SafeAreaView,
     KeyboardAvoidingView,
     TouchableOpacity,
@@ -206,7 +202,7 @@ class AddAddress extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
                 <KeyboardAvoidingView>
-
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                     <ScrollView style={portraitStyles.container}  >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
@@ -318,6 +314,7 @@ class AddAddress extends Component {
 
 
                     </ScrollView>
+                </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
 

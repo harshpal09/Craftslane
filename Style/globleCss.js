@@ -33,7 +33,7 @@ export const portraitStyles = StyleSheet.create({
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f2ebd5',
+    backgroundColor:'#f9f0df',
     // backgroundColor:'green',
     
   },
@@ -42,17 +42,17 @@ export const portraitStyles = StyleSheet.create({
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f2ebd5',
+    backgroundColor:'#f9f0df',
     // backgroundColor:'green',
     // paddingBottom:'20%',
   },
   screenBackgroundStackTab: {
-    height: "100%",
+    height: Dimensions.get('screen').height,
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#f2ebd5',
-    // backgroundColor:'green',
+    backgroundColor:'#f9f0df',
+    // backgroundColor:'green', 
     // paddingBottom:'33%',
   },
   splashLogo: {
@@ -62,6 +62,7 @@ export const portraitStyles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
+    // backgroundColor:'#f2ebd5',
     // backgroundColor:'#f2ebd5',
     // backgroundColor:'skyblue',
     padding:2,
@@ -84,7 +85,6 @@ export const portraitStyles = StyleSheet.create({
   },
   logoContainer: {
     width: '100%',
-    // backgroundColor:'yellow',
     justifyContent:'center',
     alignItems:'center',
     padding:20,
@@ -259,7 +259,7 @@ export const portraitStyles = StyleSheet.create({
     // paddingLeft:10,
     // height: 25,
     // left: 23.95,
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -284,7 +284,7 @@ export const portraitStyles = StyleSheet.create({
     // width:'100%'
   },
   headerMiddleText: {
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -301,7 +301,7 @@ export const portraitStyles = StyleSheet.create({
 
   allText: {
     marginRight: 10,
-    fontFamily: 'LibreBaskerville-Regular',
+    fontFamily: 'Baskerville',
     fontWeight: "400",
     fontSize: 20,
     color: '#6D6D6D',
@@ -357,7 +357,7 @@ export const portraitStyles = StyleSheet.create({
     height: 25,
     left: 23.95,
     marginTop: 20,
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -381,7 +381,7 @@ export const portraitStyles = StyleSheet.create({
 
   //-------------------------------------------START SIGN_UP CSS--------------------------------------
   welcomeText: {
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
     fontSize: 26,
     color: '#3D3D3D',
     //  backgroundColor:'skyblue',
@@ -426,7 +426,7 @@ export const portraitStyles = StyleSheet.create({
   },
   normalText: {
     fontSize: 14,
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     color: 'grey',
@@ -530,7 +530,7 @@ export const portraitStyles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     padding: 5,
-    fontFamily: 'LibreBaskerville-Regular',
+    fontFamily: 'Baskerville',
     color: 'black',
     fontWeight: '400',
     fontSize: 12,
@@ -556,7 +556,7 @@ export const portraitStyles = StyleSheet.create({
 
   },
   categoryHeaderText: {
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -616,7 +616,7 @@ export const portraitStyles = StyleSheet.create({
   productHeaderText: {
     margin: 5,
     padding: 5,
-    fontFamily: 'LibreBaskerville-Regular',
+    fontFamily: 'Baskerville',
     fontWeight: "400",
     fontSize: 20,
     color: '#839D3C',
@@ -674,13 +674,13 @@ export const portraitStyles = StyleSheet.create({
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
-    fontFamily: 'LibreBaskerville-Regular'
+    fontFamily: 'Baskerville'
   },
   productText: {
     justifyContent: 'center',
     textAlign: 'center',
     padding: 5,
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
     color: 'black',
     fontWeight: '400',
     fontSize: 16,
@@ -727,7 +727,7 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical: 'center',
     color: 'black',
     fontSize: 15,
-    fontFamily: 'PlayfairDisplay-Regular'
+    fontFamily: 'Georgia'
 
   },
   homeAccentContainer: {
@@ -755,7 +755,7 @@ export const portraitStyles = StyleSheet.create({
     width: '100%',
     fontSize: 14,
     padding:3,
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
     marginLeft: 0,
     textAlignVertical: 'center',
     color: 'black',
@@ -766,7 +766,7 @@ export const portraitStyles = StyleSheet.create({
     fontSize: 16,
     // marginLeft: 0,
     padding: 3,
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
     textAlignVertical: 'center',
     color: '#801426',
     fontWeight: '500',
@@ -884,7 +884,7 @@ export const portraitStyles = StyleSheet.create({
     color: 'black',
     fontSize:11,
    
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
   },
   cartButtonContainer: {
     // position:'relative',
@@ -943,7 +943,7 @@ export const portraitStyles = StyleSheet.create({
     width: '85%',
     height: 35,
     textAlignVertical: 'center',
-    fontFamily: 'PlayfairDisplay-Regular',
+    fontFamily: 'Georgia',
   },
   pText: {
     // backgroundColor:'white',
@@ -1086,7 +1086,7 @@ cartText: {
   // marginLeft: 2,
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'LibreBaskerville-Regular',
+  fontFamily: 'Baskerville',
   fontSize:13,
   width: '100%',
   // height:70,
@@ -1097,7 +1097,7 @@ cartText: {
 wishlistPriceText:{
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'LibreBaskerville-Regular',
+  fontFamily: 'Baskerville',
   textAlignVertical: "center",
 },
 addressText: {
@@ -1105,7 +1105,7 @@ addressText: {
   // marginLeft: 2,
   padding:5,
   color: 'black',
-  // fontFamily: 'PlayfairDisplay-Regular',
+  // fontFamily: 'Georgia',
 
   // width: '30%',
   // height:70,
@@ -1115,11 +1115,11 @@ addressText: {
 },
 helpText:{
   color:'black',
-  fontFamily:'PlayfairDisplay-Regular'
+  fontFamily:'Georgia'
 },
 contactUs:{
   color:'black',
-  fontFamily:'PlayfairDisplay-Regular'
+  fontFamily:'Georgia'
 },
 cartModelText: {
   // margin: 2,
@@ -1158,7 +1158,7 @@ cartPriceText: {
   color: 'black',
   textAlign: 'center',
   textAlignVertical: 'center',
-  fontFamily: 'LibreBaskerville-Regular'
+  fontFamily: 'Baskerville'
 },
 
 cartIncDecArea: {
@@ -1285,7 +1285,7 @@ cartIncDecContainer: {
   profileUserName:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'LibreBaskerville-Regular',
+    fontFamily:'Baskerville',
     fontSize:23,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1299,7 +1299,7 @@ cartIncDecContainer: {
   profileEmailText:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'LibreBaskerville-Regular',
+    fontFamily:'Baskerville',
     fontSize:14,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1321,7 +1321,7 @@ cartIncDecContainer: {
     marginLeft:15,
     color:'#6D6D6D',
     width:150,
-    fontFamily:'LibreBaskerville-Regular',
+    fontFamily:'Baskerville',
     fontSize:16,
     // backgroundColor:'red'
   },
@@ -1335,11 +1335,11 @@ cartIncDecContainer: {
     borderBottomWidth:1
   },
   profileIcons:{
-    marginLeft:DeviceInfo.isTablet() ? 330 : 100
+    marginLeft:DeviceInfo.isTablet() ? 330 : 130
     
   },
   profileHeaderMiddleText: {
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 15,
@@ -1415,12 +1415,12 @@ cartIncDecContainer: {
   },
   aboutText:{
     color:'white',
-    fontFamily:'PlayfairDisplay-Regular'
+    fontFamily:'Georgia'
   },
   aboutHeaderMiddleText:{
     color:'black',
     textAlign:'center',
-    fontFamily:"LibreBaskerville-Regular",
+    fontFamily:"Baskerville",
     fontSize:14,
   },
   aboutHeaderMiddleTextContainer:{
@@ -1479,7 +1479,7 @@ cartIncDecContainer: {
     alignItems: 'center'
   },
   info_text: {
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     fontSize: 20
   },
   centre_heading_container: {
@@ -1491,7 +1491,7 @@ cartIncDecContainer: {
   },
   mail_text: {
     fontSize: 18,
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
 
   },
   verfyCode: {
@@ -1523,7 +1523,7 @@ cartIncDecContainer: {
   new_text: {
     marginTop: 8,
     fontSize: 18,
-    fontFamily: 'LibreBaskerville-Italic',
+    fontFamily: 'Baskerville-Italic',
     textAlign:'center'
   },
 //---------------------------------------------------------------------order list page
@@ -1543,7 +1543,7 @@ cartIncDecContainer: {
     // marginLeft: 2,
     padding:5,
     color: '#3d3d3d',
-    fontFamily: 'LibreBaskerville-Regular',
+    fontFamily: 'Baskerville',
     fontSize:13,
     width: '100%',
     fontWeight:"700",
@@ -1624,7 +1624,7 @@ creditsTableText:{
   // margin:2,
   textAlignVertical:'center',
   fontSize:13,
-  fontFamily:"LibreBaskerville-Regular",
+  fontFamily:"Baskerville",
 },
 trackOrderTableText:{
   color:'#3d3d3d',
@@ -1633,7 +1633,7 @@ trackOrderTableText:{
   // margin:2,
   textAlignVertical:'center',
   fontSize:13,
-  fontFamily:"LibreBaskerville-Regular",
+  fontFamily:"Baskerville",
 },
 creditsTableHeaderText:{
   color:'black',

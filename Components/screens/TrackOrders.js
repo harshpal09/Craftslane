@@ -85,6 +85,7 @@ class TrackOrders extends Component {
     render() {
         return (
             <SafeAreaView style={portraitStyles.screenBackground}>
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                 <ScrollView style={portraitStyles.container}>
 
                     <View style={portraitStyles.headerMiddleTextContainer}>
@@ -160,6 +161,7 @@ class TrackOrders extends Component {
 
                     }
                 </ScrollView>
+                </ImageBackground>
 
             </SafeAreaView>
 
