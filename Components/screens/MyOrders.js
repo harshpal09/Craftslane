@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from './LoadingComponent';
 
 
 class MyOrders extends Component {
@@ -48,10 +49,10 @@ class MyOrders extends Component {
   render() {
     console.log(this.state.all_data.body);
     return (
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+      <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+        {this.state.all_data.status == undefined ? <LoadingComponent /> :
         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-          <ScrollView style={portraitStyles.container}
+          <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}
@@ -74,7 +75,7 @@ class MyOrders extends Component {
                         <View style={portraitStyles.navContainer}>
                           <View style={portraitStyles.cartTextContainer}>
                             <Text style={portraitStyles.orderHeadingText}>
-                              Customer: <Text style={portraitStyles.cartText}>{data.name}  </Text>
+                              Customer: <Text style={portraitStyles.cartText}>{data.name} </Text>
                             </Text>
                           </View>
                           <View style={portraitStyles.cartTextContainer}>

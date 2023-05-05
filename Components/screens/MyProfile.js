@@ -7,6 +7,7 @@ import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from './LoadingComponent';
 
 class MyProfile extends Component {
     constructor() {
@@ -54,10 +55,10 @@ class MyProfile extends Component {
     render() {
         console.log(this.state.info)
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-                {this.state.info.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+                {this.state.info.length == false ?<LoadingComponent />:
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                    <ScrollView style={portraitStyles.container}
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this._onRefresh()}

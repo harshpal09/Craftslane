@@ -5,6 +5,7 @@ import { DataTable } from 'react-native-paper';
 import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from './LoadingComponent';
 
 class MyCredits extends Component {
     state = {
@@ -47,10 +48,10 @@ class MyCredits extends Component {
     render() {
         // console.warn(this.state.credits);
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-                {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+                {this.state.all_data.status == undefined ? <LoadingComponent /> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                    <ScrollView style={portraitStyles.container}
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this._onRefresh()}

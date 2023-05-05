@@ -15,8 +15,7 @@ import {
     StyleSheet,
     Text,
     ScrollView,
-    Image,
-    Dimensions,
+    ImageBackground,
     TextInput,
     Button,
     Pressable,
@@ -182,9 +181,10 @@ class EditAddress extends Component {
     render() {
         // console.log(this.state.country_id);
         return (
-            <SafeAreaView style={portraitStyles.screenBackground}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <KeyboardAvoidingView>
-                    <ScrollView style={portraitStyles.container}  >
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
                             <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
@@ -293,7 +293,7 @@ class EditAddress extends Component {
                             placeholder={this.state.country}
                             searchPlaceholder="Search..."
                             itemContainerStyle={styless.itemContainerStyle}
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={e => 
                             {
                                 // console.log(e),
@@ -326,7 +326,7 @@ class EditAddress extends Component {
                             // imageField="image"
                             placeholder={this.state.zone}
                             searchPlaceholder="Search..."
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={(e) => {
                                 this.setState({zone_id:e.zone_id,country_id:e.country_id});
                             }}
@@ -352,6 +352,7 @@ class EditAddress extends Component {
 
 
                     </ScrollView>
+                    </ImageBackground>
                 </KeyboardAvoidingView>
             </SafeAreaView>
 
@@ -368,7 +369,7 @@ const styless = StyleSheet.create({
         margin: 2,
         color:'black',
         height:60,
-        backgroundColor:'#f2ebd5'
+        // backgroundColor:'#f2ebd5'
     },
     imageStyle: {
       width: 24,

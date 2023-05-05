@@ -257,7 +257,7 @@ class SignUpPage extends Component {
                             placeholder="Select Country"
                             searchPlaceholder="Search..."
                             itemContainerStyle={styless.itemContainerStyle}
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={e => 
                             {
                                 // console.log(e),
@@ -291,7 +291,7 @@ class SignUpPage extends Component {
                             // imageField="image"
                             placeholder="Select State"
                             searchPlaceholder="Search..."
-                            containerStyle={{backgroundColor:'#f9f0df'}}
+                            // containerStyle={{backgroundColor:'#f9f0df'}}
                             onChange={(e) => {
                                 this.setState({s_state:e.zone_id});
                             }}

@@ -16,6 +16,7 @@ import { Axios } from 'axios';
 import axios from 'axios';
 import UseNet from './UseNet';
 import { portraitStyles } from '../../Style/globleCss';
+import LoadingComponent from './LoadingComponent';
 // import * as Animatable from 'react-native-animatable';
 
 // MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
@@ -489,9 +490,9 @@ class HomeAccent extends UiOrientation {
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
-        {this.state.traystyle.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
+        {this.state.traystyle.length == false ? <LoadingComponent /> :
         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-          <ScrollView style={portraitStyles.container} nestedScrollEnabled={true}>
+          <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
 
 
             <View style={this.getStyle().homeAccentContainer}>

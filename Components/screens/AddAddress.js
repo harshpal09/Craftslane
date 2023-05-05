@@ -200,10 +200,10 @@ class AddAddress extends Component {
     render() {
         console.log(this.state.s_state);
         return (
-            <SafeAreaView style={portraitStyles.screenBackground}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <KeyboardAvoidingView>
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                    <ScrollView style={portraitStyles.container}  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}  >
 
                         <View style={portraitStyles.headerMiddleTextContainer}>
                             <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
@@ -230,6 +230,10 @@ class AddAddress extends Component {
                             <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} defaultValue={this.state.postal_code} />
                         </View>
 
+                        <View style={portraitStyles.containLabelAndInput}>
+                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
+                        </View>
+                        <View style={portraitStyles.containLabelAndInput}>
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -246,7 +250,7 @@ class AddAddress extends Component {
                             placeholder="Select Country"
                             searchPlaceholder="Search..."
                             itemContainerStyle={styless.itemContainerStyle}
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={e => 
                             {
                                 console.log(e),
@@ -262,7 +266,9 @@ class AddAddress extends Component {
                                 onEndReached:()=> this.onLoadMore(),
 
                             }}                       
-                        />                           
+                        />     
+                        </View>      
+                        <View style={portraitStyles.containLabelAndInput}>                
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -278,7 +284,7 @@ class AddAddress extends Component {
                             // imageField="image"
                             placeholder="Select State"
                             searchPlaceholder="Search..."
-                            containerStyle={{backgroundColor:'#f2ebd5'}}
+                            // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={(e) => {
                                 this.setState({s_state:e});
                             }}
@@ -291,11 +297,10 @@ class AddAddress extends Component {
                                 onEndReached:()=> this.onLoadMoreStates(),
                             }}           
                         />
-
-                        <View style={{marginTop:10,height:60}}>
-                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field} />
                         </View>
-                        <View style={{width:'100%',paddingHorizontal:30,paddingVertical:10}}>
+
+                        
+                        <View style={{width:'100%',paddingHorizontal:25,paddingVertical:30}}>
                             <Text style={portraitStyles.defaultAddress}>Default Address</Text>
                             <RadioGroup  
                                 radioButtons={this.state.radioButtons}
@@ -328,11 +333,11 @@ const styless = StyleSheet.create({
         borderBottomColor: 'grey',
         borderBottomWidth: 1,
         width: '90%',
-        left: 15,
-        marginBottom: 1,
+        // left: 15,
+        // marginBottom: 1,
         color:'black',
         height:60,
-        backgroundColor:'#f2ebd5'
+        // backgroundColor:'red'
     },
     imageStyle: {
       width: 24,

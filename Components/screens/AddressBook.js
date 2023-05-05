@@ -6,6 +6,7 @@ import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { showMessage } from 'react-native-flash-message';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
+import LoadingComponent from './LoadingComponent';
 
 
 class AddressBook extends Component {
@@ -126,11 +127,11 @@ class AddressBook extends Component {
     render() {
         // console.log(this.state.all_data);
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 {
-                    this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                    this.state.all_data.status == undefined ? <LoadingComponent />:
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                        <ScrollView style={portraitStyles.container}
+                        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl
                                 refreshing={this.state.refreshing}
                                 onRefresh={() => this._onRefresh()}
@@ -157,12 +158,12 @@ class AddressBook extends Component {
                                             <Text style={portraitStyles.addressText}> {item.city} {item.postcode} </Text>
                                             <Text style={portraitStyles.addressText}> {item.zone} </Text>
                                             <Text style={portraitStyles.addressText}> {item.country}</Text>
-                                            <View style={{ flexDirection: 'row', display: 'flex', width: "70%", padding: 20 }}>
-                                                <TouchableOpacity activeOpacity={0.9} style={{ width: '50%' }} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
+                                            <View style={{ flexDirection: 'row', display: 'flex', width: "80%",justifyContent:'space-between',padding: 20 }}>
+                                                <TouchableOpacity activeOpacity={0.9} style={{ width: '40%' , backgroundColor: '#B48D56', borderRadius:3, padding: 5}} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
                                                     <Text style={portraitStyles.addressButton}>Edit</Text>
                                                 </TouchableOpacity>
                                                 {this.state.address.length > 0 ?
-                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '50%' }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
+                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%' , backgroundColor: '#B48D56', borderRadius:3, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
                                                         <Text style={portraitStyles.addressButton}>Delete</Text>
                                                     </TouchableOpacity>
                                                     :

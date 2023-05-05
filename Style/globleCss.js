@@ -47,7 +47,7 @@ export const portraitStyles = StyleSheet.create({
     // paddingBottom:'20%',
   },
   screenBackgroundStackTab: {
-    height: Dimensions.get('screen').height,
+    height: '100%',
     width: Dimensions.get("screen").width,
     justifyContent: 'center',
     alignItems: 'center',
@@ -112,8 +112,8 @@ export const portraitStyles = StyleSheet.create({
   },
   containLabelAndInput: {
     marginTop: 5,
-    height: 60,
-    // backgroundColor: 'red',
+    // height: 60,
+    // backgroundColor: 'skyblue',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -127,13 +127,15 @@ export const portraitStyles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '90%',
     // left: 15,
-    // top: 2,
-    color:'black'
+    height:60,
+    color:'black',
+    // backgroundColor: 'green'
   },
   passwordInput: {
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     width: '90%',
+    height: 60,
     // left: 15,
     // top: 2,
     color:'black',
@@ -162,14 +164,20 @@ export const portraitStyles = StyleSheet.create({
     //  backgroundColor:'green'
   },
   terms: {
-    // marginLeft: 10,
+    padding: 10,
     color: '#3d3d3d',
     alignItems: 'center',
     width: '90%',
     //backgroundColor:'black'
   },
   checkbox: {
-    top: -5,
+    // top: -5,
+    // paddingLeft:5
+  },
+  checkboxContainer:{
+    justifyContent: 'center',
+    alignItems:'center',
+    // backgroundColor: 'skyblue'
   },
   buttonContainer: {
     justifyContent: 'space-around',
@@ -226,7 +234,8 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'lightgreen'
   },
   hyperlinkText: {
-    color: '#B48D56' ,fontStyle:'italic',textDecorationLine:'underline',fontSize:15
+    color: '#B48D56' ,fontStyle:'italic',textDecorationLine:'underline',fontSize:15,
+    paddingTop: 10
   },
   hyperlinkWithText: {
     display: 'flex',
@@ -976,7 +985,7 @@ export const portraitStyles = StyleSheet.create({
     fontFamily: 'PlayfairDisplay-Italic'
   },
   loadingScreen: {
-    backgroundColor: '#f2ebd5',
+    // backgroundColor: '#f2ebd5',
     // backgroundColor:'skyblue',
     // height: Dimensions.get("screen").height,
     // width: Dimensions.get("screen").width,
@@ -1059,6 +1068,7 @@ contentContainer: {
 },
 navContainer: {
   // backgroundColor:'grey',
+  width: '90%',
   display: 'flex',
   flexDirection: 'column',
   marginVertical: 10,
@@ -1068,7 +1078,7 @@ navContainer: {
 navParentContainer:{
   // backgroundColor:'red',
   padding:2,
-  width: DeviceInfo.isTablet() ? Dimensions.get("screen").width/1.42:Dimensions.get("screen").width/1.7,
+  width: DeviceInfo.isTablet() ? Dimensions.get("screen").width/1.41:Dimensions.get("screen").width/1.5,
   display:'flex',
   flexDirection:'row',
   justifyContent:'space-between',
@@ -1077,7 +1087,7 @@ navParentContainer:{
 cartTextContainer: {
   // backgroundColor:'skyblue',
   // marginHorizontal: 5,
-  width: '100%',
+  // width: '70%',
   justifyContent: 'center',
   alignItems: 'center'
 },
@@ -1190,7 +1200,7 @@ cartIncPress: {
 },
 
 cartTable: {
-  // width: 340,
+  width: '95%',
   borderColor: '#bba890',
   borderWidth: 1,
   marginTop: 20,
@@ -1320,7 +1330,7 @@ cartIncDecContainer: {
     textAlignVertical:'center',
     marginLeft:15,
     color:'#6D6D6D',
-    width:150,
+    width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.3: Dimensions.get('screen').width/2.6,
     fontFamily:'Baskerville',
     fontSize:16,
     // backgroundColor:'red'
@@ -1335,7 +1345,8 @@ cartIncDecContainer: {
     borderBottomWidth:1
   },
   profileIcons:{
-    marginLeft:DeviceInfo.isTablet() ? 330 : 130
+    paddingLeft:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.3: Dimensions.get('screen').width/2.6,
+    // backgroundColor: 'blue'
     
   },
   profileHeaderMiddleText: {
@@ -1534,7 +1545,8 @@ cartIncDecContainer: {
   paddingHorizontal: 5,
   justifyContent:'center',
   alignItems:'center',
-  backgroundColor:'lightgrey'
+  backgroundColor:'lightgrey',
+  borderRadius:7
    
     
   },
@@ -1602,9 +1614,9 @@ trackOrderContainer:{
   // backgroundColor:'green'
 },
 addressButton:{
-  textDecorationLine:'underline',
+  // textDecorationLine:'underline', 
   textAlign:'center',
-  color:'#c59a6a',
+  color:'#fff',
   fontSize:18,
   fontWeight:'600'
 },
