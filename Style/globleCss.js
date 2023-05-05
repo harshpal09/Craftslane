@@ -63,6 +63,7 @@ export const portraitStyles = StyleSheet.create({
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
     // backgroundColor:'#f2ebd5',
+    // backgroundColor:'#f2ebd5',
     // backgroundColor:'skyblue',
     padding:2,
     paddingBottom:80,
@@ -87,12 +88,11 @@ export const portraitStyles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     padding:20,
-
   },
   logo: {
     width: 165,
     height: 110,
-    backgroundColor: '#f2ebd5',
+    // backgroundColor: '#f2ebd5',
   },
 
   bgColor: {
@@ -113,7 +113,9 @@ export const portraitStyles = StyleSheet.create({
   containLabelAndInput: {
     marginTop: 5,
     height: 60,
-    // backgroundColor:'lightgreen'
+    // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   
   label: {
@@ -124,17 +126,22 @@ export const portraitStyles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     width: '90%',
-    left: 15,
-    top: 2,
+    // left: 15,
+    // top: 2,
     color:'black'
   },
   passwordInput: {
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     width: '90%',
-    left: 15,
-    top: 2,
+    // left: 15,
+    // top: 2,
     color:'black',
+  },
+  passwordEyeIcon:{
+    // backgroundColor:'red',
+    position: 'absolute', 
+    left: DeviceInfo.isTablet() ? Dimensions.get('screen').width / 1.2 : Dimensions.get('screen').width / 1.3 
   },
   termsAndConditionContainer: {
     display: 'flex',

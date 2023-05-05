@@ -297,7 +297,7 @@ class AddAddress extends Component {
                         </View>
                         <View style={{width:'100%',paddingHorizontal:30,paddingVertical:10}}>
                             <Text style={portraitStyles.defaultAddress}>Default Address</Text>
-                            <RadioGroup
+                            <RadioGroup  
                                 radioButtons={this.state.radioButtons}
                                 onPress={()=> this.onPressRadioButton(this.state.radioButtons)}
                                 layout='row'

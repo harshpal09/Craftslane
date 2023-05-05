@@ -18,14 +18,15 @@ const TabRoutes = () => {
             headerShown: false,
             tabBarActiveTintColor: '#B48D56',
             tabBarInactiveTintColor: 'black',
-        }} sceneContainerStyle={{backgroundColor:'red'}}>
+        }}
+        >
             <Tab.Screen name="Home" component={AuthNavigator} options={{
                 tabBarIcon: ({ focused }) => {
                     return (
                         <FontAwesome name="home" size={25} color={focused ? '#b48d56' : '#666666'} />
                     )
                 }
-            }} />
+              }} />
             <Tab.Screen name="Cart" component={CartScreen}
                 options={{
                     tabBarIcon: ({ focused }) => {
