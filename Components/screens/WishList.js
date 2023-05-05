@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image,Alert, ScrollView, TouchableOpacity,RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image,Alert, ScrollView,ImageBackground, TouchableOpacity,RefreshControl } from 'react-native';
 import UiOrientation from '../UiOrientation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -125,7 +125,8 @@ async addTocart(id) {
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-          <ScrollView style={portraitStyles.container}
+        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+          <ScrollView 
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}
@@ -180,6 +181,7 @@ async addTocart(id) {
             </View>
 
           </ScrollView>
+          </ImageBackground>
         }
       </SafeAreaView>
 

@@ -1,5 +1,5 @@
 import React, { Component, useEffect,useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, ImageBackground, Image, RefreshControl, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -99,7 +99,7 @@ export default class Product extends Component {
         // console.warn(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token,"pro=> ",d)
         return this.props.navigation.navigate('Cart')
     }
-
+ 
 
 
 
@@ -107,9 +107,9 @@ export default class Product extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-                    <ScrollView style={portraitStyles.container} >
-                        {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={portraitStyles.loadingTextStyle} /> */}
-                        {/* <View style={portraitStyles.parentContainer}> */}
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+                    <ScrollView style={portraitStyles.container}  >
+                        
 
                         <View style={portraitStyles.categoryHeaderContainer} >
                             <Text style={portraitStyles.productHeaderText} >{this.state.name}</Text>
@@ -143,6 +143,7 @@ export default class Product extends Component {
                         {/* </View> */}
 
                     </ScrollView>
+                    </ImageBackground>
                 }
             </SafeAreaView>
         );

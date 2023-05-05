@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-ionicons';
-import { HomeScreen, ProfileScreen, More, CartScreen, FavouriteScreen, AuthNavigator, LogInPage, Categories, WishList, } from '../export'
-import { NavigationContainer } from '@react-navigation/native';
+import {  ProfileScreen,  CartScreen, AuthNavigator,  WishList, } from '../export'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
 // import ProfileNavigations from './navigation/ProfileNavigations';
 
@@ -21,7 +22,7 @@ const TabRoutes = () => {
             <Tab.Screen name="Home" component={AuthNavigator} options={{
                 tabBarIcon: ({ focused }) => {
                     return (
-                        <Icon name="home" size={25} color={focused ? '#b48d56' : '#666666'} />
+                        <FontAwesome name="home" size={25} color={focused ? '#b48d56' : '#666666'} />
                     )
                 }
             }} />
@@ -29,9 +30,12 @@ const TabRoutes = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Icon name="cart" size={25} color={focused ? '#B48D56' : '#666666'} />
+                            <MaterialCommunityIcons name="cart" size={25} color={focused ? '#B48D56' : '#666666'} />
                         )
                     },
+                    headerShown: true,
+                    headerTitle : 'Shopping Cart',
+                    headerTitleStyle: { fontSize: 20},
                     tabBarBadge:4   
                 }
                 }  />
@@ -39,13 +43,14 @@ const TabRoutes = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Icon name="heart" size={25} color={focused ? '#B48D56' : '#666666'} />
+                            <MaterialCommunityIcons name="heart" size={25} color={focused ? '#B48D56' : '#666666'} />
                         )
                     },
                     headerShown: true,
+                    headerTitleStyle: { fontSize: 20},
                     // headerTitle: 'New Arrivals',
-                    headerStyle: { backgroundColor: '#f2ebd5' },
-                    headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' },
+                    // headerStyle: { backgroundColor: '#f2ebd5' },
+                    // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' },
                     
 
                 }} />
@@ -53,7 +58,7 @@ const TabRoutes = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Icon name="person" size={25} color={focused ? '#B48D56' : '#666666'} />
+                            <MaterialIcons name="person" size={25} color={focused ? '#B48D56' : '#666666'} />
                         )
                     }
                 }} />

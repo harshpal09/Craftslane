@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput, KeyboardAvoidingView, Image, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity,ImageBackground, TextInput, KeyboardAvoidingView, Image, RefreshControl } from 'react-native';
 // import UiOrientation from '../UiOrientation';
 
 import { DataTable } from 'react-native-paper';
@@ -56,6 +56,7 @@ class MyProfile extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.info.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                     <ScrollView style={portraitStyles.container}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
@@ -168,6 +169,7 @@ class MyProfile extends Component {
                                 </View>
                             </TouchableOpacity>
                     </ScrollView>
+                    </ImageBackground>
                 }
             </SafeAreaView>
         );

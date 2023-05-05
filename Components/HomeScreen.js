@@ -43,7 +43,7 @@ class HomeScreen extends UiOrientation {
 
         {this.state.alldata.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
-            <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} refreshControl={<RefreshControl
+            <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={()=> this._onRefresh()}
             />}>

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator,RefreshControl, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator, RefreshControl, FlatList } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
@@ -26,7 +26,7 @@ class CartScreen extends Component {
       data: {},
       cart: [],
       cart_total: {},
-      refreshing:false,
+      refreshing: false,
 
     }
   }
@@ -169,9 +169,9 @@ class CartScreen extends Component {
     }
   }
   _onRefresh = () => {
-   this.getdata(); 
+    this.getdata();
     this.setState({ refreshing: true });
-    if(this.state.cart.length > 0){
+    if (this.state.cart.length > 0) {
       this.setState({ refreshing: false });
     }
   }
@@ -190,15 +190,14 @@ class CartScreen extends Component {
 
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
-          // <SafeAreaView style={portraitStyles.screenBackground}>
-
-          <ScrollView style={portraitStyles.container}
-            refreshControl={<RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => this._onRefresh()}
-            />}
-          >
-            {/* <View style={portraitStyles.parentContainer}> */}
+          <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
+            <ScrollView 
+              refreshControl={<RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this._onRefresh()}
+              />}
+            >
+              {/* <View style={portraitStyles.parentContainer}> */}
 
 
 
@@ -268,9 +267,10 @@ class CartScreen extends Component {
               </View>
 
 
-            {/* </View> */}
+              {/* </View> */}
 
-          </ScrollView>
+            </ScrollView>
+          </ImageBackground>
 
           // </SafeAreaView>
 
