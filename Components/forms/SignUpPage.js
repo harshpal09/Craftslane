@@ -240,7 +240,7 @@ class SignUpPage extends Component {
                         <View style={portraitStyles.containLabelAndInput}>
                             <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} />
                         </View>  
-                        <KeyboardAvoidingView>                     
+                        <KeyboardAvoidingView style={portraitStyles.containLabelAndInput}>                     
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -273,7 +273,9 @@ class SignUpPage extends Component {
                                 onEndReached:()=> this.onLoadMore(),
 
                             }}                       
-                        />                           
+                        />    
+                        </KeyboardAvoidingView> 
+                        <KeyboardAvoidingView style={portraitStyles.containLabelAndInput}>                      
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -360,11 +362,11 @@ const styless = StyleSheet.create({
         borderBottomColor: 'grey',
         borderBottomWidth: 1,
         width: '90%',
-        left: 15,
-        margin: 2,
+        // left: 15,
+        // margin: 2,
         color:'black',
         height:60,
-     
+    
     },
     imageStyle: {
       width: 24,
