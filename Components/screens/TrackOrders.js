@@ -84,9 +84,9 @@ class TrackOrders extends Component {
     }
     render() {
         return (
-            <SafeAreaView style={portraitStyles.screenBackground}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                <ScrollView style={portraitStyles.container}>
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
 
                     <View style={portraitStyles.headerMiddleTextContainer}>
                         <Text style={portraitStyles.profileHeaderMiddleText}>Enter the Order Number for a status update on your Order</Text>

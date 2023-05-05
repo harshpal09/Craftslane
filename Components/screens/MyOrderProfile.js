@@ -4,6 +4,7 @@ import { portraitStyles } from '../../Style/globleCss';
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import LoadingComponent from './LoadingComponent';
 
 class MyOrderProfile extends Component {
     constructor() {
@@ -59,10 +60,10 @@ class MyOrderProfile extends Component {
         // console.warn(this.state.products)
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab} >
-                {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                {this.state.cart.length == false ? <LoadingComponent/> :
                     // <SafeAreaView style={portraitStyles.screenBackground}>
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                    <ScrollView style={portraitStyles.profileContainer} 
+                    <ScrollView style={portraitStyles.profileContainer} showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this._onRefresh()}
@@ -109,6 +110,7 @@ class MyOrderProfile extends Component {
 
 
                             {this.state.cart.map((info, i) => (
+                                <View style={{justifyContent:'center', alignItems:'center'}}>
                                 <DataTable style={portraitStyles.cartTable} key={i}>
                                     <DataTable.Row style={portraitStyles.tableRow}>
                                         <DataTable.Cell >ORDER ID</DataTable.Cell>
@@ -139,6 +141,7 @@ class MyOrderProfile extends Component {
                                         <View style={portraitStyles.invoiceTableView}><Text style={portraitStyles.invoiceTableText}>{info.order_total}</Text></View>
                                     </DataTable.Row>
                                 </DataTable>
+                                </View>
                             ))}
                             <View style={portraitStyles.logoutButtonContainer}>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.initiateWhatsApp()}>

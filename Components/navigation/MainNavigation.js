@@ -25,7 +25,7 @@ class MainNavigation extends Component {
       <Stack.Navigator initialRouteName='intro'>
         <Stack.Screen name="intro" component={IntroSlider} options={{ headerShown: false }} />
         <Stack.Screen name="login" component={LogInPage} options={{ headerShown: false }} />
-        <Stack.Screen name="signup" component={SignUpPage} options={{ headerShown: false }} />
+        <Stack.Screen name="signup" component={SignUpPage} options={{ headerShown: true,headerTitle:"", headerTintColor: '#B48D56' }} />
         <Stack.Screen name="Tab" component={TabRoutes} options={{ headerShown: false }} />
         <Stack.Screen name="myprofile" component={MyProfile} options={{
           headerShown: true, headerTitle: 'My Profile',

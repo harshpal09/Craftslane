@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { LogBox } from 'react-native';
+import LoadingComponent from './LoadingComponent';
 // import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 
@@ -106,9 +107,9 @@ export default class Product extends Component {
     render() {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-                {this.state.item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                {this.state.item.length == false ?  <LoadingComponent /> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                    <ScrollView style={portraitStyles.container}  >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}  >
                         
 
                         <View style={portraitStyles.categoryHeaderContainer} >

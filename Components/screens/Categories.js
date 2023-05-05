@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, ImageBackground, ScrollView, Image, TextInput, 
 // import { portraitStyles, landscapeStyles ,styles} from "../Style/globleCss";
 import UiOrientation from '../UiOrientation';
 import ImageLazyLoading from "react-native-image-lazy-loading";
+import LoadingComponent from './LoadingComponent';
 
 
 
@@ -21,7 +22,7 @@ class Categories extends UiOrientation {
         // console.warn(this.state.categories);
         return (
             <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
-                {this.state.categories.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
+                {this.state.categories.length == false ? <LoadingComponent /> :
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover">
                         <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
                             {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={this.getStyle().loadingTextStyle} /> */}

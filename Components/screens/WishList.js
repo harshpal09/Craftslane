@@ -8,6 +8,7 @@ import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
+import LoadingComponent from './LoadingComponent';
 
 
 class WishList extends Component {
@@ -124,9 +125,9 @@ async addTocart(id) {
     console.log(this.state.refreshing)
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {this.state.all_data.status == undefined ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+        {this.state.all_data.status == undefined ?<LoadingComponent /> :
         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-          <ScrollView 
+          <ScrollView showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => this._onRefresh()}

@@ -26,6 +26,7 @@ import { getAllExternalFilesDirs } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { portraitStyles } from '../../Style/globleCss';
+import LoadingComponent from './LoadingComponent';
 
 
 class EditProfile extends Component {
@@ -121,7 +122,7 @@ class EditProfile extends Component {
         // console.warn(this.state.notifications)
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
-                { this.state.info.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+                { this.state.info.length == false ? <LoadingComponent />:
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
                 <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl

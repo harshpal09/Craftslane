@@ -12,6 +12,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import { portraitStyles } from "../Style/globleCss";
 import axios from "axios";
 import ImageLazyLoading from "react-native-image-lazy-loading";
+import LoadingComponent from "./screens/LoadingComponent";
 // import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 // import DeviceInfo from "react-native-device-info";
 
@@ -41,9 +42,9 @@ class HomeScreen extends UiOrientation {
     return (
       <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
 
-        {this.state.alldata.length == false ? <View style={this.getStyle().loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={this.getStyle().cartImage} /></View> :
+        {this.state.alldata.length == false ? <LoadingComponent /> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
-            <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} refreshControl={<RefreshControl
+            <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={()=> this._onRefresh()}
             />}>
@@ -57,7 +58,7 @@ class HomeScreen extends UiOrientation {
                 <Text style={this.getStyle().headerText}>Categories</Text>
               </View>
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide}>
+                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false}>
                   {this.state.alldata.map((data, idx) => (
                     <View style={this.getStyle().categoryImageContainer} key={idx}>
                       {data.categories.map((item, ind) => {
@@ -85,7 +86,7 @@ class HomeScreen extends UiOrientation {
               </View>
 
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide}>
+                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false}>
                   {this.state.alldata.map((data, idx) => (
                     <View style={this.getStyle().categoryImageContainer} key={idx}>
                       {data.new_arrivals.map((item, ind) => {

@@ -15,6 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import EmptyCart from './screens/EmptyCart';
 import ImageLazyLoading from "react-native-image-lazy-loading";
+import LoadingComponent from './screens/LoadingComponent';
 // import Image from 'react-native-image-lazy-loading';
 
 class CartScreen extends Component {
@@ -189,9 +190,9 @@ class CartScreen extends Component {
     return (
 
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {this.state.cart.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+        {this.state.cart.length == false ?<LoadingComponent /> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
-            <ScrollView 
+            <ScrollView showsVerticalScrollIndicator={false}
               refreshControl={<RefreshControl
                 refreshing={this.state.refreshing}
                 onRefresh={() => this._onRefresh()}
@@ -244,7 +245,7 @@ class CartScreen extends Component {
 
 
 
-
+            <View style={{justifyContent:'center',alignItems:'center'}}>
               <DataTable style={portraitStyles.cartTable}>
                 <DataTable.Row style={portraitStyles.tableRow}>
                   <DataTable.Cell >TOTAL ITEMS</DataTable.Cell>
@@ -259,6 +260,7 @@ class CartScreen extends Component {
                   <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{this.state.cart_total.total}</DataTable.Cell>
                 </DataTable.Row>
               </DataTable>
+             </View>
 
               <View style={portraitStyles.logoutButtonContainer}>
                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: this.state.cart_total.total_items, total: this.state.cart_total.total })}>
