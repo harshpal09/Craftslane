@@ -1,34 +1,53 @@
 import React, { Component } from "react";
 import { View, Image, TextInput, Text, ScrollView, ImageBackground, Dimensions, TouchableOpacity, SafeAreaView, Linking,RefreshControl } from "react-native";
-// import axios from 'axios';
-// import ApiCall from "./ApiCall";
-// import { portraitStyles, landscapeStyles ,styles} from "../Style/globleCss";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
 import UiOrientation from "./UiOrientation";
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Icon from "react-native-ionicons";
-import UseNet from "./screens/UseNet";
 import Feather from 'react-native-vector-icons/Feather'
 import { portraitStyles } from "../Style/globleCss";
 import axios from "axios";
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from "./screens/LoadingComponent";
-// import { SafeAreaInsetsContext } from "react-native-safe-area-context";
-// import DeviceInfo from "react-native-device-info";
-
+import SearchFilter from './SearchFilter'
 class HomeScreen extends UiOrientation {
 
   state = {
     refreshing: false,
     alldata:[],
+    search:[],
+    input: ""
   };
   componentDidMount(){
     this.getData();
+    this.searchArray();
+
   }
+
+  async searchArray(){
+    try {
+      let user = await AsyncStorage.getItem('user');
+      let parsed = JSON.parse(user);
+      this.setState({ data: parsed })
+
+  }
+  catch (error) {
+      Alert.alert(error)
+  }
+
+
+    let res = await axios.get(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
+    // console.log(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
+    this.setState({ search: res.data.body})
+    // console.log(this.state.search)
+  }
+
+
   async getData(){
     let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
     this.setState({ alldata: resp.data.data })
   }
+
+
   _onRefresh = () => {
     this.render();
     this.setState({ refreshing: true });
@@ -52,8 +71,13 @@ class HomeScreen extends UiOrientation {
 
               <View style={this.getStyle().searchBar}>
                 <Feather name="search" color="#000" size={18} />
-                <TextInput style={this.getStyle().textField} placeholder='Search' placeholderTextColor={'grey'} />
+                <TextInput style={this.getStyle().textField} placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
               </View>
+
+              <View style={this.getStyle().searchBarFilter}>
+                <SearchFilter data={this.state.search} input={this.state.input} />
+              </View>
+
               <View style={this.getStyle().headerTextContainer}>
                 <Text style={this.getStyle().headerText}>Categories</Text>
               </View>

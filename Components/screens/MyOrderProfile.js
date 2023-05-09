@@ -23,7 +23,7 @@ class MyOrderProfile extends Component {
     }
     async getdata() {
 
-        const { item } = this.props.route.params;
+        const { id } = this.props.route.params;
         // console.warn(item);
 
         try {
@@ -37,7 +37,7 @@ class MyOrderProfile extends Component {
             Alert.alert(error)
         }
 
-        let resp2 = await axios.get(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + item);
+        let resp2 = await axios.get(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
         this.setState({ cart: resp2.data.body })
 
         this.state.cart.map((data) => (

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image,Alert, ScrollView,ImageBackground, TouchableOpacity,RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, Alert, ScrollView, ImageBackground, TouchableOpacity, RefreshControl } from 'react-native';
 import UiOrientation from '../UiOrientation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { portraitStyles } from '../../Style/globleCss';
@@ -16,7 +17,7 @@ class WishList extends Component {
     all_data: {},
     wish_list: [],
     message: '',
-    refreshing:false,
+    refreshing: false,
   }
   componentDidMount() {
     this.getData();
@@ -42,7 +43,7 @@ class WishList extends Component {
     else {
       this.setState({ message: this.state.all_data.body })
     }
-   
+
   }
   deleteProduct = async (product_id) => {
     const d = {
@@ -68,120 +69,123 @@ class WishList extends Component {
             titleStyle: { fontSize: 18 }
           })
       })
-      if (this.state.all_data.status == 200) {
-        this.setState({ wish_list: this.state.all_data.body });
-      }
-      else {
-        this.setState({ message: this.state.all_data.body })
-      }
+    if (this.state.all_data.status == 200) {
+      this.setState({ wish_list: this.state.all_data.body });
+    }
+    else {
+      this.setState({ message: this.state.all_data.body })
+    }
 
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
-    this.getData(); 
+    this.getData();
     if (this.state.wish_list.length > 0) {
       this.setState({ refreshing: false });
+    }
   }
-  }
-  deleteConfirmation(id){
+  deleteConfirmation(id) {
     Alert.alert(
-        'Delete',
-        'Do you really want to Delete this product ?',
-        [   {text: "Not Now"},
-            { text: "Delete", onPress: () => this.deleteProduct(id) }
-        ],
-        { cancelable: false }
+      'Delete',
+      'Do you really want to Delete this product ?',
+      [{ text: "Not Now" },
+      { text: "Delete", onPress: () => this.deleteProduct(id) }
+      ],
+      { cancelable: false }
     )
-}
-async addTocart(id) {
-  // const{ item } = this.props.route.params;
-  const d = {
+  }
+  async addTocart(id) {
+    // const{ item } = this.props.route.params;
+    const d = {
       product_id: id,
       quantity: this.state.itemcnt
-  }
+    }
 
-  const header = {
+    const header = {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
-  }
-  let rsp = await axios.post(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
+    }
+    let rsp = await axios.post(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
       .then((response) => showMessage({
-          message: 'Product added successfully',
-          type: 'success',
-          color: 'white',
-          icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-          backgroundColor: 'green',
-          titleStyle: { fontSize: 18 }
+        message: 'Product added successfully',
+        type: 'success',
+        color: 'white',
+        icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+        backgroundColor: 'green',
+        titleStyle: { fontSize: 18 }
       }))
       .catch((error) => {
-          console.warn(error);
+        console.warn(error);
       })
 
 
-  // console.warn(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token,"pro=> ",d)
-  // return this.props.navigation.navigate('Cart')
-}
+    // console.warn(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token,"pro=> ",d)
+    // return this.props.navigation.navigate('Cart')
+  }
 
   render() {
     console.log(this.state.refreshing)
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {this.state.all_data.status == undefined ?<LoadingComponent /> :
-        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-          <ScrollView showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => this._onRefresh()}
-            />}
-          >
-            <View>
-              {this.state.all_data.status == 200 ?
-                <View style={portraitStyles.warpProductContainer} >
-                  {this.state.wish_list.map((item, j) => (
-                    <View style={portraitStyles.cartProductContainer} key={j}>
-                      <View style={portraitStyles.cartImageContainer} >
-                        <Image style={portraitStyles.cartImage} source={{ uri: item.image }}></Image>
-                      </View>
-                      <View style={portraitStyles.contentContainer}>
-                        <View style={portraitStyles.cartTextContainer}>
-                          <Text style={portraitStyles.cartText}>{item.name}</Text>
+        {this.state.all_data.status == undefined ? <LoadingComponent /> :
+          <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+            <ScrollView showsVerticalScrollIndicator={false}
+              refreshControl={<RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this._onRefresh()}
+              />}
+            >
+              <View>
+                {this.state.all_data.status == 200 ?
+                  <View style={portraitStyles.warpProductContainer} >
+                    {this.state.wish_list.map((item, j) => (
+                      <View style={portraitStyles.cartProductContainer} key={j}>
+                        <View style={portraitStyles.cartImageContainer} >
+                          <Image style={portraitStyles.cartImage} source={{ uri: item.image }}></Image>
                         </View>
-                        <View style={portraitStyles.cartTextContainer}>
-                          <Text style={portraitStyles.cartModelText}>Model: {item.model}</Text>
-                        </View>
-                        {/* <View style={portraitStyles.cartTextContainer}>
+                        <View style={portraitStyles.contentContainer}>
+                          <View style={portraitStyles.cartTextContainer}>
+                            <Text style={portraitStyles.cartText}>{item.name}</Text>
+                          </View>
+                          <View style={portraitStyles.cartTextContainer}>
+                            <Text style={portraitStyles.cartModelText}>Model: {item.model}</Text>
+                          </View>
+                          {/* <View style={portraitStyles.cartTextContainer}>
                           <Text style={portraitStyles.cartText}></Text>
                         </View> */}
-                        <View style={portraitStyles.incDecButtonContainer}>
-                          <View style={portraitStyles.cartIncDecContainer}>
-                            <Text style={portraitStyles.wishlistPriceText} >stock: {item.stock}</Text>
+                          <View style={portraitStyles.cartTextContainer}>
+                            {/* <View style={portraitStyles.cartIncDecContainer}> */}
+                            <Text style={portraitStyles.cartText} >stock: {item.stock}</Text>
+
+
                           </View>
-                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                            <MaterialIcons name='add-shopping-cart' size={20}  style={portraitStyles.addButton} onPress={() => this.addTocart(item.product_id)}/>
-                          </TouchableOpacity>
-                        </View>
-                        <View style={portraitStyles.incDecButtonContainer}>
-                          <View style={portraitStyles.cartIncDecContainer}>
-                            <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
+                          <View style={portraitStyles.incDecButtonContainer}>
+                            <View style={portraitStyles.cartIncDecContainer}>
+                              <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
+                            </View>
+
+                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
+                              <MaterialCommunityIcons name='cart-variant' color={'grey'} size={30}  onPress={() => this.addTocart(item.product_id)} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton} onPress={() => this.deleteConfirmation(item.product_id)}>
+                              <FontAwesome name="trash-o" size={30} color={'grey'} />
+                            </TouchableOpacity>
                           </View>
-                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton} onPress={() => this.deleteConfirmation(item.product_id)}>
-                            <FontAwesome name="trash-o" size={30} color={'#5A5A5A'}  />
-                          </TouchableOpacity>
+
                         </View>
 
                       </View>
+                    ))}
+                  </View>
+                  :
+                  <View style={portraitStyles.headerMiddleTextContainer}>
+                    <Text style={portraitStyles.headerText}>{this.state.message}</Text>
+                  </View>
+                }
 
-                    </View>
-                  ))}
-                </View>
-                :
-                <View style={portraitStyles.headerMiddleTextContainer}>
-                  <Text style={portraitStyles.headerText}>{this.state.message}</Text>
-                </View>
-              }
+              </View>
 
-            </View>
-
-          </ScrollView>
+            </ScrollView>
           </ImageBackground>
         }
       </SafeAreaView>
