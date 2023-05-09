@@ -78,6 +78,16 @@ class CartScreen extends Component {
 
 
   }
+  deleteConfirmation(id){
+    Alert.alert(
+        'Delete',
+        'Do you really want to delete this address ?',
+        [   {text: "Not Now"},
+            { text: "Delete", onPress: () => this.deleteCart(id) }
+        ],
+        { cancelable: false }
+    )
+}
 
 
   deleteCart = async (product_id) => {
@@ -201,7 +211,7 @@ class CartScreen extends Component {
               {/* <View style={portraitStyles.parentContainer}> */}
 
 
-
+                
               <View style={portraitStyles.warpContainer} >
                 {this.state.cart.map((item, j) => (
                   <View style={portraitStyles.cartProductContainer} key={j}>
@@ -226,12 +236,12 @@ class CartScreen extends Component {
                       <View style={portraitStyles.incDecButtonContainer}>
 
                         <View style={portraitStyles.cartIncDecContainer}>
-                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.decBtn} onPress={() => this.decFunction(item.product_id, item.quantity)}><Text style={portraitStyles.decButton}>-</Text></TouchableOpacity>
+                          <TouchableOpacity style={portraitStyles.decBtn} onPress={() => this.decFunction(item.product_id, item.quantity)}><Text style={portraitStyles.decButton}>-</Text></TouchableOpacity>
                           <Text style={portraitStyles.incDecField} >{item.quantity}</Text>
                           <TouchableOpacity style={portraitStyles.incBtn} onPress={() => this.incFunction(item.product_id, item.quantity)}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
                         </View>
-                        <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                          <FontAwesome name="trash" size={30} color={'#5A5A5A'} onPress={() => this.deleteCart(item.product_id)} />
+                        <TouchableOpacity style={portraitStyles.refDelButton}>
+                          <FontAwesome name="trash" size={30} color={'#5A5A5A'} onPress={() => this.deleteConfirmation(item.product_id)} />
                         </TouchableOpacity>
                       </View>
 
@@ -252,7 +262,7 @@ class CartScreen extends Component {
                   <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{this.state.cart_total.total_items}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row style={portraitStyles.tableRow}>
-                  <DataTable.Cell onPress={() => this.CheckConnectivity()}>SUB-TOTAL</DataTable.Cell>
+                  <DataTable.Cell >SUB-TOTAL</DataTable.Cell>
                   <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center', }} >{this.state.cart_total.total}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row style={portraitStyles.tableLastRow}>

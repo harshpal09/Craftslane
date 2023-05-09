@@ -99,7 +99,7 @@ class MyProfile extends Component {
                                             <Text style={portraitStyles.tableDoubleColumnLable}>Company Name:</Text>
                                         </View>
                                         <View style={portraitStyles.tableColumnInput}>
-                                            <Text style={portraitStyles.tableDoubleColumnText}>{item.dob}</Text>
+                                            <Text style={portraitStyles.tableDoubleColumnText}>{item.companyname}</Text>
                                         </View>
                                         {/* <View style={portraitStyles.tableColumnInput}>
                                 <TouchableOpacity style={portraitStyles.opacityText} onPress={() => this.props.navigation.replace('editprofile')}>

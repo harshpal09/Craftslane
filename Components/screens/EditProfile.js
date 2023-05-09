@@ -124,7 +124,7 @@ class EditProfile extends Component {
         }
     }
     render() {
-        // console.warn(this.state.notifications)
+        console.warn(JSON.stringify(this.state.date).substring(1, 5))
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 {this.state.info.length == false ? <LoadingComponent /> :
@@ -136,65 +136,48 @@ class EditProfile extends Component {
                             />}
                         >
 
-                            <View style={portraitStyles.headerMiddleTextContainer}>
-                                <Text style={portraitStyles.profileHeaderMiddleText}>Manage your Personal Information</Text>
-                            </View>
-                            {this.state.info.map((item, i) => (
-                                <View key={i}>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ first_name: text })} defaultValue={item.firstname} />
-                                    </View>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ last_name: text })} defaultValue={item.lastname} />
-                                    </View>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
-                                    </View>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
-                                        <DatePicker
-                                            modal
-                                            open={this.state.open}
-                                            date={this.state.date}
-                                            androidVariant={'iosClone'}
-                                            onConfirm={(date) => {
-                                                this.setState({ open: false })
-                                                this.setState({ date: date })
-                                                this.setState({ flag: true })
-                                            }}
-                                            fadeToColor={'none'}
-                                            mode='date'
-                                            onCancel={() => {
-                                                this.setState({ open: false })
-                                            }}
-                                        />
-                                    </View>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={item.telephone} />
-                                    </View>
-                                    <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ gstn: text })} defaultValue={item.fax} />
-                                    </View>
-                                </View>
-
-                            ))}
-
-                            <View style={portraitStyles.termsAndConditionContainer}>
-
-                                <View style={portraitStyles.termsAndCondition} >
-                                    <View style={portraitStyles.checkboxContainer}>
-                                        <CheckBox
-                                            tintColors={{ true: '#B48D56', false: 'black' }}
-                                            disabled={false}
-                                            value={this.state.toggleCheckBox2}
-                                            onValueChange={(newValue) => this.setToggleCheckBox2(newValue)}
-                                            style={portraitStyles.checkbox}
-                                        />
-                                    </View>
-                                    <Text style={portraitStyles.terms}>I agree to receiving emails, calls, and text messages for service related information. (To know more about how we keep your data safe, please refer to our<Text style={portraitStyles.hyperlinkText} onPress={() => this.termAndConditions('policy')}> Privacy Policy </Text>)</Text>
-                                </View>
-                            </View>
-                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.submitFrom()} disabled={this.state.toggle == false ? true : false}>
+                    <View style={portraitStyles.headerMiddleTextContainer}>
+                        <Text style={portraitStyles.profileHeaderMiddleText}>Manage your Personal Information</Text>
+                    </View>
+                    {this.state.info.map((item,i)=>(
+                        <View key={i}>
+                    <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ first_name: text })} defaultValue={item.firstname} />
+                    </View>
+                    <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ last_name: text })} defaultValue={item.lastname} />
+                    </View>
+                    <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
+                    </View>
+                    <View style={portraitStyles.containLabelAndInput}>
+                            <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
+                            <DatePicker
+                                modal
+                                open={this.state.open}
+                                date={this.state.date}
+                                androidVariant={'iosClone'}
+                                onConfirm={(date) => {
+                                    this.setState({open:false})
+                                    this.setState({date:date})
+                                    this.setState({ flag: true })
+                                }}
+                                fadeToColor={'none'}
+                                mode='date'
+                                onCancel={() => {
+                                    this.setState({open:false})
+                                }}
+                            />
+                        </View>
+                    <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={item.telephone}/>
+                    </View>
+                    <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ gstn: text })} defaultValue={item.fax} />
+                    </View>
+                    </View>
+                    ))}
+                    <TouchableOpacity  activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.submitFrom()} disabled={this.state.toggle == false ? true : false}>
 
                                 <View style={portraitStyles.button}>
                                     {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Save</Text>}

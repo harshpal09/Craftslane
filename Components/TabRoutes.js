@@ -36,7 +36,7 @@ const TabRoutes = () => {
                     },
                     headerShown: true,
                     headerTitle : 'Shopping Cart',
-                    headerTitleStyle: { fontSize: 20},
+                    headerTitleStyle: { fontSize: 20 },
                     tabBarBadge:4   
                 }
                 }  />
