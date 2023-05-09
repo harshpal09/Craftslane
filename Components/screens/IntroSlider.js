@@ -7,6 +7,7 @@ import { LogInPage } from '../../export';
 import { portraitStyles } from '../../Style/globleCss';
 // import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 // import SplashScreen from 'react-native-splash-screen';
 
 export default class IntroSlider extends Component {
@@ -51,6 +52,10 @@ export default class IntroSlider extends Component {
     this.setState({ item_1: resp.data.url_1 })
     this.setState({ item_2: resp.data.url_2 })
     this.setState({ item_3: resp.data.url_3 })
+
+    setTimeout(() => {SplashScreen.hide()}, 2000)
+    
+   
   }
   _renderItem = ({ item }) => {
 
