@@ -79,6 +79,9 @@ class EditProfile extends Component {
             fax: this.state.gstn,
             selectaddress: '',
             country_id:"",
+            year:JSON.stringify(this.state.date).substring(1, 5),
+            month:JSON.stringify(this.state.date).substring(6,8),
+            day:JSON.stringify(this.state.date).substring(9,11),
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
@@ -119,7 +122,7 @@ class EditProfile extends Component {
         }
       }
     render() {
-        // console.warn(this.state.notifications)
+        console.warn(JSON.stringify(this.state.date).substring(1, 5))
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 { this.state.info.length == false ? <LoadingComponent />:
@@ -146,7 +149,7 @@ class EditProfile extends Component {
                         <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
                     </View>
                     <View style={portraitStyles.containLabelAndInput}>
-                            <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
+                            <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : this.state.dob} onChangeText={(date) => this.setState({ date: date })} />
                             <DatePicker
                                 modal
                                 open={this.state.open}

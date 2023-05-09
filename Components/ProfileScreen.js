@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity,ActivityIndicator,ImageBackground, TouchableHighlightBase, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity,ActivityIndicator,ImageBackground, TouchableHighlightBase,RefreshControl, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,31 +16,69 @@ import { portraitStyles } from '../Style/globleCss';
 import axios from 'axios';
 import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from './screens/LoadingComponent';
 class ProfileScreen extends Component {
     state={
         response_data:{},
         toggle:undefined,
+        info: [],
+        refreshing: false,
+    }
+    componentDidMount() {
+        this.getdata();
+    }
+    _onRefresh = () => {
+        this.getdata();
+        this.setState({ refreshing: true });
+
+    }
+    async getdata() {
+        this.setState({ refreshing: true });
+        try {
+            let user = await AsyncStorage.getItem('user');
+            let parsed = JSON.parse(user);
+            this.setState({ data: parsed })
+
+            // console.warn(this.state.data)
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
+        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+            .then((resp) => this.setState({ info: resp.data.body }))
+            .catch((error) => console.warn(error));
+        this.setState({ refreshing: false })
+        // console.warn(this.state.data);
     }
    
     render() {
         // console.warn(Dimensions.get('screen').width/2.5);
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+                {this.state.info.length == false ?<LoadingComponent />:
                 <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" >
-                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
+                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} 
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => this._onRefresh()}
+                    />}
+                >
                     <View style={portraitStyles.headerMiddleTextContainer}>
                         {/* <View style={portraitStyles.profileIconContainer}>
                             <MaterialCommunityIcons name='account-circle-outline' size={70} color={'#CEBCA3'} style={{ backgroundColor: '#f2ebd5' }} />
                         </View> */}
-                        <View style={portraitStyles.profileNameAndEmailContainer}>
+                            {this.state.info.map((data,i) => (
+                        <View style={portraitStyles.profileNameAndEmailContainer} key={i}>
                             <View style={portraitStyles.profileNameContainer}>
-                                <Text style={portraitStyles.profileUserName}>Harsh Pal</Text>
+                                <Text style={portraitStyles.profileUserName}>{data.firstname} {data.lastname}</Text>
                                 {/* <MaterialIcons name='create' color={'#CEBCA3'} size={25} style={{ marginLeft: 10 }} /> */}
                             </View>
                             <View style={portraitStyles.profileEmailContainer}>
-                                <Text style={portraitStyles.profileEmailText}>harshpal830@gmail.com</Text>
+                                <Text style={portraitStyles.profileEmailText}>{data.email}</Text>
                             </View>
                         </View>
+                        ))}
                     </View>
                     <DataTable style={portraitStyles.dataTable_2}>
                     <DataTable.Row style={portraitStyles.rowStyles}>
@@ -128,7 +166,9 @@ class ProfileScreen extends Component {
 
                 </ScrollView>
                 </ImageBackground>
+    }
             </SafeAreaView>
+            
         );
     }
 }

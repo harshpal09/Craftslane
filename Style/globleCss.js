@@ -1214,7 +1214,7 @@ tableRow: {
   borderBottomWidth: 1
 },
 tableLastRow: {
-  // borderBottomColor: 'grey',
+  borderBottomColor: 'white',
   // width: 330,
   marginHorizontal: 6,
   // borderBottomWidth:1
@@ -1330,7 +1330,7 @@ cartIncDecContainer: {
     textAlignVertical:'center',
     marginLeft:15,
     color:'#6D6D6D',
-    width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.3: Dimensions.get('screen').width/2.6,
+    width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,
     fontFamily:'Baskerville',
     fontSize:16,
     // backgroundColor:'red'
@@ -1345,7 +1345,7 @@ cartIncDecContainer: {
     borderBottomWidth:1
   },
   profileIcons:{
-    paddingLeft:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.3: Dimensions.get('screen').width/2.6,
+    paddingLeft:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,
     // backgroundColor: 'blue'
     
   },
