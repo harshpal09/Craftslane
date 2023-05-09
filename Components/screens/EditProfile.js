@@ -31,7 +31,7 @@ import LoadingComponent from './LoadingComponent';
 
 class EditProfile extends Component {
     state = {
-        info:[],
+        info: [],
         date: new Date(),
         first_name: '',
         last_name: '',
@@ -39,17 +39,22 @@ class EditProfile extends Component {
         email: '',
         contact_number: '',
         response_data: {},
-        toggle:undefined,
-        dob:'',
-        refreshing:false,
-        open:false,
-        flag:false,
+        toggle: undefined,
+        dob: '',
+        refreshing: false,
+        open: false,
+        flag: false,
+        toggleCheckBox2: false,
     }
-    componentDidMount()
-    {
+    componentDidMount() {
         this.getData();
     }
-    async getData(){
+
+    setToggleCheckBox2(val) {
+        // console.log(val);
+        this.setState({ toggleCheckBox2: val });
+    }
+    async getData() {
         try {
             let user = await AsyncStorage.getItem('user');
             let parsed = JSON.parse(user);
@@ -60,17 +65,17 @@ class EditProfile extends Component {
             Alert.alert(error)
         }
 
-        await axios.get(this.state.data.url+"customaccountinfo/index&key="+this.state.data.key+"&token="+this.state.data.token)
-        .then((resp) => this.setState({info:resp.data.body}))
-        .catch((error)=>console.warn(error));
+        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+            .then((resp) => this.setState({ info: resp.data.body }))
+            .catch((error) => console.warn(error));
 
-        this.state.info.map((val)=>
-            this.setState({first_name:val.firstname,last_name:val.lastname,email:val.email,contact_number:val.telephone,gstn:val.fax,dob:val.dob}),
+        this.state.info.map((val) =>
+            this.setState({ first_name: val.firstname, last_name: val.lastname, email: val.email, contact_number: val.telephone, gstn: val.fax, dob: val.dob }),
         )
         // console.warn(this.state.dob);
     }
     async submitFrom() {
-        this.setState({toggle:false})
+        this.setState({ toggle: false })
         data = {
             firstname: this.state.first_name,
             lastname: this.state.last_name,
@@ -78,17 +83,14 @@ class EditProfile extends Component {
             telephone: this.state.contact_number,
             fax: this.state.gstn,
             selectaddress: '',
-            country_id:"",
-            year:JSON.stringify(this.state.date).substring(1, 5),
-            month:JSON.stringify(this.state.date).substring(6,8),
-            day:JSON.stringify(this.state.date).substring(9,11),
+            country_id: "",
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
         await axios.post(this.state.data.url + "customaccountedit/index&key=" + this.state.data.key + "&token=" + this.state.data.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
         // console.warn(this.state.response_data);
-        this.setState({toggle:true})
+        this.setState({ toggle: true })
         if (this.state.response_data.status != 200) {
             showMessage({
                 message: this.state.response_data.message,
@@ -113,26 +115,26 @@ class EditProfile extends Component {
 
         }
     }
-    
+
     _onRefresh = () => {
 
         this.setState({ refreshing: true });
         if (this.state.info.length > 0) {
-          this.setState({ refreshing: false });
+            this.setState({ refreshing: false });
         }
-      }
+    }
     render() {
         console.warn(JSON.stringify(this.state.date).substring(1, 5))
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
-                { this.state.info.length == false ? <LoadingComponent />:
-                <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
-                refreshControl={<RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => this._onRefresh()}
-                  />}
-                >
+                {this.state.info.length == false ? <LoadingComponent /> :
+                    <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+                        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
+                            refreshControl={<RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={() => this._onRefresh()}
+                            />}
+                        >
 
                     <View style={portraitStyles.headerMiddleTextContainer}>
                         <Text style={portraitStyles.profileHeaderMiddleText}>Manage your Personal Information</Text>
@@ -149,7 +151,7 @@ class EditProfile extends Component {
                         <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
                     </View>
                     <View style={portraitStyles.containLabelAndInput}>
-                            <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : this.state.dob} onChangeText={(date) => this.setState({ date: date })} />
+                            <TextInput onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
                             <DatePicker
                                 modal
                                 open={this.state.open}
@@ -177,14 +179,14 @@ class EditProfile extends Component {
                     ))}
                     <TouchableOpacity  activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.submitFrom()} disabled={this.state.toggle == false ? true : false}>
 
-                        <View style={portraitStyles.button}>
-                            {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Save</Text>}
-                        </View>
-                    </TouchableOpacity>
+                                <View style={portraitStyles.button}>
+                                    {this.state.toggle == false ? <ActivityIndicator size="small" color="#fff" /> : <Text style={portraitStyles.buttonText}>Save</Text>}
+                                </View>
+                            </TouchableOpacity>
 
-                </ScrollView>
-                </ImageBackground>
-                 } 
+                        </ScrollView>
+                    </ImageBackground>
+                }
             </SafeAreaView>
 
         );

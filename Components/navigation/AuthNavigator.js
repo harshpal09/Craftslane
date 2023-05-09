@@ -5,6 +5,7 @@ import { EnterEmail, EnterOTP, CreateNewPassword, PasswordCreated, OOPS } from '
 import { LogInPage, SignUpPage, TabRoutes, Categories, Product, HomeAccent, HomeScreen, NewArrivals, PopularTrends } from '../../export';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UseNet from '../screens/UseNet';
+import SearchFilter from '../SearchFilter';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ class AuthNavigator extends Component {
 
       <Stack.Navigator>
         <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Filter" component={SearchFilter} options={{ headerShown: false }} />
         <Stack.Screen name="categories" component={Categories}
           options={
             {
