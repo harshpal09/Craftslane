@@ -22,8 +22,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Home Accents',
-              // headerStyle: { backgroundColor: '#f9f0df' }
-              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular'}
+              headerTintColor: '#B48D56',
+              headerTitleStyle: { color: 'black'}
             }
           } />     
           <Stack.Screen name="usenet" component={UseNet} options={{ headerShown: false }} />
@@ -32,8 +32,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Products',
-              // headerStyle: { backgroundColor: '#f2ebd5' },
-              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              headerTintColor: '#B48D56',
+              headerTitleStyle: { color: 'black'}
             }
           } />
         <Stack.Screen name="homeaccent" component={HomeAccent}
@@ -41,8 +41,8 @@ class AuthNavigator extends Component {
             {
               headerShown: true,
               headerTitle: 'Product Profile',
-              // headerStyle: { backgroundColor: '#f2ebd5' },
-              // headerTitleStyle: { fontFamily: 'PlayfairDisplay-Regular' }
+              headerTintColor: '#B48D56',
+              headerTitleStyle: { color: 'black'}
             }
           } />
 
