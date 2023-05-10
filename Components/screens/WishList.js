@@ -34,7 +34,7 @@ class WishList extends Component {
     catch (error) {
       Alert.alert(error)
     }
-    console.log(this.state.refreshing)
+    // console.log(this.state.refreshing)
     await axios.get(this.state.data.url + "customwishlist/index&key=" + this.state.data.key + "&token=" + this.state.data.token).then((resp) => this.setState({ all_data: resp.data }))
     this.setState({ refreshing: false });
     if (this.state.all_data.status == 200) {
@@ -123,11 +123,11 @@ class WishList extends Component {
   }
 
   render() {
-    console.log(this.state.refreshing)
+    // console.log(this.state.refreshing)
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         {this.state.all_data.status == undefined ? <LoadingComponent /> :
-          <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+          <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" style={{width:'100%',height:'100%'}} >
             <ScrollView showsVerticalScrollIndicator={false}
               refreshControl={<RefreshControl
                 refreshing={this.state.refreshing}
