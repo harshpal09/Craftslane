@@ -4,11 +4,11 @@ import { FlatList } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
 
-const SearchFilter = ({ data, input,navigation}) => {
-
+const SearchFilter = ({ data, input }) => {
+    const navigation = useNavigation();
     return (
 
-        <View style={{ borderRadius:15,  height: input ? 150 : 0 }} >
+        <View style={{ borderRadius: 15, height: input ? 150 : 0 }} >
             <FlatList data={data} renderItem={({ item }) => {
                 if (input === "") {
                     return (
@@ -16,20 +16,22 @@ const SearchFilter = ({ data, input,navigation}) => {
                     )
                 }
 
+
                 if (item.name.toLowerCase().includes(input.toLowerCase())) {
 
                     return (
-                        <View style={{ borderRadius: 15}}>
-                            <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('categories')}>
-                                <Text style={{ fontSize: 13 }}>{item.name}</Text>
+                        <View style={{ borderRadius: 15 }}>
+                            <TouchableOpacity style={styles.box} onPress={() => item.parent_id == 0?navigation.navigate('categories',{ item_id: item.category_id}): navigation.navigate('product', { item_id: item.category_id})}>
+                                <Text style={{ fontSize: 16, fontFamily:'Georgia' }}>{item.name}</Text>
                             </TouchableOpacity>
                         </View>
 
                     )
                 }
+               
             }
             }
-            showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     )
@@ -38,7 +40,10 @@ const SearchFilter = ({ data, input,navigation}) => {
 const styles = StyleSheet.create({
     box: {
         padding: 5,
-        borderBottomWidth:1,
+        borderBottomWidth: 1,
+        backgroundColor: '#F2F3F2',
+        borderBottomColor: 'lightgre'
+        // margin:5
 
     }
 })

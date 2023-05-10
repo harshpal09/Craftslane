@@ -1,3 +1,4 @@
+
 import React, { Component, useEffect,useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl,ImageBackground, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
 // import UiOrientation from './UiOrientation';
@@ -61,7 +62,7 @@ export default class Product extends Component {
                 duration: 4000,
                 type: 'danger',
                 color: 'white',
-                icon: props => <Entypo name="circle-with-cross" size={20} color={'white'} {...props} />,
+                icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
                 titleStyle: { fontSize: 18 }
             })
         }
@@ -165,7 +166,20 @@ const LikeButton = ({id}) => {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
 
-        await axios.post(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token+"&os_type=android",d,header).then((resp)=> console.log(resp.data))
+        await axios.post(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token+"&os_type=android",d,header)
+        .then((resp)=> {
+            if(resp.data.success == 1)
+            {
+                showMessage({
+                    message: "Success",
+                    duration: 4000,
+                    type: 'success',
+                    color: 'white',
+                    icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                    titleStyle: { fontSize: 18 }
+                })
+            }
+            })
         
     }
 
