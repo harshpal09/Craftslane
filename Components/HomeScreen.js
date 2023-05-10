@@ -81,9 +81,9 @@ class HomeScreen extends UiOrientation {
                 
               </View>
 
-              <View style={this.getStyle().searchBarFilter}>
+              {/* <View style={this.getStyle().searchBarFilter}>
                 <SearchFilter data={this.state.search} input={this.state.input} />
-              </View>
+              </View>  */}
 
               <View style={this.getStyle().headerTextContainer}>
                 <Text style={this.getStyle().headerText}>Categories</Text>

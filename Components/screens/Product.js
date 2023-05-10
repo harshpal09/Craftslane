@@ -1,9 +1,9 @@
+
 import React, { Component, useEffect,useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl,ImageBackground, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -62,7 +62,7 @@ export default class Product extends Component {
                 duration: 4000,
                 type: 'danger',
                 color: 'white',
-                icon: props => <Entypo name="circle-with-cross" size={20} color={'white'} {...props} />,
+                icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
                 titleStyle: { fontSize: 18 }
             })
         }
@@ -123,7 +123,7 @@ export default class Product extends Component {
                                     <View style={portraitStyles.productContainer} key={i}>
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent')} style={portraitStyles.productImageContainer}>
                                             <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
-                                            <LikeButton  isLiked={this.state.liked} />
+                                            <LikeButton  id={val.id} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
                                             <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent')}>{val.title}</Text>
@@ -131,6 +131,7 @@ export default class Product extends Component {
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
                                             <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                            {console.log(val.id)}
                                         </View>
                                     </View>
                                 ))}
@@ -148,11 +149,42 @@ export default class Product extends Component {
     }
 }
 
-const LikeButton = ({isLiked}) => {
-    const [liked, setLiked] = useState(isLiked);
-    // console.warn(liked);
+const LikeButton = ({id}) => {
+    const [liked, setLiked] = useState(false);
+    
+    const addToWishlist = async(id) =>{
+        liked ? setLiked(false) : setLiked(true);
+        let user = await AsyncStorage.getItem('user');
+        let parsed = JSON.parse(user);
+
+        // console.log(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token)
+        // console.log("id--",id);
+        const d = {
+            product_id:id,
+        }
+        const header = {
+            headers: { 'content-type': 'application/x-www-form-urlencoded' }
+        }
+
+        await axios.post(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token+"&os_type=android",d,header)
+        .then((resp)=> {
+            if(resp.data.success == 1)
+            {
+                showMessage({
+                    message: "Success",
+                    duration: 4000,
+                    type: 'success',
+                    color: 'white',
+                    icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                    titleStyle: { fontSize: 18 }
+                })
+            }
+            })
+        
+    }
+
     return (
-      <Pressable onPress={() => setLiked((isLiked) => !isLiked)} style={{position:'absolute',padding:10}}>
+      <Pressable onPress={() => addToWishlist(id)} style={{position:'absolute',padding:10}}>
         <MaterialCommunityIcons
           name={liked ? "heart" : "heart-outline"}
           size={25}

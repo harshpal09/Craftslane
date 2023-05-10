@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image,Alert,ImageBackground, RefreshControl } from 'react-native';
+import React, { Component, useState } from 'react';
+import { View, StyleSheet, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, Alert, ImageBackground, RefreshControl } from 'react-native';
 import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -19,13 +19,23 @@ class AddressBook extends Component {
                 id: '1', // acts as primary key, should be unique and non-empty string
                 label: 'Make Default',
                 value: 'option1',
-                color:'#B48D56',
-                borderSize:1,
-                borderColor:'#B48D56',
-                labelStyle:portraitStyles.radioButtons
+                color: '#B48D56',
+                borderSize: 1,
+                borderColor: '#B48D56',
+                labelStyle: portraitStyles.radioButtons
 
             },
-            
+            {
+                id: '2', // acts as primary key, should be unique and non-empty string
+                label: 'Not Make Default',
+                value: 'option2',
+                color: '#B48D56',
+                borderSize: 1,
+                borderColor: '#B48D56',
+                labelStyle: portraitStyles.radioButtons
+
+            },
+
         ],
     }
     componentDidMount() {
@@ -51,12 +61,12 @@ class AddressBook extends Component {
             this.setState({ message: this.state.all_data.body })
         }
     }
-    deleteConfirmation(id){
+    deleteConfirmation(id) {
         Alert.alert(
             'Delete',
             'Do you really want to delete this address ?',
-            [   {text: "Not Now"},
-                { text: "Delete", onPress: () => this.deleteAddress(id) }
+            [{ text: "Not Now" },
+            { text: "Delete", onPress: () => this.deleteAddress(id) }
             ],
             { cancelable: false }
         )
@@ -113,14 +123,13 @@ class AddressBook extends Component {
             this.setState({ refreshing: false });
         }
     }
-    setRadioButtons(arr)
-    {
-        
-        this.setState({radioButtons:arr});       
+    setRadioButtons(arr) {
+        console.log(arr);
+        // this.setState({radioButtons:arr});       
     }
 
     onPressRadioButton(radioButtonsArray) {
-        console.warn(radioButtonsArray);
+        console.log(radioButtonsArray);
     }
 
 
@@ -129,63 +138,65 @@ class AddressBook extends Component {
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 {
-                    this.state.all_data.status == undefined ? <LoadingComponent />:
-                    <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                        <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
-                            refreshControl={<RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={() => this._onRefresh()}
-                            />}
-                        >
-                            <View style={portraitStyles.headerMiddleTextContainer}>
-                                <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
-                            </View>
-                            {this.state.all_data.status == 200 ?
-                                <View style={portraitStyles.addressParentContainer} >
-                                    {this.state.address.map((item, i) => (
-                                        <View style={portraitStyles.addressChildContainer} key={i}>
-                                            <View style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }}>
-                                                <RadioGroup
-                                                    radioButtons={this.state.radioButtons}
-                                                    onPress={() => this.onPressRadioButton(this.state.radioButtons)}
-                                                    layout='row'
-                                                />
-                                            </View>
-                                            <Text style={portraitStyles.addressText}> {item.firstname} {item.lastname} </Text>
-                                            <Text style={portraitStyles.addressText}>{item.company}</Text>
-                                            <Text style={portraitStyles.addressText}>{item.address_1}</Text>
-                                            <Text style={portraitStyles.addressText}> {item.address_2}</Text>
-                                            <Text style={portraitStyles.addressText}> {item.city} {item.postcode} </Text>
-                                            <Text style={portraitStyles.addressText}> {item.zone} </Text>
-                                            <Text style={portraitStyles.addressText}> {item.country}</Text>
-                                            <View style={{ flexDirection: 'row', display: 'flex', width: "80%",justifyContent:'space-between',padding: 20 }}>
-                                                <TouchableOpacity activeOpacity={0.9} style={{ width: '40%' , backgroundColor: '#B48D56', borderRadius:3, padding: 5}} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
-                                                    <Text style={portraitStyles.addressButton}>Edit</Text>
-                                                </TouchableOpacity>
-                                                {this.state.address.length > 0 ?
-                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%' , backgroundColor: '#B48D56', borderRadius:3, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
-                                                        <Text style={portraitStyles.addressButton}>Delete</Text>
-                                                    </TouchableOpacity>
-                                                    :
-                                                    <>
-                                                    </>
-                                                }
-                                            </View>
-                                        </View>
-                                    ))}
-
-                                </View>
-                                :
+                    this.state.all_data.status == undefined ? <LoadingComponent /> :
+                        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+                            <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}
+                                refreshControl={<RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={() => this._onRefresh()}
+                                />}
+                            >
                                 <View style={portraitStyles.headerMiddleTextContainer}>
-                                    <Text style={portraitStyles.headerText}>{this.state.message}</Text>
+                                    <Text style={portraitStyles.profileHeaderMiddleText}>Add Multiple Billing and Shipping Addresses.</Text>
                                 </View>
-                            }
-                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.props.navigation.navigate('addaddress')}>
-                                <View style={portraitStyles.button} >
-                                    <Text style={portraitStyles.buttonText}>Add New Address</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </ScrollView>
+                                {this.state.all_data.status == 200 ?
+                                    <View style={portraitStyles.addressParentContainer} >
+                                        {this.state.address.map((item, i) => (
+                                            <View style={portraitStyles.addressChildContainer} key={i}>
+                                                {/* <View style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }}>
+                                                    <RadioGroup
+
+                                                        radioButtons={this.state.radioButtons}
+                                                        onPress={() => this.setRadioButtons(this.state.radioButtons)}
+                                                        layout='row'
+                                                    />
+                                                </View> */}
+                                                <RadioButton id={item.address_id}  />
+                                                <Text style={portraitStyles.addressText}> {item.firstname} {item.lastname} </Text>
+                                                <Text style={portraitStyles.addressText}>{item.company}</Text>
+                                                <Text style={portraitStyles.addressText}>{item.address_1}</Text>
+                                                <Text style={portraitStyles.addressText}> {item.address_2}</Text>
+                                                <Text style={portraitStyles.addressText}> {item.city} {item.postcode} </Text>
+                                                <Text style={portraitStyles.addressText}> {item.zone} </Text>
+                                                <Text style={portraitStyles.addressText}> {item.country}</Text>
+                                                <View style={{ flexDirection: 'row', display: 'flex', width: "80%", justifyContent: 'space-between', padding: 20 }}>
+                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 3, padding: 5 }} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
+                                                        <Text style={portraitStyles.addressButton}>Edit</Text>
+                                                    </TouchableOpacity>
+                                                    {this.state.address.length > 0 ?
+                                                        <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 3, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
+                                                            <Text style={portraitStyles.addressButton}>Delete</Text>
+                                                        </TouchableOpacity>
+                                                        :
+                                                        <>
+                                                        </>
+                                                    }
+                                                </View>
+                                            </View>
+                                        ))}
+
+                                    </View>
+                                    :
+                                    <View style={portraitStyles.headerMiddleTextContainer}>
+                                        <Text style={portraitStyles.headerText}>{this.state.message}</Text>
+                                    </View>
+                                }
+                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.props.navigation.navigate('addaddress')}>
+                                    <View style={portraitStyles.button} >
+                                        <Text style={portraitStyles.buttonText}>Add New Address</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </ScrollView>
                         </ImageBackground>
                 }
             </SafeAreaView>
@@ -196,3 +207,39 @@ class AddressBook extends Component {
 const styles = StyleSheet.create({})
 
 export default AddressBook;
+
+const RadioButton = ({id}) => {
+
+    const [radioButtons, setradioButtons] = useState([
+        {
+            id: id, // acts as primary key, should be unique and non-empty string
+            label: 'Make Default',
+            value: 'option1',
+            color: '#B48D56',
+            borderSize: 1,
+            borderColor: '#B48D56',
+            labelStyle: portraitStyles.radioButtons
+
+        },
+    ]);
+
+   const setRadioButtons = (arr) =>{
+        console.log(arr);
+        // this.setState({radioButtons:arr});       
+    }
+
+    const onPressRadioButton = (radioButtonsArray) => {
+        console.log(radioButtonsArray);
+    }
+
+    return (
+        <View style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }}>
+            <RadioGroup
+
+                radioButtons={radioButtons}
+                onPress={() => setRadioButtons(radioButtons)}
+                layout='row'
+            />
+        </View>
+    )
+}
