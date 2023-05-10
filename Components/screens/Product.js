@@ -1,15 +1,19 @@
-import React, { Component, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, ImageBackground, FlatList, RefreshControl, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
+import React, { Component, useEffect,useState } from 'react';
+import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl,ImageBackground, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
 // import UiOrientation from './UiOrientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { LogBox } from 'react-native';
-import LoadingComponent from './LoadingComponent';
+
+
+
+
 
 
 
@@ -17,9 +21,6 @@ export default class Product extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            users: [],
-            currentPage: 0,
-            isLoading: false,
             categories: [],
             item: [],
             arr: [],
@@ -34,7 +35,6 @@ export default class Product extends Component {
     }
 
     async getdata() {
-
         const { item_name, item_id } = this.props.route.params;
         this.setState({ name: item_name })
         let id = ""
@@ -44,39 +44,35 @@ export default class Product extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
 
-        this.setState({ currentPage: this.state.currentPage + 1 })
-        this.setState({ isLoading: true });
-        let r = await axios.get(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key + "&page=" + this.state.currentPage);
+        //   console.warn(this.state.data)
 
-
+        let r = await axios.get(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
 
         this.setState({ response_data: r.data })
 
-        if (this.state.response_data.success == 0 && flag == 0) {
+        if (this.state.response_data.success == 0) {
             showMessage({
                 message: this.state.response_data.error,
                 duration: 4000,
                 type: 'danger',
                 color: 'white',
-                icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
+                icon: props => <Entypo name="circle-with-cross" size={20} color={'white'} {...props} />,
                 titleStyle: { fontSize: 18 }
             })
         }
         else {
-            this.setState({ users: this.state.users.concat(this.state.response_data.categories) });
-
+            this.setState({ item: r.data.categories })
         }
 
     }
-
-
     async addTocart(id) {
-
+        // const{ item } = this.props.route.params;
         const d = {
             product_id: id,
             quantity: this.state.itemcnt
@@ -99,132 +95,71 @@ export default class Product extends Component {
             })
 
 
-
         return this.props.navigation.navigate('Cart')
     }
 
 
 
 
-    renderItem = ({ item }) => {
-        return (
-            
-                <View style={portraitStyles.productContainer} >
-                    <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent')} style={portraitStyles.productImageContainer}>
-                        <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: item.image }} />
-                        <LikeButton isLiked={this.state.liked} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={portraitStyles.productTextContainer}>
-                        <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent')}>{item.title}</Text>
-                    </TouchableOpacity>
-                    <View style={portraitStyles.priceContainer}>
-                        <Text style={portraitStyles.priceText}>Rs. {item.price}</Text>
-                        <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(item.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-                    </View>
-                </View>
-             
-        );
-    }
-
-    renderLoader() {
-        return (
-            this.state.isLoading ?
-                <View style={styles.loaderStyle}>
-                    <ActivityIndicator size="large" color="#aaa" />
-                </View> : null
-        );
-    };
-
-    onRefresh() {
-        this.getdata();
-    }
-
-
     render() {
-
         return (
-            <>
+            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+                {this.state.item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                {/* <View style={portraitStyles.warpProductContainer} > */}
-                    <FlatList
-                        data={this.state.users}
-                        style={portraitStyles.warpFlatlistContainer}
-                        renderItem={this.renderItem}
-                        keyExtractor={item => item.product_id}
-                        ListFooterComponent={this.renderLoader()}
-                        showsVerticalScrollIndicator={false}
-                        onEndReached={() => this.getdata()}
-                        onEndReachedThreshold={0}
-                        refreshControl={<RefreshControl refreshing={false} onRefresh={() => this.onRefresh()} />}
-                    />
-                {/* </View> */}
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
 
-                </ImageBackground>
-            </>
+
+                        <View style={portraitStyles.categoryHeaderContainer} >
+                            <Text style={portraitStyles.productHeaderText} >{this.state.name}</Text>
+                        </View>
+
+
+                        <View style={portraitStyles.underline}></View>
+
+                        <View >
+
+                            <View style={portraitStyles.warpProductContainer}>
+                                {this.state.item.map((val, i) => (
+                                    <View style={portraitStyles.productContainer} key={i}>
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent')} style={portraitStyles.productImageContainer}>
+                                            <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
+                                            <LikeButton  isLiked={this.state.liked} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={portraitStyles.productTextContainer}>
+                                            <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent')}>{val.title}</Text>
+                                        </TouchableOpacity>
+                                        <View style={portraitStyles.priceContainer}>
+                                            <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
+                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ))}
+                            </View>
+
+                        </View>
+
+                        {/* </View> */}
+
+                    </ScrollView>
+                    </ImageBackground>
+                }
+            </SafeAreaView>
         );
-    };
+    }
 }
 
-const Item = ({ item }) => {
-    return (
-        
-            <View style={portraitStyles.productContainer} >
-                <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent')} style={portraitStyles.productImageContainer}>
-                    <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: item.image }} />
-                    {/* <LikeButton isLiked={this.state.liked} /> */}
-                </TouchableOpacity>
-                <TouchableOpacity style={portraitStyles.productTextContainer}>
-                    <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent')}>{item.title}</Text>
-                </TouchableOpacity>
-                <View style={portraitStyles.priceContainer}>
-                    <Text style={portraitStyles.priceText}>Rs. {item.price}</Text>
-                    <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(item.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-                </View>
-            </View>
-         
-    );
-}
-
-const LikeButton = ({ isLiked }) => {
+const LikeButton = ({isLiked}) => {
     const [liked, setLiked] = useState(isLiked);
     // console.warn(liked);
     return (
-        <Pressable onPress={() => setLiked((isLiked) => !isLiked)} style={{ position: 'absolute', padding: 10 }}>
-            <MaterialCommunityIcons
-                name={liked ? "heart" : "heart-outline"}
-                size={25}
-                color={liked ? "red" : "black"}
-            />
-        </Pressable>
+      <Pressable onPress={() => setLiked((isLiked) => !isLiked)} style={{position:'absolute',padding:10}}>
+        <MaterialCommunityIcons
+          name={liked ? "heart" : "heart-outline"}
+          size={25}
+          color={liked ? "red" : "black"}
+        />
+      </Pressable>
     );
-};
-
-const styles = StyleSheet.create({
-    itemWrapperStyle: {
-        flexDirection: "row",
-        paddingHorizontal: 16,
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        borderColor: "#ddd",
-    },
-    itemImageStyle: {
-        width: 50,
-        height: 50,
-        marginRight: 16,
-    },
-    contentWrapperStyle: {
-        justifyContent: "space-around",
-    },
-    txtNameStyle: {
-        fontSize: 16,
-    },
-    txtEmailStyle: {
-        color: "#777",
-    },
-    loaderStyle: {
-        marginVertical: 16,
-        alignItems: "center",
-    },
-});
+  };
 
 

@@ -454,7 +454,10 @@ export const portraitStyles = StyleSheet.create({
 
   // -------------------------------------------Globle css----------------------------------------------
 
-
+  searchButton:{
+    // backgroundColor: 'blue',
+    padding:10
+  },
 
 
   searchBar: {
@@ -468,12 +471,14 @@ export const portraitStyles = StyleSheet.create({
     width: '90%',
     marginLeft: '5%',
     borderTopLeftRadius: 5,
+    justifyContent: 'space-around'
   },
 
   searchBarFilter:{
     marginTop:-20,
-    backgroundColor: '#F2F3F2',
-    // backgroundColor:'red',
+    backgroundColor: 'transparent',
+    
+    // backgroundColor:'#',
     width: '90%',
     marginLeft: '5%',
    borderRadius:5
@@ -488,6 +493,7 @@ export const portraitStyles = StyleSheet.create({
 
   textField: {
     width: '80%',
+    // backgroundColor:'red'
   },
 
 
@@ -607,7 +613,7 @@ export const portraitStyles = StyleSheet.create({
     justifyContent:'center',
     paddingBottom:DeviceInfo.isTablet() ? 180:100,
     width: "100%",
-    backgroundColor:'green',
+    // backgroundColor:'green',
   },
 
   warpFlatlistContainer: {
@@ -651,7 +657,7 @@ export const portraitStyles = StyleSheet.create({
   productContainer: {
     width: 151,
     // height: 241,
-    backgroundColor:'red',
+    // backgroundColor:'red',
     margin: 8,
     display: 'flex',
     flexDirection: 'column',

@@ -28,45 +28,70 @@ class MainNavigation extends Component {
         <Stack.Screen name="signup" component={SignUpPage} options={{ headerShown: true,headerTitle:"", headerTintColor: '#B48D56' }} />
         <Stack.Screen name="Tab" component={TabRoutes} options={{ headerShown: false }} />
         <Stack.Screen name="myprofile" component={MyProfile} options={{
-          headerShown: true, headerTitle: 'My Profile',
+          headerShown: true, headerTitle: 'My Profile', headerTintColor: '#B48D56',
+          headerTitleStyle: { color: 'black'}
         
         }} />
         <Stack.Screen name="myorder" component={MyOrders} options={{
-          headerShown: true, headerTitle: 'My Orders',
+          headerShown: true,
+           headerTitle: 'My Orders',
+           headerTintColor: '#B48D56',
+           headerTitleStyle: { color: 'black'}
          
         }} />
         <Stack.Screen name="mycredits" component={MyCredits} options={{
-          headerShown: true, headerTitle: 'My Credits',
+          headerShown: true,
+           headerTitle: 'My Credits',
+           headerTintColor: '#B48D56',
+           headerTitleStyle: { color: 'black'}
          
         }} />
         <Stack.Screen name="addressbook" component={AddressBook} options={{
-          headerShown: true, headerTitle: 'Manage Your Addresses',
+          headerShown: true,
+           headerTitle: 'Manage Your Addresses',
+           headerTintColor: '#B48D56',
+           headerTitleStyle: { color: 'black'}
        
         }} />
         <Stack.Screen name="wishlist" component={WishList} options={{
-          headerShown: true, headerTitle: 'My Wish List',
+          headerShown: true,
+           headerTitle: 'My Wish List',
+           headerTintColor: '#B48D56',
+           headerTitleStyle: { color: 'black'}
          
         }} />
         <Stack.Screen name="editprofile" component={EditProfile} options={{
-          headerShown: true, headerTitle: 'Edit Profile',
+          headerShown: true,
+           headerTitle: 'Edit Profile',
+           headerTintColor: '#B48D56',
+          headerTitleStyle: { color: 'black'}
           
         }} />
         <Stack.Screen name="password" component={Password}
           options={{
-            headerShown: true, headerTitle: 'Change Password',
+            headerShown: true,
+             headerTitle: 'Change Password',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
             
           }}
         />
         <Stack.Screen name="trackorders" component={TrackOrders}
           options={{
-            headerShown: true, headerTitle: 'Track Orders',
+            headerShown: true,
+             headerTitle: 'Track Orders',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
            
           }}
         />
         <Stack.Screen name="np" component={NewProduct} options={{ headerShown: true }} />
         <Stack.Screen name="forgot" component={ForgotPassword} 
           options={{
-            headerShown: true, headerTitle: 'Forgot Password',
+            headerShown: true,
+             headerTitle: 'Forgot Password',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
            
           }}
         />
@@ -77,31 +102,46 @@ class MainNavigation extends Component {
         />
         <Stack.Screen name="myorderprofile" component={MyOrderProfile}
           options={{
-            headerShown: true, headerTitle: 'Order Profile',
+            headerShown: true,
+             headerTitle: 'Order Profile',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
          
           }}
         />
         <Stack.Screen name="editaddress" component={EditAddress}
           options={{
-            headerShown: true, headerTitle: 'Manage Your Addresses',
+            headerShown: true, 
+            headerTitle: 'Manage Your Addresses',
+            headerTintColor: '#B48D56',
+            headerTitleStyle: { color: 'black'}
           
           }}
         />
         <Stack.Screen name="addaddress" component={AddAddress}
           options={{
-            headerShown: true, headerTitle: 'Manage Your Addresses',
+            headerShown: true,
+             headerTitle: 'Manage Your Addresses',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
            
           }}
         />
         <Stack.Screen name="Checkout" component={CheckOut}
           options={{
-            headerShown: true, headerTitle: 'checkout',
+            headerShown: true,
+             headerTitle: 'Checkout',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
         
           }}
         />
          <Stack.Screen name="placeorder" component={PlaceOrder}
           options={{
-            headerShown: true, headerTitle: 'checkout',
+            headerShown: true,
+             headerTitle: 'Checkout',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
          
           }}
         />

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, TextInput, Text, ScrollView, ImageBackground, Dimensions, TouchableOpacity, SafeAreaView, Linking,RefreshControl } from "react-native";
+import { View, Image, TextInput, Text, ScrollView, ImageBackground, Dimensions, TouchableOpacity, SafeAreaView, Linking,RefreshControl, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
 import UiOrientation from "./UiOrientation";
@@ -9,6 +9,9 @@ import axios from "axios";
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from "./screens/LoadingComponent";
 import SearchFilter from './SearchFilter'
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); 
+LogBox.ignoreAllLogs();
 class HomeScreen extends UiOrientation {
 
   state = {
@@ -21,6 +24,8 @@ class HomeScreen extends UiOrientation {
     this.getData();
     this.searchArray();
 
+    AsyncStorage.setItem('badge', JSON.stringify(1));
+ 
   }
 
   async searchArray(){
@@ -70,8 +75,10 @@ class HomeScreen extends UiOrientation {
               {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' textStyle={this.getStyle().loadingTextStyle} size={50} animation="slide" /> */}
 
               <View style={this.getStyle().searchBar}>
-                <Feather name="search" color="#000" size={18} />
-                <TextInput style={this.getStyle().textField} placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
+                {/* <Feather name="search" color="#000" size={18} /> */}
+                <TextInput style={this.getStyle().textField}  placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
+                <TouchableOpacity style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
+                
               </View>
 
               <View style={this.getStyle().searchBarFilter}>
