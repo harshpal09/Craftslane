@@ -17,7 +17,7 @@ export default class EmptyCart extends Component {
       <View style={portraitStyles.centre_heading_container}> */}
 
           <View style={{margin:10}}>
-            <Text style={{ fontSize: 30, fontFamily: 'LibreBaskerville-Italic' }}>OOPS!</Text>
+            <Text style={{ fontSize: 30, fontFamily: 'LibreBaskerville-Italic',color:'#6D6D6D' }}>OOPS!</Text>
           </View>
 
           <View style={{margin:10}}>

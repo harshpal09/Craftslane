@@ -9,6 +9,7 @@ import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { portraitStyles } from '../../Style/globleCss';
 import { SelectCountry } from 'react-native-element-dropdown';
+import LoadingComponent from './LoadingComponent';
 
 import {
     View,
@@ -163,6 +164,7 @@ class EditAddress extends Component {
                 icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
                 titleStyle: { fontSize: 18 }
             })
+            return this.props.navigation.navigate('addressbook')
         }
     }
     onRefresh()
@@ -182,6 +184,7 @@ class EditAddress extends Component {
         // console.log(this.state.country_id);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+                {this.state.prefield.length == false ?<LoadingComponent />:
                 <KeyboardAvoidingView>
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
                     <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
@@ -275,6 +278,7 @@ class EditAddress extends Component {
                                 renderDropdownIcon={(icon) => <MaterialIcons name="keyboard-arrow-down" size={16} color={'black'}  {...icon} />}
                             />
                         </View> */}
+                        <View style={portraitStyles.containLabelAndInput}>
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -309,7 +313,9 @@ class EditAddress extends Component {
                                 onEndReached:()=> this.onLoadMore(),
 
                             }}                       
-                        />                           
+                        /> 
+                        </View> 
+                        <View style={portraitStyles.containLabelAndInput}>                          
                         <SelectCountry
                             style={styless.dropdown}
                             selectedTextStyle={styless.selectedTextStyle}
@@ -339,6 +345,7 @@ class EditAddress extends Component {
                                 onEndReached:()=> this.onLoadMoreStates(),
                             }}           
                         />
+                        </View>
                         <View style={portraitStyles.containLabelAndInput}>
                             <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field}/>
                         </View>
@@ -354,6 +361,7 @@ class EditAddress extends Component {
                     </ScrollView>
                     </ImageBackground>
                 </KeyboardAvoidingView>
+    }
             </SafeAreaView>
 
         );
@@ -365,8 +373,8 @@ const styless = StyleSheet.create({
         borderBottomColor: 'grey',
         borderBottomWidth: 1,
         width: '90%',
-        left: 15,
-        margin: 2,
+        // left: 15,
+        // margin: 2,
         color:'black',
         height:60,
         // backgroundColor:'#f2ebd5'

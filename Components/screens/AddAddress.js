@@ -152,6 +152,7 @@ class AddAddress extends Component {
             'zone_id': this.state.s_state.zone_id,
             'country_id': this.state.s_state.country_id,
             'contact_number': this.state.contact_number,
+            'default_address': 0,
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
