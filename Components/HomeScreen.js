@@ -94,9 +94,11 @@ class HomeScreen extends Component{
                 
               </View>
 
+
               <View style={portraitStyles.searchBarFilter}>
+
                 <SearchFilter data={this.state.search} input={this.state.input} />
-              </View>
+              </View>  */}
 
               <View style={portraitStyles.headerTextContainer}>
                 <Text style={portraitStyles.headerText}>Categories</Text>

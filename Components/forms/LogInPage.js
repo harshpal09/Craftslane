@@ -72,12 +72,13 @@ class LogInPage extends Component {
             this.state = {
                 token: this.state.response_data.token,
                 key: 'Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q',
-                url: 'https://demo.craftslane.com/index.php?route=api/'
+                url: 'https://demo.craftslane.com/index.php?route=api/',
+                os_type:'android'
             }
 
             AsyncStorage.setItem('user', JSON.stringify(this.state));
 
-            // console.warn(this.state.response_data);
+            // console.warn(this.state.os_type);
             // const data = await AsyncStorage.getItem('user');
             // let par = JSON.parse(data);
             // console.warn(par);
