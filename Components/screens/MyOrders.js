@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, ImageBackground, TouchableOpacity, RefreshControl } from 'react-native';
-import UiOrientation from '../UiOrientation';
+import React, { Component, useState } from "react";
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, RefreshControl,ImageBackground,TouchableOpacity, Dimensions } from "react-native";
+import axios from "axios";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { portraitStyles } from '../../Style/globleCss';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from './LoadingComponent';
 
@@ -120,7 +119,31 @@ class MyOrders extends Component {
       </SafeAreaView>
 
     );
-  }
+
+  };
+
+render(){
+  // console.log(this.state.users);
+  return (
+    <>
+    <ImageBackground  style={{justifyContent:'center',alignItems:'center', height:'100%'}}source={require('../../assets/base-texture.png')} resizeMode="cover" > 
+    {this.state.users.length == false ? <LoadingComponent />:
+      <FlatList
+        data={this.state.users}
+        renderItem={this.renderItem}
+        keyExtractor={item => item.order_id}
+        ListFooterComponent={this.renderLoader()}
+        showsVerticalScrollIndicator={false}
+        onEndReached={ ()=> this.getUsers()}
+        onEndReachedThreshold={0}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={()=> this.onRefresh()} />}
+      />
+      }
+      </ImageBackground>
+    </>
+  );
+};
+
 }
 
 const styles = StyleSheet.create({})

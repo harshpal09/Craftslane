@@ -1,104 +1,94 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ImageBackground, ScrollView, Image, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ImageBackground,Alert, ScrollView, Image, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 // import { portraitStyles, landscapeStyles ,styles} from "../Style/globleCss";
-import UiOrientation from '../UiOrientation';
+import { portraitStyles } from "../../Style/globleCss";
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from './LoadingComponent';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 
 
-class Categories extends UiOrientation {
+class Categories extends Component {
     constructor() {
         super();
         this.state = {
             categories: [],
-            username: 'hARSH',
         }
 
     }
+
+    componentDidMount(){
+        this.getData();
+    }
+
+    async getData(){
+        const { cat_id } = this.props.route.params;
+
+      try {
+        let user = await AsyncStorage.getItem('user');
+        let parsed = JSON.parse(user);
+        this.setState({ data: parsed })
+  
+    }
+    catch (error) {
+        Alert.alert(error)
+    }
+  
+      let resp = await axios.get(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id="+cat_id)
+    //   console.log(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id=4")
+      this.setState({ categories: resp.data.data })
+    }
+
     render() {
         // const { navigate } = this.props.navigation;  
 
         // console.warn(this.state.categories);
         return (
-            <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.categories.length == false ? <LoadingComponent /> :
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover">
-                        <ScrollView style={this.getStyle().container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
-                            {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={this.getStyle().loadingTextStyle} /> */}
+                        <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
+                            {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' size={50} animation="slide" textStyle={portraitStyles.loadingTextStyle} /> */}
                             <View>
                                 {this.state.categories.map((data, idx) => (
-                                    <View style={this.getStyle().categoryHeaderContainer} key={idx}>
-                                        <Text style={this.getStyle().categoryHeaderText}>{data.title}</Text>
+                                    <View style={portraitStyles.categoryHeaderContainer} key={idx}>
+                                        <Text style={portraitStyles.categoryHeaderText}>{data.title}</Text>
                                     </View>
                                 ))}
                             </View>
-                            <View style={this .getStyle().underline}></View>
+                            <View style={portraitStyles.underline}></View>
 
                             {
                                 this.state.categories.map((data, idx) => (
                                     <View key={idx}>
-                                        {data.Kitchen.map((item, ind) => (
-                                            <View style={this.getStyle().headerTextContainer} key={ind}>
-                                                <Text style={this.getStyle().headerText}>{item.title1}</Text>
+                                        {data.sub_category.map((item, ind) => (
+                                            <View>
+                                            <View style={portraitStyles.headerTextContainer} key={ind}>
+                                                <Text style={portraitStyles.headerText}>{item.title}</Text>
                                             </View>
-                                        ))}
-                                    </View>
-                                ))}
-                            {this.state.categories.map((data, idx) => (
-                                <View key={idx}>
-                                    {data.Kitchen.map((item, ind) => (
-                                        <View style={this.getStyle().warpContainer} key={ind}>
-                                            {item.Drinkware.map((val, i) => (
-                                                <View style={this.getStyle().warpImageTextContainer} key={i}>
+                                            <View style={portraitStyles.warpContainer} key={ind}>
+                                            {item.sub_sub_category.map((val, i) => (
+                                                <View style={portraitStyles.warpImageTextContainer} key={i}>
                                                     <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product', { item_name: val.title, item_id: val.id })} >
-                                                        <View style={this.getStyle().warpImageContainer}>
-                                                            <ImageLazyLoading style={this.getStyle().warpRoundImage} source={{ uri: val.image }} onPress={() => this.props.navigation.navigate('product', { productName: val.title })} />
+                                                        <View style={portraitStyles.warpImageContainer}>
+                                                            <ImageLazyLoading style={portraitStyles.warpRoundImage} source={{ uri: val.image }} onPress={() => this.props.navigation.navigate('product', { productName: val.title })} />
                                                         </View>
                                                     </TouchableOpacity>
-                                                    <View style={this.getStyle().textContainer}>
+                                                    <View style={portraitStyles.textContainer}>
                                                         <Text
-                                                            style={this.getStyle().categoryType}
+                                                            style={portraitStyles.categoryType}
                                                             onPress={() => this.props.navigation.navigate('product', { productName: val.title })}
                                                         >{val.title}</Text>
                                                     </View>
                                                 </View>
                                             ))}
-
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
-                            {this.state.categories.map((data, idx) => (
-                                <View key={idx}>
-                                    {data.Kitchen.map((item, ind) => (
-                                        <View style={this.getStyle().headerTextContainer} key={ind}>
-                                            <Text style={this.getStyle().headerText}>{item.title_2}</Text>
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
-                            {this.state.categories.map((data, idx) => (
-                                <View key={idx}>
-                                    {data.Kitchen.map((item, ind) => (
-                                        <View style={this.getStyle().warpProductContainer} key={ind}>
-                                            {item.sub_categorie_2.map((val, i) => (
-                                                <View style={this.getStyle().warpImageTextContainer} key={i}>
-                                                    <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product', { item_name: val.title, item_id: val.id })} >
-                                                        <View style={this.getStyle().warpImageContainer}>
-                                                            <ImageLazyLoading style={this.getStyle().warpRoundImage} source={{ uri: val.image }} onPress={() => this.props.navigation.navigate('product', { productName: val.title })} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                    <View style={this.getStyle().textContainer}>
-                                                        <Text style={this.getStyle().categoryType}>{val.title}</Text>
-                                                    </View>
-                                                </View>
-                                            ))}
-
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
+                                            </View>
+                                            </View>
+                                        ))}
+                                    </View>
+                                ))}
+                            
                         </ScrollView>
 
 
