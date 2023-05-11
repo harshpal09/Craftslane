@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TouchableOpacity,RefreshControl ,TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
@@ -10,13 +10,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { SelectCountry } from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 
 import { Axios } from 'axios';
 import axios from 'axios';
 import UseNet from './UseNet';
 import { portraitStyles } from '../../Style/globleCss';
 import LoadingComponent from './LoadingComponent';
+import renderIf from './renderIf';
 // import * as Animatable from 'react-native-animatable';
 
 // MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
@@ -67,7 +68,7 @@ var items = [
 ];
 
 
-class HomeAccent extends UiOrientation {
+class HomeAccent extends Component {
 
   constructor(props) {
     super(props);
@@ -79,10 +80,13 @@ class HomeAccent extends UiOrientation {
       arrayname: props,
       image: 'https://www.craftslane.com/image/cache/catalog/home-accents/DGRDE0716L_7/DGRDE0716L_7-1000x1000.png',
       price: 'Rs. 850.00 - 2850.00',
-      name: 's. 850.00 - 2850.00',
+      name: '',
       size: '',
+      showDesign:false,
+      isFocus:false,
       item: [],
       itemcnt: 1,
+      isTraySelect:false,
       focused: false,
       o_plus_minus: '+',
       sp_plus_minus: '+',
@@ -127,13 +131,65 @@ class HomeAccent extends UiOrientation {
       selected_id: 0,
       size_id: 0,
       liked: false,
-      isLoading:false,
-      countries:[
+      isLoading: false,
+      countries: [
         {
 
         }
       ],
-      select_color:[
+      tray_styles:[
+        { label: 'Rectangle Curved Handle', value: '1' },
+        { label: 'Rectangle Straight Edge', value: '2' },
+        { label: 'Rectangle Decorative Edge', value: '3' },
+        { label: 'Square Straight Edge', value: '4' },
+      ],
+      tray_sizes:[
+        { label: 'Extra small', value: '1' },
+        { label: 'Small', value: '2' },
+        { label: 'Large', value: '3' },
+      ],
+      occasion:[
+        {
+          id: 0,
+          value: 'Anniversary',
+        },
+        {
+          id: 1,
+          value: 'Birthday',
+        },
+        {
+          id: 2,
+          value: 'Father’s Day',
+        },
+        {
+          id: 3,
+          value: 'Host & Hostess',
+        },
+        {
+          id: 4,
+          value: 'Monogram',
+        },
+        {
+          id: 5,
+          value: 'Housewarming',
+        },
+        {
+          id: 6,
+          value: 'Season’s Greetings',
+        },
+        {
+          id: 7,
+          value: 'Valentine’s Day',
+        },
+        {
+          id: 8,
+          value: 'Wedding',
+        },
+      ],
+
+      
+    
+      select_color: [
         {
           id: 0,
           value: 'green',
@@ -147,7 +203,7 @@ class HomeAccent extends UiOrientation {
           value: 'grey',
         },
       ],
-      index:0,
+      index: 0,
       items_image: [
         [
           {
@@ -166,7 +222,7 @@ class HomeAccent extends UiOrientation {
             id: 3,
             value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HLRSE0006AG_1/HLRSE0006AG_2-400x400.png',
           },
-         
+
         ],
         [
           {
@@ -195,7 +251,125 @@ class HomeAccent extends UiOrientation {
             id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
           }
-        ]
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
+          }
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
+          }
+        ],
+
+      ],
+      design_image: [
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_1B-240x150.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_1B-240x150.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_3B-240x150.png',
+          },
+          {
+            id: 3,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_4B-240x150.png',
+          },
+          {
+            id: 4,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_5B-240x150.png',
+          },
+
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_5B-240x150.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/happy_birthday/HB_2B-240x150.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/happy_birthday/HB_3B-240x150.png',
+          },
+          {
+            id: 3,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/happy_birthday/HB_4B-240x150.png',
+          }
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/fathers_day/FD_1B-240x150.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/fathers_day/FD_2B-240x150.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/fathers_day/FD_3B-240x150.png',
+          },
+          {
+            id: 3,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/fathers_day/FD_4B-240x150.png',
+          }
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
+          }
+        ],
+        [
+          {
+            id: 0,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
+          },
+          {
+            id: 1,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
+          },
+          {
+            id: 2,
+            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
+          }
+        ],
 
       ]
     };
@@ -245,19 +419,19 @@ class HomeAccent extends UiOrientation {
   accordianOverview() {
     if (this.state.o_plus_minus == '-') {
       return (
-        <View style={this.getStyle().accordianContainer}>
-          <Text style={this.getStyle().accordianParagraph}>Paisley Garden! Enjoy your coffee in these beautiful coffee mugs which blend together the timeless paisley design with the signature Noritake white porcelain and 24K gold lining, creating a look of elegant sophistication.</Text>
-          <Text style={this.getStyle().accordianParagraph}>Noritake, now a valued international brand name, has its origins back in a little village near Nagoya in Japan, and has been bringing beauty and quality to dining tables around the world since 1904.</Text>
-          <Text style={this.getStyle().accordianText}>:- Crafted out of fine, white porcelain</Text>
-          <Text style={this.getStyle().accordianText}>:- Embellished with a 24K Gold trim</Text>
-          <Text style={this.getStyle().accordianText}>:- Sold Individually</Text>
-          <Text style={this.getStyle().accordianText}>:- 250 ml Capacity</Text>
-          <Text style={this.getStyle().accordianText}>:- 3.5 inch Height</Text>
-          <Text style={this.getStyle().accordianText}>:- Dishwasher safe</Text>
-          <Text style={this.getStyle().accordianText}>:- Not Microwaveable</Text>
-          <Text style={this.getStyle().accordianText}>:- Country of Origin: Sri Lanka</Text>
-          <Text style={this.getStyle().accordianText}>:- Due to the differences in displays on tech devices, the colours of the product you receive may vary marginally from the colours seen on our website</Text>
-          <Text style={this.getStyle().accordianText}>:- SKU: M574</Text>
+        <View style={portraitStyles.accordianContainer}>
+          <Text style={portraitStyles.accordianParagraph}>Paisley Garden! Enjoy your coffee in these beautiful coffee mugs which blend together the timeless paisley design with the signature Noritake white porcelain and 24K gold lining, creating a look of elegant sophistication.</Text>
+          <Text style={portraitStyles.accordianParagraph}>Noritake, now a valued international brand name, has its origins back in a little village near Nagoya in Japan, and has been bringing beauty and quality to dining tables around the world since 1904.</Text>
+          <Text style={portraitStyles.accordianText}>:- Crafted out of fine, white porcelain</Text>
+          <Text style={portraitStyles.accordianText}>:- Embellished with a 24K Gold trim</Text>
+          <Text style={portraitStyles.accordianText}>:- Sold Individually</Text>
+          <Text style={portraitStyles.accordianText}>:- 250 ml Capacity</Text>
+          <Text style={portraitStyles.accordianText}>:- 3.5 inch Height</Text>
+          <Text style={portraitStyles.accordianText}>:- Dishwasher safe</Text>
+          <Text style={portraitStyles.accordianText}>:- Not Microwaveable</Text>
+          <Text style={portraitStyles.accordianText}>:- Country of Origin: Sri Lanka</Text>
+          <Text style={portraitStyles.accordianText}>:- Due to the differences in displays on tech devices, the colours of the product you receive may vary marginally from the colours seen on our website</Text>
+          <Text style={portraitStyles.accordianText}>:- SKU: M574</Text>
         </View>
       )
     }
@@ -266,19 +440,19 @@ class HomeAccent extends UiOrientation {
   accordianShippingPolicy() {
     if (this.state.sp_plus_minus == '-') {
       return (
-        <View style={this.getStyle().accordianContainer}>
-          <Text style={this.getStyle().accordianParagraph}>Paisley Garden! Enjoy your coffee in these beautiful coffee mugs which blend together the timeless paisley design with the signature Noritake white porcelain and 24K gold lining, creating a look of elegant sophistication.</Text>
-          <Text style={this.getStyle().accordianParagraph}>Noritake, now a valued international brand name, has its origins back in a little village near Nagoya in Japan, and has been bringing beauty and quality to dining tables around the world since 1904.</Text>
-          <Text style={this.getStyle().accordianText}>:- Crafted out of fine, white porcelain</Text>
-          <Text style={this.getStyle().accordianText}>:- Embellished with a 24K Gold trim</Text>
-          <Text style={this.getStyle().accordianText}>:- Sold Individually</Text>
-          <Text style={this.getStyle().accordianText}>:- 250 ml Capacity</Text>
-          <Text style={this.getStyle().accordianText}>:- 3.5 inch Height</Text>
-          <Text style={this.getStyle().accordianText}>:- Dishwasher safe</Text>
-          <Text style={this.getStyle().accordianText}>:- Not Microwaveable</Text>
-          <Text style={this.getStyle().accordianText}>:- Country of Origin: Sri Lanka</Text>
-          <Text style={this.getStyle().accordianText}>:- Due to the differences in displays on tech devices, the colours of the product you receive may vary marginally from the colours seen on our website</Text>
-          <Text style={this.getStyle().accordianText}>:- SKU: M574</Text>
+        <View style={portraitStyles.accordianContainer}>
+          <Text style={portraitStyles.accordianParagraph}>Paisley Garden! Enjoy your coffee in these beautiful coffee mugs which blend together the timeless paisley design with the signature Noritake white porcelain and 24K gold lining, creating a look of elegant sophistication.</Text>
+          <Text style={portraitStyles.accordianParagraph}>Noritake, now a valued international brand name, has its origins back in a little village near Nagoya in Japan, and has been bringing beauty and quality to dining tables around the world since 1904.</Text>
+          <Text style={portraitStyles.accordianText}>:- Crafted out of fine, white porcelain</Text>
+          <Text style={portraitStyles.accordianText}>:- Embellished with a 24K Gold trim</Text>
+          <Text style={portraitStyles.accordianText}>:- Sold Individually</Text>
+          <Text style={portraitStyles.accordianText}>:- 250 ml Capacity</Text>
+          <Text style={portraitStyles.accordianText}>:- 3.5 inch Height</Text>
+          <Text style={portraitStyles.accordianText}>:- Dishwasher safe</Text>
+          <Text style={portraitStyles.accordianText}>:- Not Microwaveable</Text>
+          <Text style={portraitStyles.accordianText}>:- Country of Origin: Sri Lanka</Text>
+          <Text style={portraitStyles.accordianText}>:- Due to the differences in displays on tech devices, the colours of the product you receive may vary marginally from the colours seen on our website</Text>
+          <Text style={portraitStyles.accordianText}>:- SKU: M574</Text>
         </View>
       )
     }
@@ -327,9 +501,9 @@ class HomeAccent extends UiOrientation {
         this.state.traystyle.map((data, i) => (
           <View key={i}>
             {data.traystyle.map((item, j) => (
-              <View style={this.getStyle().trayStyleChildContainer} key={j}>
+              <View style={portraitStyles.trayStyleChildContainer} key={j}>
                 {item.rectangle_curved_handle.map((val, k) => (
-                  <View style={this.getStyle().trayStyleChild} key={k}>
+                  <View style={portraitStyles.trayStyleChild} key={k}>
                     <TouchableOpacity activeOpacity={0.9} onPress={() => this.functionName2(val.id_1, val.image_1, val.price_1, val.size_1)}>
                       <View>
                         <Text style={this.state.size_id == 1 ? this.state.size_style_in : this.state.size_style}>{val.title_1}</Text>
@@ -358,9 +532,9 @@ class HomeAccent extends UiOrientation {
         this.state.traystyle.map((data, i) => (
           <View key={i}>
             {data.traystyle.map((item, j) => (
-              <View style={this.getStyle().trayStyleChildContainer} key={j}>
+              <View style={portraitStyles.trayStyleChildContainer} key={j}>
                 {item.rectangle_straight_edge.map((val, k) => (
-                  <View style={this.getStyle().trayStyleChild} key={k}>
+                  <View style={portraitStyles.trayStyleChild} key={k}>
                     <TouchableOpacity activeOpacity={0.9} onPress={() => this.functionName2(val.id_1, val.image_1, val.price_1, val.size_1)}>
                       <View>
                         <Text style={this.state.size_id == 1 ? this.state.size_style_in : this.state.size_style}   >{val.title_1}</Text>
@@ -389,9 +563,9 @@ class HomeAccent extends UiOrientation {
         this.state.traystyle.map((data, i) => (
           <View key={i}>
             {data.traystyle.map((item, j) => (
-              <View style={this.getStyle().trayStyleChildContainer} key={j}>
+              <View style={portraitStyles.trayStyleChildContainer} key={j}>
                 {item.rectangle_decorative_edge.map((val, k) => (
-                  <View style={this.getStyle().trayStyleChild} key={k}>
+                  <View style={portraitStyles.trayStyleChild} key={k}>
                     <TouchableOpacity onPress={() => this.functionName2(val.id_1, val.image_1, val.price_1, val.size_1)}>
                       <View>
                         <Text style={this.state.size_id == 1 ? this.state.size_style_in : this.state.size_style}   >{val.title_1}</Text>
@@ -420,9 +594,9 @@ class HomeAccent extends UiOrientation {
         this.state.traystyle.map((data, i) => (
           <View key={i}>
             {data.traystyle.map((item, j) => (
-              <View style={this.getStyle().trayStyleChildContainer} key={j}>
+              <View style={portraitStyles.trayStyleChildContainer} key={j}>
                 {item.square_straight_edge.map((val, k) => (
-                  <View style={this.getStyle().trayStyleChild} key={k}>
+                  <View style={portraitStyles.trayStyleChild} key={k}>
                     <TouchableOpacity onPress={() => this.functionName2(val.id_1, val.image_1, val.price_1, val.size_1)}>
                       <View>
                         <Text style={this.state.size_id == 1 ? this.state.size_style_in : this.state.size_style}   >{val.title_1}</Text>
@@ -474,190 +648,284 @@ class HomeAccent extends UiOrientation {
   isLiked(flag) {
     flag ? this.setState({ liked: false }) : this.setState({ liked: true });
   }
-  onRefresh()
-    {
-        this.getData();    
-    }
-    onLoadMore()
-    {
-        this.setState({isLoading:true});
-        this.getData();
-    }
+  onRefresh() {
+    this.getData();
+  }
+  onLoadMore() {
+    this.setState({ isLoading: true });
+    this.getData();
+  }
+  componentDidMount() {
+    this.getData()
+  }
+  async getData() {
+    const { image, name, config_type } = this.props.route.params;
+    this.setState({ image: image, name: name })
+  }
+  // onOccasionSelect(id){
+  //   this.setState({index:id})
+  // }
 
   render() {
     // console.warn(this.state.traystyle);
-    console.log(this.state.index,this.state.image)
+    console.log(this.state.index, this.state.image)
     return (
-      <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
 
-        {this.state.traystyle.length == false ? <LoadingComponent /> :
-        <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-          <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+        {this.state.traystyle.length == true ? <LoadingComponent /> :
+          <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
+            <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
 
 
-            <View style={this.getStyle().homeAccentContainer}>
-              {this.state.traystyle.map((data, idx) => (
-                <View key={idx}>
-                  {data.traystyle.map((item, idx) => (
-                    <View key={idx}>
-                      {item.coffemugs.map((val, i) => (
-                        <View key={i}>
-                          {val.small.map((small, ind) => (
-                            <View style={this.getStyle().productProfileContainer} key={ind}>
-                              <TouchableOpacity>
-                                <View style={this.getStyle().homeAccentImageContainer}>
-                                  <Image style={this.getStyle().homeAccentImage} source={{ uri: this.state.image }} />
-                                </View>
-                              </TouchableOpacity>
-                              <ScrollView horizontal={true}>
-                                {
-                                  this.state.select_color.map((data,i)=>(
-                                    <TouchableOpacity key={i} style={{width:50,height:50,margin:20,justifyContent:'center',alignItems:'center',borderRadius:50,backgroundColor:data.value}} onPress={()=> this.setState({ image: this.state.items_image[data.id][0].value,index: data.id})} >
-                                      <Text style={{color:'white',fontWeight:'500',textAlign:'center',textAlignVertical:'center'}}>{data.value}</Text>
-                                    </TouchableOpacity>
-                                  ))
-                                } 
-                              </ScrollView>
-                              <ScrollView horizontal={true} style={{ width: "80%" }}>
-                                {this.state.items_image[this.state.index].map((data, i) => (
-                                  <TouchableOpacity onPress={() => this.setState({image: this.state.items_image[this.state.index][data.id].value })} key={i}>
-                                    <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
-                                  </TouchableOpacity>
-                                ))}
-                              </ScrollView>
-                              <View style={this.getStyle().homeAccentTextContainer}>
-                                <Text style={this.getStyle().homeAccentText} onPress={() => this.props.navigation.navigate('')}>{small.title}</Text>
-                                <Text style={this.getStyle().productProfilePrice} >{this.state.price}</Text>
-                              </View>
-                            </View>
-                          ))}
-                        </View>
-                      ))}
+              <View style={portraitStyles.homeAccentContainer}>
+
+                <View style={portraitStyles.productProfileContainer} >
+                  <TouchableOpacity>
+                    <View style={portraitStyles.homeAccentImageContainer}>
+                      <Image style={portraitStyles.homeAccentImage} source={{ uri: this.state.image }} />
                     </View>
-                  ))}
+                  </TouchableOpacity>
+                  {renderIf(false)(
+                    <ScrollView horizontal={true}>
+                      {
+                        this.state.select_color.map((data, i) => (
+                          <TouchableOpacity key={i} style={{ width: 50, height: 50, margin: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: data.value }} onPress={() => this.setState({ image: this.state.items_image[data.id][0].value, index: data.id })} >
+                            <Text style={{ color: 'white', fontWeight: '500', textAlign: 'center', textAlignVertical: 'center' }}>{data.value}</Text>
+                          </TouchableOpacity>
+                        ))
+                      }
+                    </ScrollView>
+                  )}
+                  {renderIf(false)(
+                    <ScrollView horizontal={true} style={{ width: "80%" }}>
+                      {this.state.items_image[this.state.index].map((data, i) => (
+                        <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[this.state.index][data.id].value })} key={i}>
+                          <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  )}
+                  <View style={portraitStyles.homeAccentTextContainer}>
+                    <Text style={portraitStyles.homeAccentText} onPress={() => this.props.navigation.navigate('')}>{this.state.name}</Text>
+                    <Text style={portraitStyles.productProfilePrice} >{this.state.price}</Text>
+                  </View>
                 </View>
-              ))}
-              <View style={{padding:10}}>
-                  <SelectCountry
-                    style={styless.dropdown}
-                    selectedTextStyle={styless.selectedTextStyle}
-                    placeholderStyle={styless.placeholderStyle}
-                    imageStyle={styless.imageStyle}
-                    inputSearchStyle={styless.inputSearchStyle}
-                    iconStyle={styless.iconStyle}
-                    maxHeight={200}
+                {renderIf(false)(
+                <View style={{ padding: 10 }}>
+                  <Dropdown
+                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={this.state.tray_styles}
                     // search
-                    data={this.state.items_image}
-                    valueField="id"
-                    labelField="value"
-                    // imageField="image"
-                    placeholder="Select Country"
+                    itemTextStyle={{color:'black'}}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    
+                    // itemContainerStyle={{backgroundColor:'grey'}}
+                    placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
                     searchPlaceholder="Search..."
-                    itemContainerStyle={styless.itemContainerStyle}
-                    containerStyle={{backgroundColor:'#f2ebd5'}}
-                    onChange={e => 
-                    {
-                        console.log(e)
-                    }
-                  }
+                    // value={value}
+                    onFocus={() => this.setState({isfocus:true})}
+                    onBlur={() => this.setState({isfocus:false})}
+                    onChange={item => {
+                      console.log(item)
+                      this.setState({isfocus:false,isTraySelect:true});
+                    }}
+                    renderLeftIcon={() => (
+                      <AntDesign
+                        style={styles.icon}
+                        color={this.state.isFocus ? 'blue' : 'black'}
+                        name="Safety"
+                        size={20}
+                      />
+                    )}
+                  />
+                </View>
+                )}
+                {renderIf(this.state.isTraySelect)(
+                <View style={{ padding: 10 }}>
+                  <Dropdown
+                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={this.state.tray_sizes}
+                    // search
+                    itemTextStyle={{color:'black'}}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    
+                    // itemContainerStyle={{backgroundColor:'grey'}}
+                    placeholder={!this.state.isFocus ? 'Select a Size' : '...'}
+                    searchPlaceholder="Search..."
+                    // value={value}
+                    onFocus={() => this.setState({isfocus:true})}
+                    onBlur={() => this.setState({isfocus:false})}
+                    onChange={item => {
+                      console.log(item)
+                      this.setState({isfocus:false});
+                    }}
+                    renderLeftIcon={() => (
+                      <AntDesign
+                        style={styles.icon}
+                        color={this.state.isFocus ? 'blue' : 'black'}
+                        name="Safety"
+                        size={20}
+                      />
+                    )}
+                  />
+                </View>
+                )}
+                {renderIf(false)(
+                <View style={portraitStyles.trayStyleContainer}>
+                  <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
+                  <View style={portraitStyles.trayStyleChild}>
+                    <Text style={{height:20,width:20,backgroundColor:'indigo',borderRadius:10,margin:20}}></Text>
+                    <Text style={{height:20,width:20,backgroundColor:'grey',borderRadius:10,margin:20}}></Text>
+                    <Text style={{height:20,width:20,backgroundColor:'skyblue',borderRadius:10,margin:20}}></Text>
+                    <Text style={{height:20,width:20,backgroundColor:'pink',borderRadius:10,margin:20}}></Text>
+                  </View>
+                </View>
+                )}
+                {renderIf(true)(
+                <View style={{ padding: 10 }}>
+                  <Text style={{color:'black',padding:10,fontSize:16}}>How would you like us to Personalize it for you?</Text>
+                  <Dropdown
+                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={this.state.occasion}
+                    // search
+                    itemTextStyle={{color:'black'}}
+                    maxHeight={300}
+                    labelField="value"
+                    valueField="id"
+                    
+                    // itemContainerStyle={{backgroundColor:'grey'}}
+                    placeholder={!this.state.isFocus ? 'Select an Occasion' : '...'}
+                    searchPlaceholder="Search..."
+                    // value={value}
+                    onFocus={() => this.setState({isfocus:true})}
+                    onBlur={() => this.setState({isfocus:false})}
+                    onChange={item => {
+                      this.setState({index:item.id,showDesign:true});
+                      this.setState({isfocus:false});
+                    }}
+                    renderLeftIcon={() => (
+                      <AntDesign
+                        style={styles.icon}
+                        color={this.state.isFocus ? 'blue' : 'black'}
+                        name="Safety"
+                        size={20}
+                      />
+                    )}
+                  />
+                </View>
+                )}
+                {renderIf(this.state.showDesign)(
+                    <ScrollView horizontal={true}  style={{ width: "90%",padding:10 }}>
+                      {this.state.design_image[this.state.index].map((data, i) => (
+                        <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[this.state.index][data.id].value })} key={i}>
+                          <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  )}
 
-                    keyboardAvoiding={false}
-                    activeColor='#d4b58a'
-                    flatListProps={{
-                        ListEmptyComponent:<EmptyList />,
-                        ListFooterComponent: <RenderFooter isLoading={this.state.isLoading} />,
-                        refreshControl:(<RefreshControl refreshing={false} onRefresh={()=> this.onRefresh()} />),
-                        onEndReachedThreshold:0.5,
-                        onEndReached:()=> this.onLoadMore(),
-
-                    }}                       
-                  />  
-              </View>
-              {/* {this.state.traystyle.map((data, i) => (
-                <View style={this.getStyle().trayStyleContainer} key={i}>
-                  <Text style={this.getStyle().headerTrayStyle}>Select tray style: {this.state.value}</Text>
+                
+                {/* {this.state.traystyle.map((data, i) => (
+                <View style={portraitStyles.trayStyleContainer} key={i}>
+                  <Text style={portraitStyles.headerTrayStyle}>Select tray style: {this.state.value}</Text>
                   {data.traystyle.map((item, j) => (
-                    <View style={this.getStyle().trayStyleChildContainer} key={j}>
-                      <View style={this.getStyle().trayStyleChild} >
+                    <View style={portraitStyles.trayStyleChildContainer} key={j}>
+                      <View style={portraitStyles.trayStyleChild} >
                         <TouchableOpacity style={this.state.selected_id == 1 ? this.state.style_in : this.state.style} onPress={() => this.functionName(item.id_1, item.title_1, item.arrayname_1)}>
-                          <Text style={this.getStyle().trayStyleChildText} >{item.title_1}</Text>
+                          <Text style={portraitStyles.trayStyleChildText} >{item.title_1}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={this.state.selected_id == 2 ? this.state.style_in : this.state.style} onPress={() => this.functionName(item.id_2, item.title_2, item.arrayname_2)}>
-                          <Text style={this.getStyle().trayStyleChildText}>{item.title_2}</Text>
+                          <Text style={portraitStyles.trayStyleChildText}>{item.title_2}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={this.state.selected_id == 3 ? this.state.style_in : this.state.style} onPress={() => this.functionName(item.id_3, item.title_3, item.arrayname_3)}>
-                          <Text style={this.getStyle().trayStyleChildText} >{item.title_3}</Text>
+                          <Text style={portraitStyles.trayStyleChildText} >{item.title_3}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={this.state.selected_id == 4 ? this.state.style_in : this.state.style} onPress={() => this.functionName(item.id_4, item.title_4, item.arrayname_4)}>
-                          <Text style={this.getStyle().trayStyleChildText} >{item.title_4}</Text>
+                          <Text style={portraitStyles.trayStyleChildText} >{item.title_4}</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
                   ))}
-                  <Text style={this.getStyle().headerTrayStyle}>Select a Size: {this.state.size}</Text>
+                  <Text style={portraitStyles.headerTrayStyle}>Select a Size: {this.state.size}</Text>
                   {this.function1()}
                 </View>
               ))} */}
-            </View>
-            {/* <View style={this.getStyle().selectContainer}>
-                <Text style={this.getStyle().selectListHeader}>How would you like us to Personalize it for you?</Text>
-                <SelectList data={items} setSelected={() => this.props.selected} style={this.getStyle().selectList} />
+              </View>
+              {/* <View style={portraitStyles.selectContainer}>
+                <Text style={portraitStyles.selectListHeader}>How would you like us to Personalize it for you?</Text>
+                <SelectList data={items} setSelected={() => this.props.selected} style={portraitStyles.selectList} />
               </View> */}
-            {/* <View style={this.getStyle().quantityAndIncDecContainer}>
-                <Text style={this.getStyle().quantityText}>Quantity:</Text>
-                <View style={this.getStyle().incDecContainer}>
-                  <Pressable style={this.getStyle().decPress} onPress={() => this.decFunction()}><Text style={this.getStyle().decButton}>-</Text></Pressable>
-                  <Text style={this.getStyle().incDecArea} >{this.state.itemcnt}</Text>
-                  <Pressable style={this.getStyle().incPress} onPress={() => this.incFunction()}><Text style={this.getStyle().incButton}>+</Text></Pressable>
+              {/* <View style={portraitStyles.quantityAndIncDecContainer}>
+                <Text style={portraitStyles.quantityText}>Quantity:</Text>
+                <View style={portraitStyles.incDecContainer}>
+                  <Pressable style={portraitStyles.decPress} onPress={() => this.decFunction()}><Text style={portraitStyles.decButton}>-</Text></Pressable>
+                  <Text style={portraitStyles.incDecArea} >{this.state.itemcnt}</Text>
+                  <Pressable style={portraitStyles.incPress} onPress={() => this.incFunction()}><Text style={portraitStyles.incButton}>+</Text></Pressable>
                 </View>
               </View> */}
-            <View style={portraitStyles.incDecButtonContainerProfile}>
-              <Text style={this.getStyle().quantityText}>Quantity:</Text>
-              <View style={portraitStyles.cartIncDecContainer}>
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.decBtn} onPress={() => this.decFunction()}><Text style={portraitStyles.decButton}>-</Text></TouchableOpacity>
-                <Text style={portraitStyles.incDecField} >{this.state.itemcnt}</Text>
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.incBtn} onPress={() => this.incFunction()}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
+              <View style={portraitStyles.incDecButtonContainerProfile}>
+                <Text style={portraitStyles.quantityText}>Quantity:</Text>
+                <View style={portraitStyles.cartIncDecContainer}>
+                  <TouchableOpacity activeOpacity={0.9} style={portraitStyles.decBtn} onPress={() => this.decFunction()}><Text style={portraitStyles.decButton}>-</Text></TouchableOpacity>
+                  <Text style={portraitStyles.incDecField} >{this.state.itemcnt}</Text>
+                  <TouchableOpacity activeOpacity={0.9} style={portraitStyles.incBtn} onPress={() => this.incFunction()}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <View style={this.getStyle().cartButtonContainer}>
-              <Pressable style={this.getStyle().cartbutton} onPress={() => this.addToCart()}>
-                <Text style={this.getStyle().buttonText}>Add to Basket</Text>
-              </Pressable>
-              <Pressable onPress={() => this.isLiked(this.state.liked)}>
-                <MaterialCommunityIcons
-                  name={this.state.liked ? "heart" : "heart-outline"}
-                  size={32}
-                  color={this.state.liked ? "red" : "black"}
-                />
-              </Pressable>
-              <Pressable >
-                <MaterialCommunityIcons
-                  name="share-variant"
-                  size={32}
-                  color="black"
-                />
-              </Pressable>
-            </View>
-            <View style={this.getStyle().overViewAndShippingPolicyContainer}>
-              <TouchableOpacity activeOpacity={0.9} style={this.getStyle().overViewContainer} onPress={() => this.isOPlus()}>
-                <Text style={this.getStyle().overViewText}>Overview</Text>
-                <Text style={this.getStyle().pText}>{this.state.o_plus_minus}</Text>
-              </TouchableOpacity>
-              {this.accordianOverview()}
-              <TouchableOpacity activeOpacity={0.9} style={this.getStyle().shippingPolicyContainer} onPress={() => this.isSpPlus()}>
-                <Text style={this.getStyle().overViewText}>Shipping Policy</Text>
-                <Text style={this.getStyle().pText}>{this.state.sp_plus_minus}</Text>
-              </TouchableOpacity>
-              {this.accordianShippingPolicy()}
-            </View>
-            <View style={this.getStyle().noteContainer}>
+              <View style={portraitStyles.cartButtonContainer}>
+                <Pressable style={portraitStyles.cartbutton} onPress={() => this.addToCart()}>
+                  <Text style={portraitStyles.buttonText}>Add to Basket</Text>
+                </Pressable>
+                <Pressable onPress={() => this.isLiked(this.state.liked)}>
+                  <MaterialCommunityIcons
+                    name={this.state.liked ? "heart" : "heart-outline"}
+                    size={32}
+                    color={this.state.liked ? "red" : "black"}
+                  />
+                </Pressable>
+                <Pressable >
+                  <MaterialCommunityIcons
+                    name="share-variant"
+                    size={32}
+                    color="black"
+                  />
+                </Pressable>
+              </View>
+              <View style={portraitStyles.overViewAndShippingPolicyContainer}>
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.overViewContainer} onPress={() => this.isOPlus()}>
+                  <Text style={portraitStyles.overViewText}>Overview</Text>
+                  <Text style={portraitStyles.pText}>{this.state.o_plus_minus}</Text>
+                </TouchableOpacity>
+                {this.accordianOverview()}
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.shippingPolicyContainer} onPress={() => this.isSpPlus()}>
+                  <Text style={portraitStyles.overViewText}>Shipping Policy</Text>
+                  <Text style={portraitStyles.pText}>{this.state.sp_plus_minus}</Text>
+                </TouchableOpacity>
+                {this.accordianShippingPolicy()}
+              </View>
+              <View style={portraitStyles.noteContainer}>
 
-              <Text style={this.getStyle().noteText}>
-                Note: If you are shipping this to an address other than your own, and would like to send a message to your friends or loved ones, then please enter your personalized message at the point of checkout.
-              </Text>
-            </View>
-            {/* </View> */}
-          </ScrollView>
+                <Text style={portraitStyles.noteText}>
+                  Note: If you are shipping this to an address other than your own, and would like to send a message to your friends or loved ones, then please enter your personalized message at the point of checkout.
+                </Text>
+              </View>
+              {/* </View> */}
+            </ScrollView>
           </ImageBackground>
         }
       </SafeAreaView>
@@ -668,30 +936,40 @@ class HomeAccent extends UiOrientation {
 
 
 export default HomeAccent;
-const styless = StyleSheet.create({
-  dropdown: {
-      borderBottomColor: 'grey',
-      borderBottomWidth: 1,
-      width: '90%',
-      left: 15,
-      margin: 2,
-      color:'black',
-      height:60,
-      backgroundColor:'#f2ebd5'
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
   },
-  imageStyle: {
-    width: 24,
-    height: 24,
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    color:'black',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+    color:"black"
   },
   placeholderStyle: {
-    fontSize: 14,
-    color:'grey'
+    fontSize: 16,
+    color:"black"
   },
   selectedTextStyle: {
-    fontSize: 14,
-    marginLeft: 8,
-    color:'grey',
-  //   backgroundColor:'red',
+    fontSize: 16,
+    // backgroundColor:"red",
+    color:"black"
   },
   iconStyle: {
     width: 20,
@@ -700,44 +978,6 @@ const styless = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    color:'grey',
+    color:"black"
   },
 });
-
-const EmptyList =()=>{
-  return(
-      <View style={{padding:16,alignItems:'center'}}>
-          <Text style={{color:'black'}}>Please Wait!</Text>
-      </View>
-  )
-}
-const EmptyList_1 =()=>{
-  return(
-      <View style={{padding:16,alignItems:'center'}}>
-          <Text style={{color:'black'}}>Please Wait!</Text>
-      </View>
-  )
-}
-const RenderFooter = (isLoading) =>{
-  if(!isLoading)
-  {
-      return null;
-  }
-  return(
-      <View style={{padding:16,alignItems:'center'}}>
-          <ActivityIndicator color={'grey'} size={'large'}  />
-      </View>
-  )
-}
-const RenderFooter_2 = (isLoading) =>{
-  if(!isLoading)
-  {
-      return null;
-  }
-  return(
-      <View style={{padding:16,alignItems:'center'}}>
-          <ActivityIndicator color={'grey'} size={'large'}  />
-      </View>
-  )
-}
-

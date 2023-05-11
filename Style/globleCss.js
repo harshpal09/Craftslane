@@ -767,7 +767,8 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'lightgreen',
     width: '100%',
     // marginHorizontal: 15,
-    marginVertical: 5,
+    // marginVertical: 5,
+    padding:10,
   },
   homeAccentImageContainer: {
     // backgroundColor:'red',
@@ -776,7 +777,7 @@ export const portraitStyles = StyleSheet.create({
   },
   homeAccentImage: {
     width: '100%',
-    height: Dimensions.get("screen").height/2.5,
+    height: Dimensions.get("screen").height/2.4,
   },
   homeAccentTextContainer: {
     // backgroundColor:'skyblue',
@@ -815,9 +816,7 @@ export const portraitStyles = StyleSheet.create({
     width: '100%',
     padding: 5,
     // backgroundColor:'red',
-    borderWidth: 1,
-    marginBottom:120,
-    borderColor: '#EAD3B9',
+    
   },
   headerTrayStyle: {
     // backgroundColor:'lightgreen',
@@ -949,6 +948,7 @@ export const portraitStyles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     flexDirection:'column',
+    padding:10,
   },
   overViewContainer: {
     width:'100%',
@@ -1034,6 +1034,9 @@ export const portraitStyles = StyleSheet.create({
     fontStyle:'italic',
     margin: 10,
     // marginBottom:120,
+    borderWidth: 1,
+    padding:10,
+    borderColor: '#EAD3B9',
     textAlignVertical: 'center',
     color: '#6D6D6D'
     
@@ -1254,7 +1257,8 @@ incDecButtonContainerProfile: {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  // backgroundColor: 'red'
+  // backgroundColor: 'red',
+  padding:10
 },
 incDecButton: {
   marginLeft: 5,
