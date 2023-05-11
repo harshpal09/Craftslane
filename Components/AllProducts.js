@@ -1,13 +1,14 @@
 import React, { Component, useState } from "react";
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, RefreshControl,ImageBackground,TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, RefreshControl,ImageBackground,TouchableOpacity } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoadingComponent from './LoadingComponent';
-import { portraitStyles } from "../../Style/globleCss";
+import LoadingComponent from './screens/LoadingComponent';
+import ImageLazyLoading from "react-native-image-lazy-loading";
+import { portraitStyles } from "../Style/globleCss";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 // import withRouter from "./withRouter";
 
-export default class MyOrders extends Component {
+export default class AllProducts extends Component {
 
   constructor(props) {
     super(props)
@@ -46,15 +47,16 @@ onRefresh()
 
     this.setState({currentPage:this.state.currentPage+1})
     this.setState({isLoading:true});
-    await axios.get(this.state.data.url + "customorderlist/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&page="+this.state.currentPage)
+    await axios.get(this.state.data.url + "customadvsearch/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&page="+this.state.currentPage)
       .then(res => {
        
         this.setState({all_data:res.data})
+        // console.log(this.state.all_data)
        
       });
       if (this.state.all_data.status == 200) {
       
-        this.setState({users : this.state.users.concat(this.state.all_data.body)});
+        this.setState({users : this.state.users.concat(this.state.all_data.products)});
         
       }
       else {
@@ -66,24 +68,24 @@ onRefresh()
   renderItem = ({ item }) => {
     // console.log(item);
     return (
-              <TouchableOpacity activeOpacity={0.9} style={portraitStyles.cartProductContainer} onPress={() => this.props.navigation.push('myorderprofile', { id: item.order_id })}  >
-                <View style={portraitStyles.orderContainer} >
-                  <Text style={{ color: 'black' }}>Order ID</Text>
-                  <View >
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>#{item.order_id}</Text>
-                  </View>
+              <TouchableOpacity activeOpacity={0.9} style={portraitStyles.cartProductContainer} onPress={() => this.props.navigation.push('homeaccent', { id: item.order_id })}  >
+                <View style={portraitStyles.cartImageContainer} >
+                  {/* <Text style={{ color: 'black' }}>Order ID</Text> */}
+                  {/* <View > */}
+                  <ImageLazyLoading style={portraitStyles.cartImage} source={{ uri: item.image }} />
+                  {/* </View> */}
 
                 </View>
                 <View style={portraitStyles.navParentContainer}>
                   <View style={portraitStyles.navContainer}>
                     <View style={portraitStyles.cartTextContainer}>
                       <Text style={portraitStyles.orderHeadingText}>
-                        Customer: <Text style={portraitStyles.cartText}>{item.name} </Text>
+                         <Text style={portraitStyles.cartText}>{item.title} </Text>
                       </Text>
                     </View>
                     <View style={portraitStyles.cartTextContainer}>
                       <Text style={portraitStyles.orderHeadingText}>
-                        No. of products: <Text style={portraitStyles.cartText}>{item.products}</Text>
+                        Model: <Text style={portraitStyles.cartText}>{item.model}</Text>
                       </Text>
                     </View>
                     
@@ -92,14 +94,14 @@ onRefresh()
                     </View>
                     <View style={portraitStyles.cartTextContainer}>
                       <Text style={portraitStyles.orderHeadingText}>
-                        Date: <Text style={portraitStyles.cartText}>{item.date_added}</Text>
+                        Price: <Text style={portraitStyles.cartText}>{item.price}</Text>
                       </Text>
                     </View>
-                    <View style={portraitStyles.cartTextContainer}>
+                    {/* <View style={portraitStyles.cartTextContainer}>
                       <Text style={portraitStyles.orderHeadingText}>
                         Total: <Text style={portraitStyles.cartText}>{item.total}</Text>
                       </Text>
-                    </View>
+                    </View> */}
                   </View>
                   <View>
                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={35} />
@@ -122,19 +124,20 @@ render(){
   // console.log(this.state.users);
   return (
     <>
-    <ImageBackground  style={{justifyContent:'center',alignItems:'center', height:'100%'}}source={require('../../assets/base-texture.png')} resizeMode="cover" > 
-    {this.state.users.length == false ? <LoadingComponent />:
+    <ImageBackground style={{height:'100%', justifyContent:'center'}}source={require('../assets/base-texture.png')} resizeMode="cover" > 
+      {this.state.users.length == false ? <LoadingComponent />:
       <FlatList
         data={this.state.users}
         renderItem={this.renderItem}
-        keyExtractor={item => item.order_id}
+        keyExtractor={item => item.id}
         ListFooterComponent={this.renderLoader()}
         showsVerticalScrollIndicator={false}
         onEndReached={ ()=> this.getUsers()}
         onEndReachedThreshold={0}
         refreshControl={<RefreshControl refreshing={false} onRefresh={()=> this.onRefresh()} />}
       />
-      }
+  }
+     
       </ImageBackground>
     </>
   );

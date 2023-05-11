@@ -581,9 +581,9 @@ export const portraitStyles = StyleSheet.create({
 
   },
   categoryHeaderText: {
-    fontFamily: 'Baskerville-Italic',
-    fontSize: "italic",
-    fontWeight: "400",
+    fontFamily: 'Georgia',
+    // fontSize: "italic",
+    // fontWeight: "400",
     fontSize: 20,
     color: '#839D3C',
   },
@@ -1555,7 +1555,7 @@ cartIncDecContainer: {
     marginBottom: 20,
     color: 'blue'
   },
-  new_text: {
+  new_text: { 
     marginTop: 8,
     fontSize: 18,
     fontFamily: 'Baskerville-Italic',
@@ -1575,19 +1575,15 @@ cartIncDecContainer: {
     
   },
   orderHeadingText: {
-    // margin: 2,
-    // marginLeft: 2,
     padding:5,
     color: '#3d3d3d',
     fontFamily: 'Baskerville',
     fontSize:13,
     width: '100%',
-    fontWeight:"700",
-    // height:70,
-    // textAlign:"center",
+    fontWeight:"500",
     textAlignVertical: "center",
-    // backgroundColor:'white',
   },
+
   orderText: {
     margin: 2,
     marginLeft: 2,

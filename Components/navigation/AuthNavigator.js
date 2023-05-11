@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { EnterEmail, EnterOTP, CreateNewPassword, PasswordCreated, OOPS } from '../forgot-password/ForgotPassword';
-import { LogInPage, SignUpPage, TabRoutes, Categories, Product, HomeAccent, HomeScreen, NewArrivals, PopularTrends } from '../../export';
+import { LogInPage, SignUpPage, AllProducts, Categories, Product, HomeAccent, HomeScreen, NewArrivals, PopularTrends } from '../../export';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UseNet from '../screens/UseNet';
 import SearchFilter from '../SearchFilter';
@@ -26,6 +26,15 @@ class AuthNavigator extends Component {
               headerTitleStyle: { color: 'black'}
             }
           } />     
+          <Stack.Screen name="allProducts" component={AllProducts}
+          options={
+            {
+              headerShown: true,
+              headerTitle: 'Advance Search',
+              headerTintColor: '#B48D56',
+              headerTitleStyle: { color: 'black'}
+            }
+          } />  
           <Stack.Screen name="usenet" component={UseNet} options={{ headerShown: false }} />
         <Stack.Screen name="product" component={Product}
           options={

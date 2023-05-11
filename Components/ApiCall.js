@@ -20,10 +20,8 @@ class ApiCall extends Component {
         }
     }
     
-    componentDidMount() {
-        this.getdata();
-        
-    }
+  
+  
     
       async getdata() 
       {
@@ -36,7 +34,8 @@ class ApiCall extends Component {
             Alert.alert(error)
           }
         let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
-        let resp2 = await axios.get('https://echoit.in/craftslane-apis/categories.php')
+        let resp2 = await axios.get(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+ "&category_id=4")
+        console.log(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+ "&category_id=4")
         let resp3 = await axios.get('https://echoit.in/craftslane-apis/productprofile.php')
         // let resp4 = await axios.get('https://staging.shivikaspottery.com/index.php?route=api/customhome/index&key=U9XLFvnjCiOTIf3JIhPntVuhhAwpjczjuVvTpbs3cxNzUOq7ph9XCt3OfxuiUvCpFiNB8EHsvrfcfZ8uESKeJNazqaDosjVXz7DmJvksWp8yBIJMGFHX3agUTVByMS3IURBcYLMUyf8bNnIm4Xtu5vOKyPgVTDWXiS13IfdP4E3bMt79GXT1lnFXvYqkfvcv1PbGLlIJ6K4otiJ8O5rE7mW7KixetI2MHUHctmlpK6uCCLMIphE0mBndSWroyWEX')
         let resp5 = await axios.get('https://echoit.in/craftslane-apis/cart_product.php')
@@ -52,6 +51,7 @@ class ApiCall extends Component {
         this.setState({notifications:resp8.data.data})
         this.setState({my_orders:resp6.data.data})
         this.setState({categories:resp2.data.data})
+        console.log(this.state.categories)
         this.setState({cart_product:resp5.data.data})
         this.setState({wish_list:resp7.data.data})
 

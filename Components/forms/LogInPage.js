@@ -60,14 +60,14 @@ class LogInPage extends Component {
         }
         else {
 
-            showMessage({
-                message: this.state.response_data.message,
-                duration: 4000,
-                type: 'success',
-                color: 'white',
-                icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
-                titleStyle: { fontSize: 18 }
-            })
+            // showMessage({
+            //     message: this.state.response_data.message,
+            //     duration: 4000,
+            //     type: 'success',
+            //     color: 'white',
+            //     icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
+            //     titleStyle: { fontSize: 18 }
+            // })
 
             this.state = {
                 token: this.state.response_data.token,

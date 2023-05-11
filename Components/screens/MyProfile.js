@@ -40,7 +40,7 @@ class MyProfile extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
-            // console.warn(this.state.data)
+            // console.warn(this.state.data) 
         }
         catch (error) {
             Alert.alert(error)
@@ -50,7 +50,7 @@ class MyProfile extends Component {
             .then((resp) => this.setState({ info: resp.data.body }))
             .catch((error) => console.warn(error));
         this.setState({ refreshing: false })
-        // console.warn(this.state.data);
+        // console.warn(this.state.info);
     }
     render() {
         console.log(this.state.info)

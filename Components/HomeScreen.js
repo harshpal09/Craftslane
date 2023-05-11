@@ -12,7 +12,7 @@ import SearchFilter from './SearchFilter'
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); 
 LogBox.ignoreAllLogs();
-class HomeScreen extends UiOrientation {
+class HomeScreen extends Component{
 
   state = {
     refreshing: false,
@@ -23,6 +23,7 @@ class HomeScreen extends UiOrientation {
   componentDidMount(){
     this.getData();
     this.searchArray();
+    
 
     AsyncStorage.setItem('badge', JSON.stringify(1));
  
@@ -39,7 +40,6 @@ class HomeScreen extends UiOrientation {
       Alert.alert(error)
   }
 
-
     let res = await axios.get(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
     // console.log(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
     this.setState({ search: res.data.body})
@@ -48,8 +48,21 @@ class HomeScreen extends UiOrientation {
 
 
   async getData(){
-    let resp = await axios.get('https://echoit.in/craftslane-apis/homepage.php')
+
+    try {
+      let user = await AsyncStorage.getItem('user');
+      let parsed = JSON.parse(user);
+      this.setState({ data: parsed })
+
+  }
+  catch (error) {
+      Alert.alert(error)
+  }
+
+    let resp = await axios.get(this.state.data.url + "customhome/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+    // console.log(this.state.data.url + "customhome/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
     this.setState({ alldata: resp.data.data })
+    console.log(this.state.alldata)
   }
 
 
@@ -62,45 +75,45 @@ class HomeScreen extends UiOrientation {
   }
 
   render() {
-    // console.warn(this.s )
+    
     return (
-      <SafeAreaView style={this.getStyle().screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
 
         {this.state.alldata.length == false ? <LoadingComponent /> :
-          <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" onLayout={this.onLayout.bind(this)} >
+          <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
             <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={()=> this._onRefresh()}
             />}>
-              {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' textStyle={this.getStyle().loadingTextStyle} size={50} animation="slide" /> */}
+              {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' textStyle={portraitStyles.loadingTextStyle} size={50} animation="slide" /> */}
 
-              <View style={this.getStyle().searchBar}>
+              <View style={portraitStyles.searchBar}>
                 {/* <Feather name="search" color="#000" size={18} /> */}
-                <TextInput style={this.getStyle().textField}  placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
-                <TouchableOpacity style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
+                <TextInput style={portraitStyles.textField}  placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
+                <TouchableOpacity onPress={()=> this.props.navigation.navigate('allProducts')} style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
                 
               </View>
 
-              <View style={this.getStyle().searchBarFilter}>
+              <View style={portraitStyles.searchBarFilter}>
                 <SearchFilter data={this.state.search} input={this.state.input} />
               </View>
 
-              <View style={this.getStyle().headerTextContainer}>
-                <Text style={this.getStyle().headerText}>Categories</Text>
+              <View style={portraitStyles.headerTextContainer}>
+                <Text style={portraitStyles.headerText}>Categories</Text>
               </View>
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
                   {this.state.alldata.map((data, idx) => (
-                    <View style={this.getStyle().categoryImageContainer} key={idx}>
+                    <View style={portraitStyles.categoryImageContainer} key={idx}>
                       {data.categories.map((item, ind) => {
                         return (
-                          <View style={this.getStyle().imageTextContainer} key={ind} >
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('categories')} style={this.getStyle().imageContainer}>
-                              <ImageLazyLoading style={this.getStyle().categoryImage} source={{ uri: item.image }} />
+                          <View style={portraitStyles.imageTextContainer} key={ind} >
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('categories', {cat_id:item.id })} style={portraitStyles.imageContainer}>
+                              <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.9} style={this.getStyle().textContainer} onPress={() => this.props.navigation.navigate('categories')}>
+                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.textContainer} onPress={() => this.props.navigation.navigate('categories',{cat_id:item.id })}>
                               <Text
-                                style={this.getStyle().categoryType}
+                                style={portraitStyles.categoryType}
                               >{item.title}</Text>
                             </TouchableOpacity>
                           </View>
@@ -111,24 +124,24 @@ class HomeScreen extends UiOrientation {
                 </ScrollView>
               </View>
 
-              <View style={this.getStyle().headerTextContainer}>
-                <Text style={this.getStyle().headerText}>New Arrivals</Text>
-                <Text style={this.getStyle().allText} onPress={() => this.props.navigation.navigate('newarrivals')}>See All</Text>
+              <View style={portraitStyles.headerTextContainer}>
+                <Text style={portraitStyles.headerText}>New Arrivals</Text>
+                <Text style={portraitStyles.allText} onPress={() => this.props.navigation.navigate('newarrivals')}>See All</Text>
               </View>
 
               <View>
-                <ScrollView horizontal={true} style={this.getStyle().carosalSlide} showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
                   {this.state.alldata.map((data, idx) => (
-                    <View style={this.getStyle().categoryImageContainer} key={idx}>
+                    <View style={portraitStyles.categoryImageContainer} key={idx}>
                       {data.new_arrivals.map((item, ind) => {
                         return (
-                          <View style={this.getStyle().imageTextContainer} key={ind} >
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={this.getStyle().imageContainer}>
-                              <ImageLazyLoading style={this.getStyle().categoryImage} source={{ uri: item.image }} />
+                          <View style={portraitStyles.imageTextContainer} key={ind} >
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.imageContainer}>
+                              <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={this.getStyle().textContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.textContainer}>
                               <Text
-                                style={this.getStyle().categoryType}
+                                style={portraitStyles.categoryType}
                                 onPress={() => this.props.navigation.navigate('categories')}
                               >{item.title}</Text>
                             </TouchableOpacity>
@@ -142,23 +155,23 @@ class HomeScreen extends UiOrientation {
 
 
 
-              <View style={this.getStyle().headerTextContainer}>
-                <Text style={this.getStyle().headerText}>Popular Trends</Text>
-                <Text style={this.getStyle().allText} onPress={() => this.props.navigation.navigate('populartrends')}>See All</Text>
+              <View style={portraitStyles.headerTextContainer}>
+                <Text style={portraitStyles.headerText}>Popular Trends</Text>
+                <Text style={portraitStyles.allText} onPress={() => this.props.navigation.navigate('populartrends')}>See All</Text>
               </View>
 
 
               <View >
                 {this.state.alldata.map((data, idx) => (
-                  <View style={this.getStyle().warpContainer} key={idx}>
+                  <View style={portraitStyles.warpContainer} key={idx}>
                     {data.popular_trends.map((item, ind) => {
                       return (
-                        <View style={this.getStyle().warpImageTextContainer} key={ind} >
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={this.getStyle().squareImageContainer}>
-                            <ImageLazyLoading style={this.getStyle().popularImage} source={{ uri: item.image }} />
+                        <View style={portraitStyles.warpImageTextContainer} key={ind} >
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.squareImageContainer}>
+                            <ImageLazyLoading style={portraitStyles.popularImage} source={{ uri: item.image }} />
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={this.getStyle().textContainer}>
-                            <Text style={this.getStyle().categoryType}>{item.title}</Text>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.textContainer}>
+                            <Text style={portraitStyles.categoryType}>{item.title}</Text>
                           </TouchableOpacity>
                         </View>
                       )
@@ -167,16 +180,16 @@ class HomeScreen extends UiOrientation {
                 ))}
               </View>
               <View style={portraitStyles.headerTextContainer}>
-                <Text style={this.getStyle().headerText}>Follow on Facebook & Instagram</Text>
+                <Text style={portraitStyles.headerText}>Follow on Facebook & Instagram</Text>
               </View>
 
               {this.state.alldata.map((item, idx) => (
-                <View style={this.getStyle().fotter} key={idx}>
+                <View style={portraitStyles.fotter} key={idx}>
                   <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.instagram.com/craftslane/?hl=en')}>
-                    <ImageLazyLoading style={this.getStyle().bannerImage} source={{ uri: item.footer_banner_1 }} />
+                    <ImageLazyLoading style={portraitStyles.bannerImage} source={{ uri: item.footer_banner_1 }} />
                   </TouchableOpacity>
                   <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.facebook.com/CraftslaneIndia/')}>
-                    <Image style={this.getStyle().bannerImage} source={{ uri: item.footer_banner_2 }} />
+                    <Image style={portraitStyles.bannerImage} source={{ uri: item.footer_banner_2 }} />
                   </TouchableOpacity>
                 </View>
               ))}
