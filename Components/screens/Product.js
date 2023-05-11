@@ -121,17 +121,17 @@ export default class Product extends Component {
                             <View style={portraitStyles.warpProductContainer}>
                                 {this.state.item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent')} style={portraitStyles.productImageContainer}>
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent',{image:val.image,name:val.title,config_type:'color'})} style={portraitStyles.productImageContainer}>
                                             <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
                                             <LikeButton  id={val.id} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
-                                            <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent')}>{val.title}</Text>
+                                            <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent',{image:val.image,name:val.title,config_type:'color'})}>{val.title}</Text>
                                         </TouchableOpacity>
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
                                             <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-                                            {console.log(val.id)}
+                                            {/* {console.log(val.id)} */}
                                         </View>
                                     </View>
                                 ))}
