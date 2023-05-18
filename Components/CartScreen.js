@@ -1,96 +1,99 @@
 
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator, RefreshControl, FlatList } from 'react-native';
-// import UiOrientation from './UiOrientation';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import EmptyCart from './screens/EmptyCart';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from './screens/LoadingComponent';
-// import Image from 'react-native-image-lazy-loading';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from './redux/Actions';
 
-class CartScreen extends Component {
+export default function CartScreen() {
 
-  constructor() {
-    super();
-    this.state = {
-      len: 1,
-      data: {},
-      cart: [],
-      cart_total: {},
-      refreshing: false,
 
-    }
-  }
+  const [data, setData] = useState({});
+  const [len, setLength] = useState(1);
+  const [cart, setCart] = useState([]);
+  const [cart_total, setCartTotal] = useState({});
+  const [refreshing, setRefresh] = useState(false);
+  const [overlay , setOverlay] = useState(false);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
 
-    this.getdata();
-    //  this.cartItems();
-    //  this.displayData();
+  useEffect(() => {
 
-    this.focusSubscription = this.props.navigation.addListener('focus', () => {
-      this.getdata();
+    getdata();
+    isEmpty();
 
-    });
-  }
-
-  componentWillUnmount() {
-    this.focusSubscription();
-  }
-
-  cartItems() {
-
-  }
+  }, [])
 
 
 
+  getdata = async () => {
 
-  async getdata() {
-
-
+    let parsed = {};
 
     try {
       let user = await AsyncStorage.getItem('user');
-      let parsed = JSON.parse(user);
-      this.setState({ data: parsed })
+      parsed = JSON.parse(user);
+
     }
+
     catch (error) {
       Alert.alert(error)
     }
-    // console.warn(this.state.data.url)
-    let resp2 = await axios.get(this.state.data.url + "customcart/products&key=" + this.state.data.key + '&token=' + this.state.data.token + '&os_type=android');
-    this.setState({ cart: resp2.data.products })
-    this.setState({ cart_total: resp2.data })
-    this.setState({ len: resp2.data.cart })
 
-    // console.warn(resp2.data);
+    await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
+      .then((resp2) => {
+
+        dispatch(addItemToCart(resp2.data.total_cart)),
+          setCart(resp2.data.products),
+          setCartTotal(resp2.data),
+          setLength(resp2.data.cart)
+
+      }
+      ).catch(function (error) {
+        console.log("post error: " + error);
+      });
+
 
 
 
   }
-  deleteConfirmation(id){
+
+  deleteConfirmation = (id) => {
     Alert.alert(
-        'Delete',
-        'Do you really want to delete this address ?',
-        [   {text: "Not Now"},
-            { text: "Delete", onPress: () => this.deleteCart(id) }
-        ],
-        { cancelable: false }
+      'Delete',
+      'Do you really want to delete this address ?',
+      [{ text: "Not Now" },
+      { text: "Delete", onPress: () => this.deleteCart(id) }
+      ],
+      { cancelable: false }
     )
-}
+  }
 
 
   deleteCart = async (product_id) => {
+    setOverlay(true);
+    let parsed = {};
+
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+
+    }
+
+    catch (error) {
+      Alert.alert(error)
+    }
+
     const d = {
       product_id: product_id
     }
@@ -100,19 +103,15 @@ class CartScreen extends Component {
     }
 
 
-    await axios.post(this.state.data.url + "customcart/remove&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header).
+    await axios.post(parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header).
       then((response) => {
-        this.setState({ cart: response.data.products, cart_total: response.data, len: response.data.cart }),
+        dispatch(addItemToCart(response.data.total_cart)),
 
-          showMessage({
-            message: 'Product deleted successfully',
-            duration: 4000,
-            type: 'success',
-            color: 'white',
-            icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-            backgroundColor: 'green',
-            titleStyle: { fontSize: 18 }
-          })
+          setCart(response.data.products),
+          setCartTotal(response.data),
+          setLength(response.data.cart)
+
+          setOverlay(false);
 
 
       })
@@ -122,7 +121,20 @@ class CartScreen extends Component {
 
 
 
-  async incFunction(product_id, quantity) {
+  incFunction = async (product_id, quantity) => {
+    setOverlay(true);
+    let parsed = {};
+
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+
+    }
+
+    catch (error) {
+      Alert.alert(error)
+    }
+
     const d = {
       quantity: quantity + 1,
       product_id: product_id
@@ -132,88 +144,110 @@ class CartScreen extends Component {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
 
-    await axios.post(this.state.data.url + "customcart/edit&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
-      .then((response) =>
-        this.setState({ cart: response.data.products, cart_total: response.data }),
+    await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
+      .then((response) => {
+        dispatch(addItemToCart(response.data.total_cart)),
 
-        showMessage({
-          message: 'Cart updated successfully',
-          type: 'success',
-          color: 'white',
-          icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-          backgroundColor: 'green',
-          titleStyle: { fontSize: 18 }
-        })).catch((error) => console.warn(error))
+          setCart(response.data.products),
+          setCartTotal(response.data),
+          setLength(response.data.cart),
+
+          // showMessage({
+          //   message: 'Cart updated successfully',
+          //   type: 'success',
+          //   color: 'white',
+          //   icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+          //   backgroundColor: 'green',
+          //   titleStyle: { fontSize: 18 }
+          // })
+
+          setOverlay(false);
+      })
+
 
 
 
   }
 
 
-  async decFunction(product_id, quantity) {
+  decFunction = async (product_id, quantity) => {
+    
+    let parsed = {};
+
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+
+    }
+
+    catch (error) {
+      Alert.alert(error)
+    }
+
 
     if (quantity > 1) {
       const d = {
         quantity: quantity - 1,
         product_id: product_id
       }
-      // console.warn(d.quantity);
+
       const header = {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
       }
+      setOverlay(true);
 
-      let resp = await axios.post(this.state.data.url + "customcart/edit&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
-        .then((response) =>
-          this.setState({ cart: response.data.products, cart_total: response.data }),
+      let resp = await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
+        .then((response) => {
+          dispatch(addItemToCart(response.data.total_cart)),
 
-          showMessage({
-            message: 'Cart updated successfully',
-            type: 'success',
-            color: 'white',
-            icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-            backgroundColor: 'green',
-            titleStyle: { fontSize: 18 }
-          }))
+            setCart(response.data.products),
+            setCartTotal(response.data),
+            setLength(response.data.cart)
 
-      // console.warn(resp)
+            setOverlay(false);
+        })
+
 
     }
+
+    // setOverlay(false);
   }
+
   _onRefresh = () => {
-    this.getdata();
-    this.setState({ refreshing: true });
-    if (this.state.cart.length > 0) {
-      this.setState({ refreshing: false });
+    getdata();
+    setRefresh(true)
+    if (cart.length > 0) {
+      setRefresh(false)
     }
   }
 
 
-
-  render() {
-    // console.log(this.state.cart)
-    if (this.state.cart_total.total_items == 0) {
+  isEmpty = () => {
+    if (cart_total.total_items == 0) {
       return (
         <EmptyCart />
       )
     }
+  }
 
-    return (
+  return (
 
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {this.state.cart.length == false ?<LoadingComponent /> :
+    <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+      {cart_total.total_items == 0 ? <EmptyCart /> : <View>
+        {cart.length == false ? <LoadingComponent /> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
             <ScrollView showsVerticalScrollIndicator={false}
               refreshControl={<RefreshControl
-                refreshing={this.state.refreshing}
+                refreshing={refreshing}
                 onRefresh={() => this._onRefresh()}
               />}
             >
-              {/* <View style={portraitStyles.parentContainer}> */}
+
+                <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{color: 'white'}}/>
 
 
-                
               <View style={portraitStyles.warpContainer} >
-                {this.state.cart.map((item, j) => (
+                {cart.map((item, j) => (
                   <View style={portraitStyles.cartProductContainer} key={j}>
 
                     <View style={portraitStyles.cartImageContainer} >
@@ -255,46 +289,47 @@ class CartScreen extends Component {
 
 
 
-            <View style={{justifyContent:'center',alignItems:'center'}}>
-              <DataTable style={portraitStyles.cartTable}>
-                <DataTable.Row style={portraitStyles.tableRow}>
-                  <DataTable.Cell >TOTAL ITEMS</DataTable.Cell>
-                  <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{this.state.cart_total.total_items}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row style={portraitStyles.tableRow}>
-                  <DataTable.Cell >SUB-TOTAL</DataTable.Cell>
-                  <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center', }} >{this.state.cart_total.total}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row style={portraitStyles.tableLastRow}>
-                  <DataTable.Cell >TOTAL</DataTable.Cell>
-                  <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{this.state.cart_total.total}</DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
-             </View>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <DataTable style={portraitStyles.cartTable}>
+                  <DataTable.Row style={portraitStyles.tableRow}>
+                    <DataTable.Cell >TOTAL ITEMS</DataTable.Cell>
+                    <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{cart_total.total_items}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row style={portraitStyles.tableRow}>
+                    <DataTable.Cell >SUB-TOTAL</DataTable.Cell>
+                    <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center', }} >{cart_total.total}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row style={portraitStyles.tableLastRow}>
+                    <DataTable.Cell >TOTAL</DataTable.Cell>
+                    <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{cart_total.total}</DataTable.Cell>
+                  </DataTable.Row>
+                </DataTable>
+              </View>
 
               <View style={portraitStyles.logoutButtonContainer}>
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: this.state.cart_total.total_items, total: this.state.cart_total.total })}>
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: cart_total.total_items, total: cart_total.total })}>
                   <Text style={portraitStyles.buttonText} >Checkout</Text>
                 </TouchableOpacity>
               </View>
 
 
-              {/* </View> */}
+
 
             </ScrollView>
           </ImageBackground>
 
-          // </SafeAreaView>
 
         }
-      </SafeAreaView>
+      </View>
+      }
+    </SafeAreaView>
 
-    );
+  );
 
-  }
 }
+
 
 
 const styles = StyleSheet.create({})
 
-export default CartScreen;
+
