@@ -111,6 +111,7 @@ export const portraitStyles = StyleSheet.create({
     marginBottom:130,
   },
   containLabelAndInput: {
+    width:'100%',
     marginTop: 5,
     // width:'100%',
     // height: 60,
@@ -280,7 +281,7 @@ export const portraitStyles = StyleSheet.create({
     // paddingLeft:10,
     // height: 25,
     // left: 23.95,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -305,7 +306,7 @@ export const portraitStyles = StyleSheet.create({
     // width:'100%'
   },
   headerMiddleText: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -322,7 +323,7 @@ export const portraitStyles = StyleSheet.create({
 
   allText: {
     marginRight: 10,
-    fontFamily: 'Baskerville',
+    fontFamily: 'Baskervville-Regular',
     fontWeight: "400",
     fontSize: 20,
     color: '#6D6D6D',
@@ -378,7 +379,7 @@ export const portraitStyles = StyleSheet.create({
     height: 25,
     left: 23.95,
     marginTop: 20,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 20,
@@ -567,7 +568,7 @@ export const portraitStyles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     padding: 5,
-    fontFamily: 'Baskerville',
+    fontFamily: 'Baskervville-Regular',
     color: 'black',
     fontWeight: '400',
     fontSize: 12,
@@ -661,7 +662,7 @@ export const portraitStyles = StyleSheet.create({
   productHeaderText: {
     margin: 5,
     padding: 5,
-    fontFamily: 'Baskerville',
+    fontFamily: 'Baskervville-Regular',
     fontWeight: "400",
     fontSize: 20,
     color: '#839D3C',
@@ -715,7 +716,7 @@ export const portraitStyles = StyleSheet.create({
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
-    fontFamily: 'Baskerville'
+    fontFamily: 'Baskervville-Regular'
   },
   productText: {
     justifyContent: 'center',
@@ -841,7 +842,7 @@ export const portraitStyles = StyleSheet.create({
     paddingVertical: 3,
   },
   trayStyleChild: {
-    // backgroundColor:'white',
+    // backgroundColor:'red',
     width: '100%',
     margin: 1,
     flexWrap: 'wrap',
@@ -1131,7 +1132,7 @@ cartText: {
   // marginLeft: 2,
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'Baskerville',
+  fontFamily: 'Baskervville-Regular',
   fontSize:13,
   width: '100%',
   // height:70,
@@ -1142,7 +1143,7 @@ cartText: {
 wishlistPriceText:{
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'Baskerville',
+  fontFamily: 'Baskervville-Regular',
   textAlignVertical: "center",
 },
 addressText: {
@@ -1203,7 +1204,7 @@ cartPriceText: {
   color: 'black',
   textAlign: 'center',
   textAlignVertical: 'center',
-  fontFamily: 'Baskerville'
+  fontFamily: 'Baskervville-Regular'
 },
 
 cartIncDecArea: {
@@ -1331,7 +1332,7 @@ cartIncDecContainer: {
   profileUserName:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'Baskerville',
+    fontFamily:'Baskervville-Regular',
     fontSize:23,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1345,7 +1346,7 @@ cartIncDecContainer: {
   profileEmailText:{
     // backgroundColor:'green',
     textAlignVertical:'center',
-    fontFamily:'Baskerville',
+    fontFamily:'Baskervville-Regular',
     fontSize:14,
     color:'#6D6D6D'
     // marginHorizontal:15
@@ -1367,7 +1368,7 @@ cartIncDecContainer: {
     marginLeft:15,
     color:'#6D6D6D',
     width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,
-    fontFamily:'Baskerville',
+    fontFamily:'Baskervville-Regular',
     fontSize:16,
     // backgroundColor:'red'
   },
@@ -1386,7 +1387,7 @@ cartIncDecContainer: {
     
   },
   profileHeaderMiddleText: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     fontSize: "italic",
     fontWeight: "400",
     fontSize: 15,
@@ -1467,7 +1468,7 @@ cartIncDecContainer: {
   aboutHeaderMiddleText:{
     color:'black',
     textAlign:'center',
-    fontFamily:"Baskerville",
+    fontFamily:"Baskervville-Regular",
     fontSize:14,
   },
   aboutHeaderMiddleTextContainer:{
@@ -1526,7 +1527,7 @@ cartIncDecContainer: {
     alignItems: 'center'
   },
   info_text: {
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     fontSize: 20
   },
   centre_heading_container: {
@@ -1538,7 +1539,7 @@ cartIncDecContainer: {
   },
   mail_text: {
     fontSize: 18,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
 
   },
   verfyCode: {
@@ -1570,7 +1571,7 @@ cartIncDecContainer: {
   new_text: { 
     marginTop: 8,
     fontSize: 18,
-    fontFamily: 'Baskerville-Italic',
+    fontFamily: 'Baskervville-Italic',
     textAlign:'center'
   },
 //---------------------------------------------------------------------order list page
@@ -1589,7 +1590,7 @@ cartIncDecContainer: {
   orderHeadingText: {
     padding:5,
     color: '#3d3d3d',
-    fontFamily: 'Baskerville',
+    fontFamily: 'Baskervville-Regular',
     fontSize:13,
     width: '100%',
     fontWeight:"500",
@@ -1668,7 +1669,7 @@ creditsTableText:{
   // margin:2,
   textAlignVertical:'center',
   fontSize:13,
-  fontFamily:"Baskerville",
+  fontFamily:"Baskervville-Regular",
 },
 trackOrderTableText:{
   color:'#3d3d3d',
@@ -1677,7 +1678,7 @@ trackOrderTableText:{
   // margin:2,
   textAlignVertical:'center',
   fontSize:13,
-  fontFamily:"Baskerville",
+  fontFamily:"Baskervville-Regular",
 },
 creditsTableHeaderText:{
   color:'black',

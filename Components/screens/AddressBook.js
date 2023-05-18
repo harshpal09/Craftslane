@@ -37,6 +37,7 @@ class AddressBook extends Component {
             },
 
         ],
+        toggle: undefined,
     }
     componentDidMount() {
         this.getData();
@@ -81,8 +82,8 @@ class AddressBook extends Component {
         }
 
 
-        await axios.post(this.state.data.url + "customaddressbook/delete&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header).
-            then((response) => {
+        await axios.post(this.state.data.url + "customaddressbook/delete&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
+            .then((response) => {
                 this.setState({ all_data: response.data })
             })
         console.log(this.state.all_data);
@@ -123,20 +124,46 @@ class AddressBook extends Component {
             this.setState({ refreshing: false });
         }
     }
-    setRadioButtons(arr) {
-        console.log(arr);
-        // this.setState({radioButtons:arr});       
-    }
+    async makeDefault(id) {
+        this.setState({ toggle: id })
 
-    onPressRadioButton(radioButtonsArray) {
-        console.log(radioButtonsArray);
+        const d = {
+            address_id: id
+        }
+        console.log("address_id=> ", id)
+        const header = {
+            headers: { 'content-type': 'application/x-www-form-urlencoded' }
+        }
+
+        await axios.post(this.state.data.url + 'customaddressbook/updateDefaultAddress&key=' + this.state.data.key + '&token=' + this.state.data.token + '&os_type=android', d, header)
+            .then((response) => {
+                this.setState({ all_data: response.data })
+            })
+        // console.log(this.state.all_data);
+        if (this.state.all_data.status == 200) {
+            this.setState({ address: this.state.all_data.body })
+            showMessage({
+                message: 'Default address successfully Set',
+                duration: 4000,
+                type: 'success',    
+                color: 'white',
+                icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                backgroundColor: 'green',
+                titleStyle: { fontSize: 18 }
+            })
+        }
+        else if (this.state.all_data.status == 204) {
+            this.setState({ message: this.state.all_data.body })
+
+        }
+
     }
 
 
     render() {
         // console.log(this.state.all_data);
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {
                     this.state.all_data.status == undefined ? <LoadingComponent /> :
                         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
@@ -161,7 +188,10 @@ class AddressBook extends Component {
                                                         layout='row'
                                                     />
                                                 </View> */}
-                                                <RadioButton id={item.address_id}  />
+                                                <TouchableOpacity style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10, display: 'flex', flexDirection: 'row' }} onPress={() => this.makeDefault(item.address_id)}>
+                                                    <MaterialIcons name={this.state.toggle == item.address_id || item.default == 1 ? 'radio-button-on' : 'radio-button-off'} size={25} color={"#B48D56"} />
+                                                    <Text style={{ color: 'black', textAlignVertical: 'center', textAlign: 'center', paddingHorizontal: 10 }}>Make Default</Text>
+                                                </TouchableOpacity>
                                                 <Text style={portraitStyles.addressText}> {item.firstname} {item.lastname} </Text>
                                                 <Text style={portraitStyles.addressText}>{item.company}</Text>
                                                 <Text style={portraitStyles.addressText}>{item.address_1}</Text>
@@ -208,38 +238,11 @@ const styles = StyleSheet.create({})
 
 export default AddressBook;
 
-const RadioButton = ({id}) => {
-
-    const [radioButtons, setradioButtons] = useState([
-        {
-            id: id, // acts as primary key, should be unique and non-empty string
-            label: 'Make Default',
-            value: 'option1',
-            color: '#B48D56',
-            borderSize: 1,
-            borderColor: '#B48D56',
-            labelStyle: portraitStyles.radioButtons
-
-        },
-    ]);
-
-   const setRadioButtons = (arr) =>{
-        console.log(arr);
-        // this.setState({radioButtons:arr});       
-    }
-
-    const onPressRadioButton = (radioButtonsArray) => {
-        console.log(radioButtonsArray);
-    }
-
+const RadioButton = ({ t }) => {
+    const [toggle, settoggle] = useState(t);
     return (
-        <View style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }}>
-            <RadioGroup
-
-                radioButtons={radioButtons}
-                onPress={() => setRadioButtons(radioButtons)}
-                layout='row'
-            />
-        </View>
+        <TouchableOpacity style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10 }} onPress={() => settoggle(!toggle)}>
+            <MaterialIcons name={toggle ? 'radio-button-on' : 'radio-button-off'} size={25} color={"black"} />
+        </TouchableOpacity>
     )
-}
+} 

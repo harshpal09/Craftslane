@@ -1,6 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, ImageBackground,TextInput ,TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
+import DatePicker from 'react-native-date-picker';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
 import Icon from 'react-native-ionicons';
@@ -11,6 +12,9 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown } from 'react-native-element-dropdown';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+// import Spinner from 'react-native-loading-spinner-overlay';
+
 
 import { Axios } from 'axios';
 import axios from 'axios';
@@ -74,6 +78,11 @@ class HomeAccent extends Component {
     super(props);
     this.state = {
       traystyle: [],
+      date: new Date(),
+      open:false,
+      border_color:'lightgrey',
+      flag:false,
+      costumer_name:'',
       cnt: 100,
       subcnt: 99,
       value: '',
@@ -82,11 +91,12 @@ class HomeAccent extends Component {
       price: 'Rs. 850.00 - 2850.00',
       name: '',
       size: '',
-      showDesign:false,
-      isFocus:false,
+      showDesign: false,
+      showPersonalization:false,
+      isFocus: false,
       item: [],
       itemcnt: 1,
-      isTraySelect:false,
+      isTraySelect: false,
       focused: false,
       o_plus_minus: '+',
       sp_plus_minus: '+',
@@ -137,18 +147,18 @@ class HomeAccent extends Component {
 
         }
       ],
-      tray_styles:[
+      tray_styles: [
         { label: 'Rectangle Curved Handle', value: '1' },
         { label: 'Rectangle Straight Edge', value: '2' },
         { label: 'Rectangle Decorative Edge', value: '3' },
         { label: 'Square Straight Edge', value: '4' },
       ],
-      tray_sizes:[
+      tray_sizes: [
         { label: 'Extra small', value: '1' },
         { label: 'Small', value: '2' },
         { label: 'Large', value: '3' },
       ],
-      occasion:[
+      occasion: [
         {
           id: 0,
           value: 'Anniversary',
@@ -187,8 +197,8 @@ class HomeAccent extends Component {
         },
       ],
 
-      
-    
+
+
       select_color: [
         {
           id: 0,
@@ -290,19 +300,23 @@ class HomeAccent extends Component {
           },
           {
             id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_1B-240x150.png',
-          },
-          {
-            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_3B-240x150.png',
           },
           {
-            id: 3,
+            id: 2,
             value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_4B-240x150.png',
           },
           {
-            id: 4,
+            id: 3,
             value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_5B-240x150.png',
+          },
+          {
+            id: 4,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_3B-240x150.png',
+          },
+          {
+            id: 5,
+            value: 'https://www.craftslane.com/image/cache/catalog/etching/big/anniversary/AN_3B-240x150.png',
           },
 
         ],
@@ -711,136 +725,175 @@ class HomeAccent extends Component {
                   </View>
                 </View>
                 {renderIf(false)(
-                <View style={{ padding: 10 }}>
-                  <Dropdown
-                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={this.state.tray_styles}
-                    // search
-                    itemTextStyle={{color:'black'}}
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    
-                    // itemContainerStyle={{backgroundColor:'grey'}}
-                    placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
-                    searchPlaceholder="Search..."
-                    // value={value}
-                    onFocus={() => this.setState({isfocus:true})}
-                    onBlur={() => this.setState({isfocus:false})}
-                    onChange={item => {
-                      console.log(item)
-                      this.setState({isfocus:false,isTraySelect:true});
-                    }}
-                    renderLeftIcon={() => (
-                      <AntDesign
-                        style={styles.icon}
-                        color={this.state.isFocus ? 'blue' : 'black'}
-                        name="Safety"
-                        size={20}
-                      />
-                    )}
-                  />
-                </View>
+                  <View style={{ padding: 10 }}>
+                    <Dropdown
+                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={this.state.tray_styles}
+                      // search
+                      itemTextStyle={{ color: 'black' }}
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+
+                      // itemContainerStyle={{backgroundColor:'grey'}}
+                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
+                      searchPlaceholder="Search..."
+                      // value={value}
+                      onFocus={() => this.setState({ isfocus: true })}
+                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+                        console.log(item)
+                        this.setState({ isfocus: false, isTraySelect: true });
+                      }}
+                      renderLeftIcon={() => (
+                        <AntDesign
+                          style={styles.icon}
+                          color={this.state.isFocus ? 'blue' : 'black'}
+                          name="Safety"
+                          size={20}
+                        />
+                      )}
+                    />
+                  </View>
                 )}
                 {renderIf(this.state.isTraySelect)(
-                <View style={{ padding: 10 }}>
-                  <Dropdown
-                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={this.state.tray_sizes}
-                    // search
-                    itemTextStyle={{color:'black'}}
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    
-                    // itemContainerStyle={{backgroundColor:'grey'}}
-                    placeholder={!this.state.isFocus ? 'Select a Size' : '...'}
-                    searchPlaceholder="Search..."
-                    // value={value}
-                    onFocus={() => this.setState({isfocus:true})}
-                    onBlur={() => this.setState({isfocus:false})}
-                    onChange={item => {
-                      console.log(item)
-                      this.setState({isfocus:false});
-                    }}
-                    renderLeftIcon={() => (
-                      <AntDesign
-                        style={styles.icon}
-                        color={this.state.isFocus ? 'blue' : 'black'}
-                        name="Safety"
-                        size={20}
-                      />
-                    )}
-                  />
-                </View>
+                  <View style={{ padding: 10 }}>
+                    <Dropdown
+                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={this.state.tray_sizes}
+                      // search
+                      itemTextStyle={{ color: 'black' }}
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+
+                      // itemContainerStyle={{backgroundColor:'grey'}}
+                      placeholder={!this.state.isFocus ? 'Select a Size' : '...'}
+                      searchPlaceholder="Search..."
+                      // value={value}
+                      onFocus={() => this.setState({ isfocus: true })}
+                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+                        console.log(item)
+                        this.setState({ isfocus: false });
+                      }}
+                      renderLeftIcon={() => (
+                        <AntDesign
+                          style={styles.icon}
+                          color={this.state.isFocus ? 'blue' : 'black'}
+                          name="Safety"
+                          size={20}
+                        />
+                      )}
+                    />
+                  </View>
                 )}
                 {renderIf(false)(
-                <View style={portraitStyles.trayStyleContainer}>
-                  <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
-                  <View style={portraitStyles.trayStyleChild}>
-                    <Text style={{height:20,width:20,backgroundColor:'indigo',borderRadius:10,margin:20}}></Text>
-                    <Text style={{height:20,width:20,backgroundColor:'grey',borderRadius:10,margin:20}}></Text>
-                    <Text style={{height:20,width:20,backgroundColor:'skyblue',borderRadius:10,margin:20}}></Text>
-                    <Text style={{height:20,width:20,backgroundColor:'pink',borderRadius:10,margin:20}}></Text>
+                  <View style={portraitStyles.trayStyleContainer}>
+                    <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
+                    <View style={portraitStyles.trayStyleChild}>
+                      <Text style={{ height: 20, width: 20, backgroundColor: 'indigo', borderRadius: 10, margin: 20 }}></Text>
+                      <Text style={{ height: 20, width: 20, backgroundColor: 'grey', borderRadius: 10, margin: 20 }}></Text>
+                      <Text style={{ height: 20, width: 20, backgroundColor: 'skyblue', borderRadius: 10, margin: 20 }}></Text>
+                      <Text style={{ height: 20, width: 20, backgroundColor: 'pink', borderRadius: 10, margin: 20 }}></Text>
+                    </View>
                   </View>
-                </View>
                 )}
                 {renderIf(true)(
-                <View style={{ padding: 10 }}>
-                  <Text style={{color:'black',padding:10,fontSize:16}}>How would you like us to Personalize it for you?</Text>
-                  <Dropdown
-                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={this.state.occasion}
-                    // search
-                    itemTextStyle={{color:'black'}}
-                    maxHeight={300}
-                    labelField="value"
-                    valueField="id"
-                    
-                    // itemContainerStyle={{backgroundColor:'grey'}}
-                    placeholder={!this.state.isFocus ? 'Select an Occasion' : '...'}
-                    searchPlaceholder="Search..."
-                    // value={value}
-                    onFocus={() => this.setState({isfocus:true})}
-                    onBlur={() => this.setState({isfocus:false})}
-                    onChange={item => {
-                      this.setState({index:item.id,showDesign:true});
-                      this.setState({isfocus:false});
-                    }}
-                    renderLeftIcon={() => (
-                      <AntDesign
-                        style={styles.icon}
-                        color={this.state.isFocus ? 'blue' : 'black'}
-                        name="Safety"
-                        size={20}
-                      />
-                    )}
-                  />
-                </View>
+                  <View style={{ padding: 10 }}>
+                    <Text style={{ color: 'black', padding: 10, fontSize: 16 }}>How would you like us to Personalize it for you?</Text>
+                    <Dropdown
+                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={this.state.occasion}
+                      // search
+                      itemTextStyle={{ color: 'black' }}
+                      maxHeight={300}
+                      labelField="value"
+                      valueField="id"
+
+                      // itemContainerStyle={{backgroundColor:'grey'}}
+                      placeholder={!this.state.isFocus ? 'Select an Occasion' : '...'}
+                      searchPlaceholder="Search..."
+                      // value={value}
+                      onFocus={() => this.setState({ isfocus: true })}
+                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+                        this.setState({ index: item.id, showDesign: true });
+                        this.setState({ isfocus: false });
+                      }}
+                      renderLeftIcon={() => (
+                        <AntDesign
+                          style={styles.icon}
+                          color={this.state.isFocus ? 'blue' : 'black'}
+                          name="Safety"
+                          size={20}
+                        />
+                      )}
+                    />
+                  </View>
                 )}
                 {renderIf(this.state.showDesign)(
-                    <ScrollView horizontal={true}  style={{ width: "90%",padding:10 }}>
-                      {this.state.design_image[this.state.index].map((data, i) => (
-                        <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[this.state.index][data.id].value })} key={i}>
-                          <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
-                        </TouchableOpacity>
-                      ))}
-                    </ScrollView>
-                  )}
+                  <View style={{width:"100%",justifyContent:"center",alignItems:'center',padding:10,display:'flex',flexDirection:'row'}}>
+                    <View>
+                          <MaterialIcons name='navigate-before' color={'#6D6D6D'} size={35} />
+                    </View>
+                  <ScrollView horizontal={true} style={{ width: "80%" }} >
+                    {this.state.design_image[this.state.index].map((data, i) => (
+                      <TouchableOpacity style={{ height: 110, width: 110,borderWidth:1,justifyContent:"center",alignItems:'center',borderColor:this.state.image == data.value ? "black":"lightgrey", margin:5 }} onPress={() => this.setState({ image: this.state.design_image[this.state.index][data.id].value,showPersonalization:true,border_color:'black' })} key={i}>
+                        <Image style={{ height: 100, width: 100,  }} source={{ uri: data.value }}></Image>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                  <View>
+                          <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={35} />
+                  </View>
+                  </View>
+                )}
+                {renderIf(this.state.showPersonalization)(
+                  <View style={portraitStyles.trayStyleContainer}>
+                    <Text style={portraitStyles.headerTrayStyle}>Add Your Personalization</Text>
+                    <View style={portraitStyles.trayStyleChild}>
+                      <View style={portraitStyles.containLabelAndInput}>
+                                <TextInput style={portraitStyles.input} placeholder="Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ costumer_name: text })} />
+                      </View>
+                      <View style={portraitStyles.containLabelAndInput}>
+                        <TextInput showSoftInputOnFocus={false} onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
+                        <DatePicker
+                          modal
+                          open={this.state.open}
+                          date={this.state.date}
+                          androidVariant={'iosClone'}
+                          onConfirm={(date) => {
+                            this.setState({ open: false })
+                            this.setState({ date: date })
+                            this.setState({ flag: true })
+                          }}
+                          fadeToColor={'none'}
+                          mode='date'
+                          onCancel={() => {
+                            this.setState({ open: false })
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
 
-                
+
+                {/* <Spinner visible={true} overlayColor='rgba(0, 0, 0, 0.25)' color='#6d6d6d' size='large'  /> */}
+
                 {/* {this.state.traystyle.map((data, i) => (
                 <View style={portraitStyles.trayStyleContainer} key={i}>
                   <Text style={portraitStyles.headerTrayStyle}>Select tray style: {this.state.value}</Text>
@@ -947,7 +1000,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    color:'black',
+    color: 'black',
   },
   icon: {
     marginRight: 5,
@@ -960,16 +1013,16 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
-    color:"black"
+    color: "black"
   },
   placeholderStyle: {
     fontSize: 16,
-    color:"black"
+    color: "black"
   },
   selectedTextStyle: {
     fontSize: 16,
     // backgroundColor:"red",
-    color:"black"
+    color: "black"
   },
   iconStyle: {
     width: 20,
@@ -978,6 +1031,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    color:"black"
+    color: "black"
   },
 });

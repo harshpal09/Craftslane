@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { ProfileScreen, CartScreen, AuthNavigator, WishList, } from '../export'
+import React, { useEffect, useState,Component } from 'react';
+import { View, StyleSheet, Image,Text } from 'react-native';
+import { ProfileScreen, AuthNavigator, WishList,CartScreen } from '../export'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
+
 import { useSelector } from 'react-redux';
+
+
+
+
+
+
+
+
+
 
 
 const Tab = createBottomTabNavigator();
@@ -16,8 +26,9 @@ const TabRoutes = () => {
 
  const items = useSelector(state => state)
 
+
     return (
-        <Tab.Navigator screenOptions={{
+        <Tab.Navigator  screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: '#B48D56',
             tabBarInactiveTintColor: 'black',
@@ -41,6 +52,8 @@ const TabRoutes = () => {
                     headerShown: true,
                     headerTitle: 'Shopping Cart',
                     headerTitleStyle: { fontSize: 20 },
+
+
                     tabBarBadge: items > 0 ? items: undefined
                 }
                 } />

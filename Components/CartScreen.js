@@ -307,7 +307,9 @@ export default function CartScreen() {
               </View>
 
               <View style={portraitStyles.logoutButtonContainer}>
+
                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: cart_total.total_items, total: cart_total.total })}>
+
                   <Text style={portraitStyles.buttonText} >Checkout</Text>
                 </TouchableOpacity>
               </View>

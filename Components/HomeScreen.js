@@ -99,7 +99,9 @@ export default function HomeScreen({navigation}){
 
               <View style={portraitStyles.searchBarFilter}>
 
+
                 <SearchFilter data={search} input={input} />
+
               </View>  
 
               <View style={portraitStyles.headerTextContainer}>
