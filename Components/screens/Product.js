@@ -1,7 +1,6 @@
 
-import React, { Component, useEffect,useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, TextInput, Image, RefreshControl,ImageBackground, TouchableOpacity, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
-// import UiOrientation from './UiOrientation';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, SafeAreaView, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -9,7 +8,8 @@ import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
-import { LogBox } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../redux/Actions';
 
 
 
@@ -17,48 +17,52 @@ import { LogBox } from 'react-native';
 
 
 
-export default class Product extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            categories: [],
-            item: [],
-            arr: [],
-            name: '',
-            response_data: {},
-            liked: false,
-        }
-    }
+export default function Product({ route, navigation }) {
 
-    componentDidMount() {
-        this.getdata();
-    }
+    const [categories, setCategories] = useState([]);
+    const [item, setItems] = useState([]);
+    const [name, setName] = useState("");
+    const [response_data, setData] = useState({});
+    const dispatch = useDispatch();
 
-    async getdata() {
-        const { item_name, item_id } = this.props.route.params;
-        this.setState({ name: item_name })
+
+    useEffect(() => {
+
+        getdata();
+    }, [])
+
+
+
+
+    getdata = async () => {
+
+        let parsed = {}
+
+        const { item_name, item_id } = route.params;
+
+        setName(item_name);
+
+
         let id = ""
         item_id != null ? id = item_id : id = "";
         try {
             let user = await AsyncStorage.getItem('user');
-            let parsed = JSON.parse(user);
-            this.setState({ data: parsed })
+            parsed = JSON.parse(user);
 
-            // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
 
-        //   console.warn(this.state.data)
 
-        let r = await axios.get(this.state.data.url + "categoryproducts/index&cat_id=" + id + "&key=" + this.state.data.key);
+        let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key);
 
-        this.setState({ response_data: r.data })
 
-        if (this.state.response_data.success == 0) {
+        setData(r.data);
+
+        if (response_data.success == 0) {
             showMessage({
-                message: this.state.response_data.error,
+                message: response_data.error,
                 duration: 4000,
                 type: 'danger',
                 color: 'white',
@@ -67,50 +71,64 @@ export default class Product extends Component {
             })
         }
         else {
-            this.setState({ item: r.data.categories })
+
+            setItems(r.data.categories)
         }
 
     }
-    async addTocart(id) {
-        // const{ item } = this.props.route.params;
+
+    addTocart = async (id) => {
+
+
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
         const d = {
             product_id: id,
-            quantity: this.state.itemcnt
         }
 
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-        let rsp = await axios.post(this.state.data.url + "customcart/add&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
-            .then((response) => showMessage({
-                message: 'Product added successfully',
-                type: 'success',
-                color: 'white',
-                icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-                backgroundColor: 'green',
-                titleStyle: { fontSize: 18 }
-            }))
+        let rsp = await axios.post(parsed.url + "customcart/add&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
+            .then((response) => {
+                dispatch(addItemToCart(response.data.total_cart)),
+
+                    showMessage({
+                        message: 'Product added successfully',
+                        type: 'success',
+                        color: 'white',
+                        icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                        backgroundColor: 'green',
+                        titleStyle: { fontSize: 18 }
+                    })
+            })
             .catch((error) => {
                 console.warn(error);
             })
 
 
-        return this.props.navigation.navigate('Cart')
+        navigation.navigate('Cart')
     }
 
 
 
-
-    render() {
-        return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-                {this.state.item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+    return (
+        <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+            {item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
                     <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
 
 
                         <View style={portraitStyles.categoryHeaderContainer} >
-                            <Text style={portraitStyles.productHeaderText} >{this.state.name}</Text>
+                            <Text style={portraitStyles.productHeaderText} >{name}</Text>
                         </View>
 
 
@@ -119,19 +137,19 @@ export default class Product extends Component {
                         <View >
 
                             <View style={portraitStyles.warpProductContainer}>
-                                {this.state.item.map((val, i) => (
+                                {item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('homeaccent',{image:val.image,name:val.title,config_type:'color'})} style={portraitStyles.productImageContainer}>
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color' })} style={portraitStyles.productImageContainer}>
                                             <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
-                                            <LikeButton  id={val.id} />
+                                            <LikeButton id={val.id} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
-                                            <Text style={portraitStyles.productText} onPress={() => this.props.navigation.navigate('homeaccent',{image:val.image,name:val.title,config_type:'color'})}>{val.title}</Text>
+                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color' })}>{val.title}</Text>
                                         </TouchableOpacity>
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
                                             <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-                                            {/* {console.log(val.id)} */}
+
                                         </View>
                                     </View>
                                 ))}
@@ -139,59 +157,57 @@ export default class Product extends Component {
 
                         </View>
 
-                        {/* </View> */}
+
 
                     </ScrollView>
-                    </ImageBackground>
-                }
-            </SafeAreaView>
-        );
-    }
+                </ImageBackground>
+            }
+        </SafeAreaView>
+    );
+
 }
 
-const LikeButton = ({id}) => {
+const LikeButton = ({ id }) => {
     const [liked, setLiked] = useState(false);
-    
-    const addToWishlist = async(id) =>{
+
+    const addToWishlist = async (id) => {
         liked ? setLiked(false) : setLiked(true);
         let user = await AsyncStorage.getItem('user');
         let parsed = JSON.parse(user);
 
-        // console.log(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token)
-        // console.log("id--",id);
+
         const d = {
-            product_id:id,
+            product_id: id,
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
 
-        await axios.post(parsed.url+'customwishlist/add&key='+parsed.key+'&token='+parsed.token+"&os_type=android",d,header)
-        .then((resp)=> {
-            if(resp.data.success == 1)
-            {
-                showMessage({
-                    message: "Success",
-                    duration: 4000,
-                    type: 'success',
-                    color: 'white',
-                    icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-                    titleStyle: { fontSize: 18 }
-                })
-            }
+        await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=android", d, header)
+            .then((resp) => {
+                if (resp.data.success == 1) {
+                    showMessage({
+                        message: "Success",
+                        duration: 4000,
+                        type: 'success',
+                        color: 'white',
+                        icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+                        titleStyle: { fontSize: 18 }
+                    })
+                }
             })
-        
+
     }
 
     return (
-      <Pressable onPress={() => addToWishlist(id)} style={{position:'absolute',padding:10}}>
-        <MaterialCommunityIcons
-          name={liked ? "heart" : "heart-outline"}
-          size={25}
-          color={liked ? "red" : "black"}
-        />
-      </Pressable>
+        <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10 }}>
+            <MaterialCommunityIcons
+                name={liked ? "heart" : "heart-outline"}
+                size={25}
+                color={liked ? "red" : "black"}
+            />
+        </Pressable>
     );
-  };
+};
 
 

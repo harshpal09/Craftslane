@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, TextInput, Text, ScrollView, ImageBackground, Dimensions, TouchableOpacity, SafeAreaView, Linking,RefreshControl, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Spinner from "react-native-loading-spinner-overlay";
-import UiOrientation from "./UiOrientation";
 import Feather from 'react-native-vector-icons/Feather'
 import { portraitStyles } from "../Style/globleCss";
 import axios from "axios";
@@ -10,94 +8,100 @@ import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from "./screens/LoadingComponent";
 import SearchFilter from './SearchFilter'
 import { LogBox } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from './redux/Actions';
 LogBox.ignoreLogs(['Warning: ...']); 
 LogBox.ignoreAllLogs();
-class HomeScreen extends Component{
 
-  state = {
-    refreshing: false,
-    alldata:[],
-    search:[],
-    input: ""
-  };
-  componentDidMount(){
-    this.getData();
-    this.searchArray();
-    
+export default function HomeScreen({navigation}){
 
-    AsyncStorage.setItem('badge', JSON.stringify(1));
- 
-  }
+  const [refreshing , setRefresh] = useState(false);
+  const [alldata , setData] = useState([]);
+  const [search, setSearch] = useState([]);
+  const [input , setInput] = useState("");
 
-  async searchArray(){
+  useEffect(() => {
+
+  getData();
+  searchArray();
+
+  }, [])
+
+
+   searchArray = async() => {
+    let parsed = {};
+
     try {
       let user = await AsyncStorage.getItem('user');
-      let parsed = JSON.parse(user);
-      this.setState({ data: parsed })
-
+      parsed = JSON.parse(user);
+      
   }
+
   catch (error) {
       Alert.alert(error)
   }
 
-    let res = await axios.get(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
-    // console.log(this.state.data.url + "customcateautosuggestion/index&key=" + this.state.data.key + "&token=" + this.state.data.token);
-    this.setState({ search: res.data.body})
-    // console.log(this.state.search)
+    let res = await axios.get(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token);
+  
+    setSearch(res.data.body);
+
   }
 
 
-  async getData(){
+   getData = async() => {
+
+     let parsed = {};
 
     try {
       let user = await AsyncStorage.getItem('user');
-      let parsed = JSON.parse(user);
-      this.setState({ data: parsed })
-
+      parsed = JSON.parse(user);
+      
   }
+  
   catch (error) {
       Alert.alert(error)
   }
 
-    let resp = await axios.get(this.state.data.url + "customhome/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
-    // console.log(this.state.data.url + "customhome/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
-    this.setState({ alldata: resp.data.data })
-    console.log(this.state.alldata)
+    let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
+    // console.log(resp.data)
+    setData(resp.data.data)
   }
 
 
   _onRefresh = () => {
-    this.render();
-    this.setState({ refreshing: true });
-    if(this.state.alldata.length > 0){
-      this.setState({ refreshing: false });
+   getData();
+    setRefresh(true);
+    if(alldata.length > 0){
+      setRefresh(false);
     }
   }
 
-  render() {
+
     
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
 
-        {this.state.alldata.length == false ? <LoadingComponent /> :
+        {alldata.length == false ? <LoadingComponent /> :
           <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
             <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={()=> this._onRefresh()}
+              refreshing={refreshing}
+              onRefresh={()=> _onRefresh()}
             />}>
-              {/* <Spinner visible={this.state.categories.length ? false : true} overlayColor="rgba(0, 0, 0, 0.58)" textContent='Loading...' textStyle={portraitStyles.loadingTextStyle} size={50} animation="slide" /> */}
+
 
               <View style={portraitStyles.searchBar}>
-                {/* <Feather name="search" color="#000" size={18} /> */}
-                <TextInput style={portraitStyles.textField}  placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> this.setState({input:t})} />
-                <TouchableOpacity onPress={()=> this.props.navigation.navigate('allProducts')} style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
+              
+                <TextInput style={portraitStyles.textField}  placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t)=> setInput(t)} />
+                <TouchableOpacity onPress={()=> navigation.navigate('allProducts',{order_by:""})} style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
                 
               </View>
 
 
               <View style={portraitStyles.searchBarFilter}>
 
-                <SearchFilter data={this.state.search} input={this.state.input} />
+
+                <SearchFilter data={search} input={input} />
+
               </View>  
 
               <View style={portraitStyles.headerTextContainer}>
@@ -105,15 +109,15 @@ class HomeScreen extends Component{
               </View>
               <View>
                 <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
-                  {this.state.alldata.map((data, idx) => (
+                  {alldata.map((data, idx) => (
                     <View style={portraitStyles.categoryImageContainer} key={idx}>
                       {data.categories.map((item, ind) => {
                         return (
                           <View style={portraitStyles.imageTextContainer} key={ind} >
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('categories', {cat_id:item.id })} style={portraitStyles.imageContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('categories', {cat_id:item.id })} style={portraitStyles.imageContainer}>
                               <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.textContainer} onPress={() => this.props.navigation.navigate('categories',{cat_id:item.id })}>
+                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.textContainer} onPress={() => navigation.navigate('categories',{cat_id:item.id })}>
                               <Text
                                 style={portraitStyles.categoryType}
                               >{item.title}</Text>
@@ -128,23 +132,23 @@ class HomeScreen extends Component{
 
               <View style={portraitStyles.headerTextContainer}>
                 <Text style={portraitStyles.headerText}>New Arrivals</Text>
-                <Text style={portraitStyles.allText} onPress={() => this.props.navigation.navigate('newarrivals')}>See All</Text>
+                <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts',{order_by:'new_arrivals'})}>See All</Text>
               </View>
 
               <View>
                 <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
-                  {this.state.alldata.map((data, idx) => (
+                  {alldata.map((data, idx) => (
                     <View style={portraitStyles.categoryImageContainer} key={idx}>
                       {data.new_arrivals.map((item, ind) => {
                         return (
                           <View style={portraitStyles.imageTextContainer} key={ind} >
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.imageContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product', )} style={portraitStyles.imageContainer}>
                               <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.textContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.textContainer}>
                               <Text
                                 style={portraitStyles.categoryType}
-                                onPress={() => this.props.navigation.navigate('categories')}
+                                onPress={() => navigation.navigate('categories')}
                               >{item.title}</Text>
                             </TouchableOpacity>
                           </View>
@@ -159,20 +163,20 @@ class HomeScreen extends Component{
 
               <View style={portraitStyles.headerTextContainer}>
                 <Text style={portraitStyles.headerText}>Popular Trends</Text>
-                <Text style={portraitStyles.allText} onPress={() => this.props.navigation.navigate('populartrends')}>See All</Text>
+                <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts',{order_by:'popular_trends'})}>See All</Text>
               </View>
 
 
               <View >
-                {this.state.alldata.map((data, idx) => (
+                {alldata.map((data, idx) => (
                   <View style={portraitStyles.warpContainer} key={idx}>
                     {data.popular_trends.map((item, ind) => {
                       return (
                         <View style={portraitStyles.warpImageTextContainer} key={ind} >
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.squareImageContainer}>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.squareImageContainer}>
                             <ImageLazyLoading style={portraitStyles.popularImage} source={{ uri: item.image }} />
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product')} style={portraitStyles.textContainer}>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.textContainer}>
                             <Text style={portraitStyles.categoryType}>{item.title}</Text>
                           </TouchableOpacity>
                         </View>
@@ -185,7 +189,7 @@ class HomeScreen extends Component{
                 <Text style={portraitStyles.headerText}>Follow on Facebook & Instagram</Text>
               </View>
 
-              {this.state.alldata.map((item, idx) => (
+              {alldata.map((item, idx) => (
                 <View style={portraitStyles.fotter} key={idx}>
                   <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.instagram.com/craftslane/?hl=en')}>
                     <ImageLazyLoading style={portraitStyles.bannerImage} source={{ uri: item.footer_banner_1 }} />
@@ -201,6 +205,9 @@ class HomeScreen extends Component{
         }
       </SafeAreaView>
     );
-  }
+
+ 
+
+  
 }
-export default HomeScreen;
+

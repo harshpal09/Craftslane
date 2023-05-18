@@ -7,7 +7,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+
 
 
 
@@ -19,9 +20,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Tab = createBottomTabNavigator();
-// const [number, setNumber] = useState(0);
 
 const TabRoutes = () => {
+
+
+ const items = useSelector(state => state)
+
 
     return (
         <Tab.Navigator  screenOptions={{
@@ -48,7 +52,9 @@ const TabRoutes = () => {
                     headerShown: true,
                     headerTitle: 'Shopping Cart',
                     headerTitleStyle: { fontSize: 20 },
-                    tabBarBadge:4
+
+
+                    tabBarBadge: items > 0 ? items: undefined
                 }
                 } />
             <Tab.Screen name="Favourite" component={WishList}
