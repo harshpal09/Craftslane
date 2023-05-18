@@ -29,11 +29,11 @@ export const portraitStyles = StyleSheet.create({
     borderRadius: 10,
   },
   screenBackground: {
-    height: Dimensions.get("screen").height,
+    // height: 350,
     width: Dimensions.get("screen").width,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'#f9f0df',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor:'#f9f0df',
     // backgroundColor:'green',
     
   },
@@ -112,6 +112,16 @@ export const portraitStyles = StyleSheet.create({
   },
   containLabelAndInput: {
     marginTop: 5,
+    // width:'100%',
+    // height: 60,
+    // backgroundColor: 'skyblue',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  filterFormInput:{
+    marginTop: 10,
+    width:'90%',
     // height: 60,
     // backgroundColor: 'skyblue',
     justifyContent: 'center',
@@ -199,6 +209,8 @@ export const portraitStyles = StyleSheet.create({
     marginBottom:200,
     // backgroundColor:'green'
   },
+
+  
   creatButtonContainer: {
     // justifyContent: 'space-around',
     alignItems: 'center',
@@ -656,12 +668,9 @@ export const portraitStyles = StyleSheet.create({
   },
   productContainer: {
     width: 151,
-    // height: 241,
-    // backgroundColor:'red',
     margin: 8,
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
     borderWidth: 0.5,
@@ -672,7 +681,6 @@ export const portraitStyles = StyleSheet.create({
     height: 150,
     width: 150,
     marginTop:0,
-    // backgroundColor:'skyblue',
   },
   productImage: {
     height: 149,

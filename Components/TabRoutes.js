@@ -6,21 +6,15 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 
 const Tab = createBottomTabNavigator();
-// const [number, setNumber] = useState(0);
 
 const TabRoutes = () => {
 
- 
 
-    // let notify = AsyncStorage.getItem('badge');
-    // let parsed = JSON.parse(notify);
-    // setNumber(parsed);
-    // console.log(number)
-    
+ const items = useSelector(state => state)
 
     return (
         <Tab.Navigator screenOptions={{
@@ -47,7 +41,7 @@ const TabRoutes = () => {
                     headerShown: true,
                     headerTitle: 'Shopping Cart',
                     headerTitleStyle: { fontSize: 20 },
-                    // tabBarBadge: {number}
+                    tabBarBadge: items > 0 ? items: undefined
                 }
                 } />
             <Tab.Screen name="Favourite" component={WishList}
