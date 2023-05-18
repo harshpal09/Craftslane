@@ -63,9 +63,10 @@ class AddAddress extends Component {
         address_id: '',
         zone_id: '',
         coun_id: '',
+        radio:false,
         radioButtons: [
             {
-                id: '1', // acts as primary key, should be unique and non-empty string
+                id: 1, // acts as primary key, should be unique and non-empty string
                 label: 'Yes',
                 value: 'option1',
                 color:'#B48D56',
@@ -75,7 +76,7 @@ class AddAddress extends Component {
 
             },
             {
-                id: '2',
+                id: 2,
                 label: 'No',
                 value: 'option2',
                 color:'#B48D56',
@@ -93,8 +94,11 @@ class AddAddress extends Component {
         this.setState({radioButtons:arr});       
     }
 
-    onPressRadioButton(radioButtonsArray) {
-        console.warn(radioButtonsArray);
+    onPressRadioButton(rba) {
+        // console.log(rba)
+
+        rba.map((data)=>( data.label == 'Yes' ? this.setState({radio: data.selected})  : ""))
+        // console.log(this.state.radio)
     }
 
 
@@ -199,7 +203,7 @@ class AddAddress extends Component {
         this.setState({isLoadingState:true});
     }
     render() {
-        console.log(this.state.s_state);
+        console.log(this.state.radio);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <KeyboardAvoidingView>
@@ -305,7 +309,7 @@ class AddAddress extends Component {
                             <Text style={portraitStyles.defaultAddress}>Default Address</Text>
                             <RadioGroup  
                                 radioButtons={this.state.radioButtons}
-                                onPress={()=> this.onPressRadioButton(this.state.radioButtons)}
+                                onPress={(item)=> this.onPressRadioButton(item)}
                                 layout='row'
                             />
                         </View>

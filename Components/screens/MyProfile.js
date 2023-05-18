@@ -91,7 +91,7 @@ class MyProfile extends Component {
                                             <Text style={portraitStyles.tableDoubleColumnLable}>Date of Birth:</Text>
                                         </View>
                                         <View style={portraitStyles.tableColumnInput}>
-                                            <Text style={portraitStyles.tableDoubleColumnText}>{item.dob}</Text>
+                                            <Text style={portraitStyles.tableDoubleColumnText}>{JSON.stringify(item.custom_field).substring(10,20)}</Text>
                                         </View>
                                     </DataTable.Row>
                                     <DataTable.Row style={portraitStyles.tableRow}>

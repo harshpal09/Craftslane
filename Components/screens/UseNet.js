@@ -6,15 +6,20 @@ export default class UseNet extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      netInfo: undefined
+      netInfo: undefined,
+      temp: 1,
     }
+    // console.log("constructor=> ",this.state.temp);
   }
 
   setNetInfo = netInfo => {
+    // this.setState({temp:this.state.temp+1})
     this.setState({ netInfo })
+    // console.log("setNetInfo() in class => ",netInfo);
   }
   myfunction()
   {
+    // console.log("myfunction() in class => ",this.state.netInfo);
       if(this.state.netInfo == false)
       {
           Alert.alert(
@@ -30,11 +35,7 @@ export default class UseNet extends Component {
 
 
   render() {
-    // console.warn(this.state.netInfo)
-   
-
-
-   
+    // console.log("render => ",this.state.netInfo);
     return (
       <SafeAreaView>
         <SetNetInfo setNetInfo={this.setNetInfo} />
@@ -54,9 +55,11 @@ export default class UseNet extends Component {
 
 const SetNetInfo = ({ setNetInfo }) => {
   const netInfo = useNetInfo()
-
+  // console.log("functional comp start ")
   React.useEffect(() => {
       setNetInfo(netInfo.isConnected)
+      // console.log("functional comp 2 => ",netInfo.isConnected);
+      // console.log("functional comp 3 => ",netInfo);
   },[netInfo])
 
   return null

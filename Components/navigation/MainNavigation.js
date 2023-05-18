@@ -13,6 +13,7 @@ import LogOut from '../screens/LogOut';
 import Success from '../forgot-password/Success';
 import CheckOut from '../screens/CheckOut';
 import PlaceOrder from '../screens/PlaceOrder';
+import Test from "../screens/Test"
 // import { EnterEmail, EnterOTP } from '../forgot-password/ForgotPassword';
 // import MyStripeCheckout from '../screens/MyStripeCheckout';
 
@@ -131,6 +132,15 @@ class MainNavigation extends Component {
           options={{
             headerShown: true,
              headerTitle: 'Checkout',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
+        
+          }}
+        />
+        <Stack.Screen name="test" component={Test}
+          options={{
+            headerShown: true,
+             headerTitle: 'Test',
              headerTintColor: '#B48D56',
              headerTitleStyle: { color: 'black'}
         

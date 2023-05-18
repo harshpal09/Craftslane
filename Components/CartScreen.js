@@ -273,7 +273,7 @@ class CartScreen extends Component {
              </View>
 
               <View style={portraitStyles.logoutButtonContainer}>
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: this.state.cart_total.total_items, total: this.state.cart_total.total })}>
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('test', { item: this.state.cart_total.total_items, total: this.state.cart_total.total })}>
                   <Text style={portraitStyles.buttonText} >Checkout</Text>
                 </TouchableOpacity>
               </View>
