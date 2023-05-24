@@ -12,7 +12,7 @@ import EmptyCart from './screens/EmptyCart';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from './screens/LoadingComponent';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from './redux/Actions';
 
 export default function CartScreen() {
@@ -23,10 +23,12 @@ export default function CartScreen() {
   const [cart, setCart] = useState([]);
   const [cart_total, setCartTotal] = useState({});
   const [refreshing, setRefresh] = useState(false);
-  const [overlay , setOverlay] = useState(false);
+  const [overlay, setOverlay] = useState(false);
   const dispatch = useDispatch();
 
+  const item = useSelector(i => i);
 
+  // console.log(item)
   useEffect(() => {
 
     getdata();
@@ -52,8 +54,11 @@ export default function CartScreen() {
 
     await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
       .then((resp2) => {
-
-        dispatch(addItemToCart(resp2.data.total_cart)),
+        const values = {
+          cart_items: resp2.data.total_cart,
+          wishlist_items: item.wishlist_items
+        }
+        dispatch(addItemToCart(values)),
           setCart(resp2.data.products),
           setCartTotal(resp2.data),
           setLength(resp2.data.cart)
@@ -105,16 +110,17 @@ export default function CartScreen() {
 
     await axios.post(parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header).
       then((response) => {
-        dispatch(addItemToCart(response.data.total_cart)),
+        const values = {
+          cart_items: response.data.total_cart,
+          wishlist_items: item.wishlist_items
+        }
+        dispatch(addItemToCart(values)),
 
           setCart(response.data.products),
           setCartTotal(response.data),
           setLength(response.data.cart)
-
-          setOverlay(false);
-
-
       })
+    setOverlay(false)
 
   }
 
@@ -146,7 +152,11 @@ export default function CartScreen() {
 
     await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
       .then((response) => {
-        dispatch(addItemToCart(response.data.total_cart)),
+        const values = {
+          cart_items: response.data.total_cart,
+          wishlist_items: item.wishlist_items
+        }
+        dispatch(addItemToCart(values)),
 
           setCart(response.data.products),
           setCartTotal(response.data),
@@ -171,7 +181,7 @@ export default function CartScreen() {
 
 
   decFunction = async (product_id, quantity) => {
-    
+
     let parsed = {};
 
     try {
@@ -198,13 +208,17 @@ export default function CartScreen() {
 
       let resp = await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
         .then((response) => {
-          dispatch(addItemToCart(response.data.total_cart)),
+          const values = {
+            cart_items: response.data.total_cart,
+            wishlist_items: item.wishlist_items
+          }
+          dispatch(addItemToCart(values)),
 
             setCart(response.data.products),
             setCartTotal(response.data),
             setLength(response.data.cart)
 
-            setOverlay(false);
+          setOverlay(false);
         })
 
 
@@ -243,7 +257,7 @@ export default function CartScreen() {
               />}
             >
 
-                <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{color: 'white'}}/>
+              <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
 
 
               <View style={portraitStyles.warpContainer} >
