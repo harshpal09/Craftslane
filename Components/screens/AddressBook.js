@@ -145,7 +145,7 @@ class AddressBook extends Component {
             showMessage({
                 message: 'Default address successfully Set',
                 duration: 4000,
-                type: 'success',    
+                type: 'success',
                 color: 'white',
                 icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
                 backgroundColor: 'green',
@@ -188,23 +188,25 @@ class AddressBook extends Component {
                                                         layout='row'
                                                     />
                                                 </View> */}
-                                                <TouchableOpacity style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10, display: 'flex', flexDirection: 'row' }} onPress={() => this.makeDefault(item.address_id)}>
+                                                <TouchableOpacity style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10, display: 'flex', flexDirection: 'row', backgroundColor: '' }} onPress={() => this.makeDefault(item.address_id)}>
                                                     <MaterialIcons name={this.state.toggle == item.address_id || item.default == 1 ? 'radio-button-on' : 'radio-button-off'} size={25} color={"#B48D56"} />
                                                     <Text style={{ color: 'black', textAlignVertical: 'center', textAlign: 'center', paddingHorizontal: 10 }}>Make Default</Text>
                                                 </TouchableOpacity>
-                                                <Text style={portraitStyles.addressText}> {item.firstname} {item.lastname} </Text>
-                                                <Text style={portraitStyles.addressText}>{item.company}</Text>
-                                                <Text style={portraitStyles.addressText}>{item.address_1}</Text>
-                                                <Text style={portraitStyles.addressText}> {item.address_2}</Text>
-                                                <Text style={portraitStyles.addressText}> {item.city} {item.postcode} </Text>
-                                                <Text style={portraitStyles.addressText}> {item.zone} </Text>
-                                                <Text style={portraitStyles.addressText}> {item.country}</Text>
+                                                <View style={{width:"90%"}}>
+                                                    <Text style={portraitStyles.addressHeaderText}>{item.firstname} {item.lastname} </Text>
+                                                    <Text style={portraitStyles.addressText}>{item.company}</Text>
+                                                    <Text style={portraitStyles.addressText}>{item.address_1}</Text>
+                                                    <Text style={portraitStyles.addressText}>{item.address_2}</Text>
+                                                    <Text style={portraitStyles.addressText}>{item.city} {item.postcode} </Text>
+                                                    <Text style={portraitStyles.addressText}>{item.zone} </Text>
+                                                    <Text style={portraitStyles.addressText}>{item.country}</Text>
+                                                </View>
                                                 <View style={{ flexDirection: 'row', display: 'flex', width: "80%", justifyContent: 'space-between', padding: 20 }}>
-                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 3, padding: 5 }} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
+                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 5, padding: 5 }} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
                                                         <Text style={portraitStyles.addressButton}>Edit</Text>
                                                     </TouchableOpacity>
                                                     {this.state.address.length > 0 ?
-                                                        <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 3, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
+                                                        <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 5, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
                                                             <Text style={portraitStyles.addressButton}>Delete</Text>
                                                         </TouchableOpacity>
                                                         :

@@ -288,6 +288,18 @@ export const portraitStyles = StyleSheet.create({
     color: '#6D6D6D',
     //  backgroundColor:'green',         
   },
+  headerAddressTypeText: {
+    //  margin:10,
+    // paddingLeft:10,
+    // height: 25,
+    // left: 23.95,
+    fontFamily: 'Baskervville-Regular',
+    // fontSize: "italic",
+    fontWeight: "400",
+    fontSize: 20,
+    color: '#6D6D6D',
+    //  backgroundColor:'green',         
+  },
   headerMiddleTextContainer: {
     width:'100%',
     // padding: 20,
@@ -298,6 +310,17 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'red',
     padding:5,
     paddingBottom:20,
+  },
+  addressTypeText: {
+    width:'95%',
+    // padding: 20,
+    display:'flex',
+    flexDirection:'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor:'red',
+    padding:5,
+    // paddingBottom:20,
   },
   profileIconContainer:{
     // backgroundColor:'white',
@@ -1149,16 +1172,27 @@ wishlistPriceText:{
 addressText: {
   // margin: 2,
   // marginLeft: 2,
+  lineHeight:8,
   padding:5,
-  color: 'black',
+  color: '#6d6d6d',
   // fontFamily: 'Georgia',
-
+  fontSize:12,
   // width: '30%',
   // height:70,
   // textAlign:"center",
   textAlignVertical: "center",
   // backgroundColor:'grey',
 },
+addressHeaderText: {
+  width:'90%',
+  padding:5,
+  color: '#747474',
+  fontSize:15,
+  fontWeight:'600',
+  textAlignVertical: "center",
+  // backgroundColor:'grey',
+},
+
 helpText:{
   color:'black',
   fontFamily:'Georgia'
@@ -1627,7 +1661,16 @@ cartIncDecContainer: {
     justifyContent: 'center',
     alignItems:'center',
     marginVertical:20,
-    // backgroundColor:'green'
+    // backgroundColor:'gray'
+},
+addressSubChildContainer:{
+  width: "90%",
+  borderWidth: 1,
+  borderColor: '#c59a6a',
+  justifyContent: 'center',
+  alignItems:'center',
+  marginVertical:20,
+  // backgroundColor:'green'
 },
 
 addressParentContainer:{

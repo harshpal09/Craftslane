@@ -139,12 +139,13 @@ export default function Product({ route, navigation }) {
                             <View style={portraitStyles.warpProductContainer}>
                                 {item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color' })} style={portraitStyles.productImageContainer}>
+                                        {console.log(val.id)}
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color',id : val.id })} style={portraitStyles.productImageContainer}>
                                             <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
                                             <LikeButton id={val.id} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
-                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color' })}>{val.title}</Text>
+                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color',id : val.id })}>{val.title}</Text>
                                         </TouchableOpacity>
                                         <View style={portraitStyles.priceContainer}>
                                             <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>

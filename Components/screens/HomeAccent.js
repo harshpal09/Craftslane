@@ -1,6 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, ImageBackground,TextInput ,TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TextInput, TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
+import ImageLazyLoading from "react-native-image-lazy-loading";
 import DatePicker from 'react-native-date-picker';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import UiOrientation from '../UiOrientation';
@@ -13,6 +14,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown } from 'react-native-element-dropdown';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Spinner from 'react-native-loading-spinner-overlay';
 
 
@@ -79,10 +81,10 @@ class HomeAccent extends Component {
     this.state = {
       traystyle: [],
       date: new Date(),
-      open:false,
-      border_color:'lightgrey',
-      flag:false,
-      costumer_name:'',
+      open: false,
+      border_color: 'lightgrey',
+      flag: false,
+      costumer_name: '',
       cnt: 100,
       subcnt: 99,
       value: '',
@@ -92,15 +94,16 @@ class HomeAccent extends Component {
       name: '',
       size: '',
       showDesign: false,
-      showPersonalization:false,
+      showPersonalization: false,
       isFocus: false,
-      item: [],
+      item: {},
       itemcnt: 1,
       isTraySelect: false,
       focused: false,
       o_plus_minus: '+',
       sp_plus_minus: '+',
       activity_indicator: true,
+      product_option_value: [],
       style_in: {
         borderWidth: 1, borderRadius: 15, marginVertical: 4,
         marginHorizontal: 1, width: 147,
@@ -673,30 +676,37 @@ class HomeAccent extends Component {
     this.getData()
   }
   async getData() {
-    const { image, name, config_type } = this.props.route.params;
-    this.setState({ image: image, name: name })
+
+    let parsed = {}
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+    }
+    catch (error) {
+      Alert.alert(error)
+    }
+    const { image, name, config_type, id } = this.props.route.params;
+    this.setState({ name: name })
+    await axios.get(parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id)
+      .then((resp) => this.setState({ item: resp.data, image: resp.data.data.big_image, price: resp.data.data.price, product_option_value: resp.data.data.options.length > 0 ? resp.data.data.options[0].product_option_value : []}))
   }
-  // onOccasionSelect(id){
-  //   this.setState({index:id})
-  // }
+
 
   render() {
-    // console.warn(this.state.traystyle);
-    console.log(this.state.index, this.state.image)
+    // console.log(this.state.product_option_value);
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-
-        {this.state.traystyle.length == true ? <LoadingComponent /> :
+        {console.log(this.state.item.success)}
+        {this.state.item.success == undefined ? <LoadingComponent /> :
           <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
             <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
 
 
               <View style={portraitStyles.homeAccentContainer}>
-
                 <View style={portraitStyles.productProfileContainer} >
                   <TouchableOpacity>
                     <View style={portraitStyles.homeAccentImageContainer}>
-                      <Image style={portraitStyles.homeAccentImage} source={{ uri: this.state.image }} />
+                      <ImageLazyLoading style={portraitStyles.homeAccentImage} source={{ uri: this.state.image }} />
                     </View>
                   </TouchableOpacity>
                   {renderIf(false)(
@@ -720,8 +730,12 @@ class HomeAccent extends Component {
                     </ScrollView>
                   )}
                   <View style={portraitStyles.homeAccentTextContainer}>
-                    <Text style={portraitStyles.homeAccentText} onPress={() => this.props.navigation.navigate('')}>{this.state.name}</Text>
+                    <Text style={portraitStyles.homeAccentText}>{this.state.name}</Text>
                     <Text style={portraitStyles.productProfilePrice} >{this.state.price}</Text>
+                    {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center',backgroundColor:'red'}}>
+                      <Image style={{width:100,height:100,backgroundColor:'green'}} source={require('../../assets/images/gift.svg')} />
+                      <Text >Gift Wrapped</Text>
+                    </View> */}
                   </View>
                 </View>
                 {renderIf(false)(
@@ -796,18 +810,17 @@ class HomeAccent extends Component {
                     />
                   </View>
                 )}
-                {renderIf(false)(
+                {renderIf(this.state.product_option_value.length)(
                   <View style={portraitStyles.trayStyleContainer}>
                     <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
                     <View style={portraitStyles.trayStyleChild}>
-                      <Text style={{ height: 20, width: 20, backgroundColor: 'indigo', borderRadius: 10, margin: 20 }}></Text>
-                      <Text style={{ height: 20, width: 20, backgroundColor: 'grey', borderRadius: 10, margin: 20 }}></Text>
-                      <Text style={{ height: 20, width: 20, backgroundColor: 'skyblue', borderRadius: 10, margin: 20 }}></Text>
-                      <Text style={{ height: 20, width: 20, backgroundColor: 'pink', borderRadius: 10, margin: 20 }}></Text>
+                      {this.state.product_option_value.map((data,i)=>(
+                      <Image style={{ height: 20, width: 20, borderRadius: 10, margin: 20 }} source={{uri: data.image}} />
+                      ))}
                     </View>
                   </View>
                 )}
-                {renderIf(true)(
+                {renderIf(false)(
                   <View style={{ padding: 10 }}>
                     <Text style={{ color: 'black', padding: 10, fontSize: 16 }}>How would you like us to Personalize it for you?</Text>
                     <Dropdown
@@ -845,20 +858,20 @@ class HomeAccent extends Component {
                   </View>
                 )}
                 {renderIf(this.state.showDesign)(
-                  <View style={{width:"100%",justifyContent:"center",alignItems:'center',padding:10,display:'flex',flexDirection:'row'}}>
+                  <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', padding: 10, display: 'flex', flexDirection: 'row' }}>
                     <View>
-                          <MaterialIcons name='navigate-before' color={'#6D6D6D'} size={35} />
+                      <MaterialIcons name='navigate-before' color={'#6D6D6D'} size={35} />
                     </View>
-                  <ScrollView horizontal={true} style={{ width: "80%" }} >
-                    {this.state.design_image[this.state.index].map((data, i) => (
-                      <TouchableOpacity style={{ height: 110, width: 110,borderWidth:1,justifyContent:"center",alignItems:'center',borderColor:this.state.image == data.value ? "black":"lightgrey", margin:5 }} onPress={() => this.setState({ image: this.state.design_image[this.state.index][data.id].value,showPersonalization:true,border_color:'black' })} key={i}>
-                        <Image style={{ height: 100, width: 100,  }} source={{ uri: data.value }}></Image>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                  <View>
-                          <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={35} />
-                  </View>
+                    <ScrollView horizontal={true} style={{ width: "80%" }} >
+                      {this.state.design_image[this.state.index].map((data, i) => (
+                        <TouchableOpacity style={{ height: 110, width: 110, borderWidth: 1, justifyContent: "center", alignItems: 'center', borderColor: this.state.image == data.value ? "black" : "lightgrey", margin: 5 }} onPress={() => this.setState({ image: this.state.design_image[this.state.index][data.id].value, showPersonalization: true, border_color: 'black' })} key={i}>
+                          <Image style={{ height: 100, width: 100, }} source={{ uri: data.value }}></Image>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                    <View>
+                      <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={35} />
+                    </View>
                   </View>
                 )}
                 {renderIf(this.state.showPersonalization)(
@@ -866,7 +879,7 @@ class HomeAccent extends Component {
                     <Text style={portraitStyles.headerTrayStyle}>Add Your Personalization</Text>
                     <View style={portraitStyles.trayStyleChild}>
                       <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ costumer_name: text })} />
+                        <TextInput style={portraitStyles.input} placeholder="Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ costumer_name: text })} />
                       </View>
                       <View style={portraitStyles.containLabelAndInput}>
                         <TextInput showSoftInputOnFocus={false} onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
@@ -974,7 +987,7 @@ class HomeAccent extends Component {
               <View style={portraitStyles.noteContainer}>
 
                 <Text style={portraitStyles.noteText}>
-                  Note: If you are shipping this to an address other than your own, and would like to send a message to your friends or loved ones, then please enter your personalized message at the point of checkout.
+                  Note: {this.state.item.data.additional_line}
                 </Text>
               </View>
               {/* </View> */}

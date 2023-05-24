@@ -23,9 +23,11 @@ const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
 
-
+    // const items = []
  const items = useSelector(state => state)
+//  const item2 = useSelector(s2 => s2);
 
+//  console.log("item => ",items.cart_items);
 
     return (
         <Tab.Navigator  screenOptions={{
@@ -54,7 +56,7 @@ const TabRoutes = () => {
                     headerTitleStyle: { fontSize: 20 },
 
 
-                    tabBarBadge: items > 0 ? items: undefined
+                    tabBarBadge: items.cart_items > 0 ? items.cart_items : undefined
                 }
                 } />
             <Tab.Screen name="Favourite" component={WishList}
@@ -66,6 +68,8 @@ const TabRoutes = () => {
                     },
                     headerShown: true,
                     headerTitleStyle: { fontSize: 20 },
+                    tabBarBadge: items.wishlist_items > 0 ? items.wishlist_items : undefined,
+
                     
 
 
