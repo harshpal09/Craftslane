@@ -86,7 +86,7 @@ class AddressBook extends Component {
             .then((response) => {
                 this.setState({ all_data: response.data })
             })
-        console.log(this.state.all_data);
+        // console.log(this.state.all_data);
         if (this.state.all_data.status == 200) {
             this.setState({ address: this.state.all_data.body })
             showMessage({
@@ -130,7 +130,7 @@ class AddressBook extends Component {
         const d = {
             address_id: id
         }
-        console.log("address_id=> ", id)
+        // console.log("address_id=> ", id)
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }

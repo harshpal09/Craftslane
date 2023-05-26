@@ -348,7 +348,7 @@ export const portraitStyles = StyleSheet.create({
     marginRight: 10,
     fontFamily: 'Baskervville-Regular',
     fontWeight: "400",
-    fontSize: 20,
+    fontSize: 17,
     color: '#6D6D6D',
   },
   bannerContainer: {
@@ -413,14 +413,14 @@ export const portraitStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
-    paddingBottom:Dimensions.get('screen').width/3,
+    // paddingBottom:Dimensions.get('screen').width/3,
     width:'100%',
-    // marginBottom:  ,
-    // backgroundColor:'red',
+    
   },
   bannerImage: {
-    width: Dimensions.get('screen').width/2.2,
-    height: 280,
+    width:  Dimensions.get('screen').width/2.2,
+    height: DeviceInfo.isTablet()?Dimensions.get('screen').width/2.2: Dimensions.get('screen').width/1.7,
+    // height: 280,
   },
   //------------------------------------------END HOME PAGE CSS-------------------------------------
 
@@ -451,7 +451,7 @@ export const portraitStyles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontFamily: 'PlayfairDisplay-Italic',
+    fontFamily: 'Baskervville-Italic',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     textAlign:'center',
@@ -461,7 +461,7 @@ export const portraitStyles = StyleSheet.create({
   },
   normal2text: {
     fontSize: 16,
-    fontFamily: 'PlayfairDisplay-Italic',
+    fontFamily: 'Baskervville-Italic',
     // textAlignVertical:'center',
     // justifyContent:'center', 
     textAlign:'center',
@@ -698,18 +698,21 @@ export const portraitStyles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     borderWidth: 0.5,
-    borderColor: '#706c62'
+    borderColor: '#706c62',
+    // backgroundColor: 'yellow'
 
   },
   productImageContainer: {
-    height: 150,
-    width: 150,
+    height: 149,
+    width: 149,
     marginTop:0,
+    borderRadius: 12,
+    // backgroundColor: 'red'
   },
   productImage: {
     height: 149,
     width: 149,
-    borderRadius: 17,
+    borderRadius: 12,
     backgroundColor:'#f2ebd5'
   },
   priceContainer: {
@@ -735,11 +738,21 @@ export const portraitStyles = StyleSheet.create({
   },
   priceText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
-    fontFamily: 'Baskervville-Regular'
+    // textDecorationLine: 'line-through',
+    fontFamily: 'Academy Engraved LET'
+  },
+  discountPrice: {
+    fontSize: 14,
+    // fontWeight: 'bold',
+    color: 'black',
+    textAlign:'center',
+    textAlignVertical:'center',
+    textDecorationLine: 'line-through',
+    fontFamily: 'Academy Engraved LET'
   },
   productText: {
     justifyContent: 'center',
@@ -1038,7 +1051,7 @@ export const portraitStyles = StyleSheet.create({
   },
   loadingTextStyle: {
     color: '#B48D56',
-    fontFamily: 'PlayfairDisplay-Italic'
+    fontFamily: 'Baskervville-Italic'
   },
   loadingScreen: {
     // backgroundColor: '#f2ebd5',
@@ -1166,7 +1179,7 @@ cartText: {
 wishlistPriceText:{
   padding:5,
   color: '#3d3d3d',
-  fontFamily: 'Baskervville-Regular',
+  fontFamily: 'Academy Engraved LET',
   textAlignVertical: "center",
 },
 addressText: {
@@ -1760,6 +1773,26 @@ creditTableRow:
     color:'#6d6d6d',
     fontSize:13,
 
+ },
+ tinyIcon:{
+  width: 20,
+    height: 20,
+   paddingRight:10
+ },
+ tinyIconContainer:{
+  display: 'flex',
+   flexDirection: 'row',
+  //  justifyContent:'space-evenly',
+    width:'100%',
+    padding:10,
+    // backgroundColor:'red'
+ },
+ tinyText:{
+  textAlign: 'center',
+   textAlignVertical:'center', 
+   fontFamily: 'Baskervville-Italic',
+   width:'80%',
+  //  backgroundColor: 'yellow'
  }
 
 })
