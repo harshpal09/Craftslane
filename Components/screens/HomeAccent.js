@@ -81,10 +81,12 @@ class HomeAccent extends Component {
     this.state = {
       traystyle: [],
       date: new Date(),
+      body: {},
       open: false,
       border_color: 'lightgrey',
       flag: false,
       costumer_name: '',
+      sets_view_type_5: [],
       cnt: 100,
       subcnt: 99,
       value: '',
@@ -145,6 +147,8 @@ class HomeAccent extends Component {
       size_id: 0,
       liked: false,
       isLoading: false,
+      ShowDescription: false,
+      plus_minus: "+",
       countries: [
         {
 
@@ -156,11 +160,7 @@ class HomeAccent extends Component {
         { label: 'Rectangle Decorative Edge', value: '3' },
         { label: 'Square Straight Edge', value: '4' },
       ],
-      tray_sizes: [
-        { label: 'Extra small', value: '1' },
-        { label: 'Small', value: '2' },
-        { label: 'Large', value: '3' },
-      ],
+      tray_sizes: [],
       occasion: [
         {
           id: 0,
@@ -218,81 +218,81 @@ class HomeAccent extends Component {
       ],
       index: 0,
       items_image: [
-        [
-          {
-            id: 0,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/DGRDE0716L_7/DGRDE0716L_7-200x200.png',
-          },
-          {
-            id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HHMRCH0002L_1/HHMRCH0002L_1-400x400.png',
-          },
-          {
-            id: 2,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HJCRSE0007L_4/HJCRSE0007L_4-400x400.png',
-          },
-          {
-            id: 3,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HLRSE0006AG_1/HLRSE0006AG_2-400x400.png',
-          },
+        // [
+        //   {
+        //     id: 0,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/DGRDE0716L_7/DGRDE0716L_7-200x200.png',
+        //   },
+        //   {
+        //     id: 1,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HHMRCH0002L_1/HHMRCH0002L_1-400x400.png',
+        //   },
+        //   {
+        //     id: 2,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HJCRSE0007L_4/HJCRSE0007L_4-400x400.png',
+        //   },
+        //   {
+        //     id: 3,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/HLRSE0006AG_1/HLRSE0006AG_2-400x400.png',
+        //   },
 
-        ],
-        [
-          {
-            id: 0,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
-          },
-          {
-            id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
-          },
-          {
-            id: 2,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
-          }
-        ],
-        [
-          {
-            id: 0,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
-          },
-          {
-            id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
-          },
-          {
-            id: 2,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
-          }
-        ],
-        [
-          {
-            id: 0,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
-          },
-          {
-            id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
-          },
-          {
-            id: 2,
-            value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
-          }
-        ],
-        [
-          {
-            id: 0,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
-          },
-          {
-            id: 1,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
-          },
-          {
-            id: 2,
-            value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
-          }
-        ],
+        // ],
+        // [
+        //   {
+        //     id: 0,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
+        //   },
+        //   {
+        //     id: 1,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
+        //   },
+        //   {
+        //     id: 2,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
+        //   }
+        // ],
+        // [
+        //   {
+        //     id: 0,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
+        //   },
+        //   {
+        //     id: 1,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
+        //   },
+        //   {
+        //     id: 2,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
+        //   }
+        // ],
+        // [
+        //   {
+        //     id: 0,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80022532/80022532-400x400.png',
+        //   },
+        //   {
+        //     id: 1,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80043621/80043621-400x400.png',
+        //   },
+        //   {
+        //     id: 2,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/gifting/80007692/80007692-400x400.png',
+        //   }
+        // ],
+        // [
+        //   {
+        //     id: 0,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0991C3EBPR/0991C3EBPR_1-400x400.png',
+        //   },
+        //   {
+        //     id: 1,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0187C3EBPR/0187C3EBPR-400x400.png',
+        //   },
+        //   {
+        //     id: 2,
+        //     value: 'https://www.craftslane.com/image/cache/catalog/home-accents/0963ISFBPD/0963ISFBPD_1-400x400.png',
+        //   }
+        // ],
 
       ],
       design_image: [
@@ -686,17 +686,25 @@ class HomeAccent extends Component {
       Alert.alert(error)
     }
     const { image, name, config_type, id } = this.props.route.params;
-    this.setState({ name: name })
+    // this.setState({ name: name })
+    // console.log(id)
     await axios.get(parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id)
-      .then((resp) => this.setState({ item: resp.data, image: resp.data.data.big_image, price: resp.data.data.price, product_option_value: resp.data.data.options.length > 0 ? resp.data.data.options[0].product_option_value : []}))
+      .then((resp) => this.setState({ item: resp.data, body: resp.data.body, image: resp.data.body.thumb, price: resp.data.body.price, product_option_value: resp.data.body.options.length > 0 ? resp.data.body.options[0].product_option_value : [], name: resp.data.body.heading_title, items_image: resp.data.body.images }))
+
+      if(this.state.body.view_type == 5)
+      {
+        this.setState({sets_view_type_5: this.state.item.body.options[2].product_option_value})
+      }
   }
 
 
   render() {
-    // console.log(this.state.product_option_value);
+    const id = "424";
+    console.log("sets => ",this.state.sets_view_type_5);
+    // console.log(this.state.body.options[1].product_option_value_data_child);
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-        {console.log(this.state.item.success)}
+        {/* {console.log(this.state.item.success)} */}
         {this.state.item.success == undefined ? <LoadingComponent /> :
           <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
             <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -720,12 +728,17 @@ class HomeAccent extends Component {
                       }
                     </ScrollView>
                   )}
-                  {renderIf(false)(
-                    <ScrollView horizontal={true} style={{ width: "80%" }}>
-                      {this.state.items_image[this.state.index].map((data, i) => (
-                        <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[this.state.index][data.id].value })} key={i}>
-                          <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.value }}></Image>
-                        </TouchableOpacity>
+                  {renderIf(this.state.body.view_type == 2)(
+                    <ScrollView horizontal={true} style={{ width: "100%" }}>
+                      {this.state.items_image.map((data, i) => (
+                        <View style={{ flexDirection: 'row' }} key={i}>
+                          <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[i].additional_popup })} >
+                            <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.additional_popup }}></Image>
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[i].popup })} >
+                            <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.popup }}></Image>
+                          </TouchableOpacity>
+                        </View>
                       ))}
                     </ScrollView>
                   )}
@@ -738,7 +751,7 @@ class HomeAccent extends Component {
                     </View> */}
                   </View>
                 </View>
-                {renderIf(false)(
+                {renderIf(this.state.body.view_type == 2)(
                   <View style={{ padding: 10 }}>
                     <Dropdown
                       style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
@@ -746,12 +759,12 @@ class HomeAccent extends Component {
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
-                      data={this.state.tray_styles}
+                      data={this.state.product_option_value}
                       // search
                       itemTextStyle={{ color: 'black' }}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="name"
+                      valueField="product_option_value_id"
 
                       // itemContainerStyle={{backgroundColor:'grey'}}
                       placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
@@ -760,7 +773,7 @@ class HomeAccent extends Component {
                       onFocus={() => this.setState({ isfocus: true })}
                       onBlur={() => this.setState({ isfocus: false })}
                       onChange={item => {
-                        console.log(item)
+                        this.setState({ tray_sizes: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
                         this.setState({ isfocus: false, isTraySelect: true });
                       }}
                       renderLeftIcon={() => (
@@ -786,8 +799,8 @@ class HomeAccent extends Component {
                       // search
                       itemTextStyle={{ color: 'black' }}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="name"
+                      valueField="product_option_value_id"
 
                       // itemContainerStyle={{backgroundColor:'grey'}}
                       placeholder={!this.state.isFocus ? 'Select a Size' : '...'}
@@ -796,7 +809,7 @@ class HomeAccent extends Component {
                       onFocus={() => this.setState({ isfocus: true })}
                       onBlur={() => this.setState({ isfocus: false })}
                       onChange={item => {
-                        console.log(item)
+                        this.setState({ price: item.price })
                         this.setState({ isfocus: false });
                       }}
                       renderLeftIcon={() => (
@@ -810,16 +823,18 @@ class HomeAccent extends Component {
                     />
                   </View>
                 )}
-                {renderIf(this.state.product_option_value.length)(
+                {this.state.body.view_type == 1 ?
                   <View style={portraitStyles.trayStyleContainer}>
                     <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
                     <View style={portraitStyles.trayStyleChild}>
-                      {this.state.product_option_value.map((data,i)=>(
-                      <Image style={{ height: 20, width: 20, borderRadius: 10, margin: 20 }} source={{uri: data.image}} />
+                      {this.state.product_option_value.map((data, i) => (
+                        <Image style={{ height: 20, width: 20, borderRadius: 10, margin: 20 }} source={{ uri: data.image }} />
                       ))}
                     </View>
                   </View>
-                )}
+                  :
+                  <></>
+                }
                 {renderIf(false)(
                   <View style={{ padding: 10 }}>
                     <Text style={{ color: 'black', padding: 10, fontSize: 16 }}>How would you like us to Personalize it for you?</Text>
@@ -904,6 +919,80 @@ class HomeAccent extends Component {
                   </View>
                 )}
 
+                {renderIf(this.state.body.view_type == 5)(
+                  <View style={{ padding: 10 }}>
+                    {/* <Dropdown
+                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={this.state.product_option_value}
+                      // search
+                      itemTextStyle={{ color: 'black' }}
+                      maxHeight={300}
+                      labelField="name"
+                      valueField="product_option_value_id"
+
+                      // itemContainerStyle={{backgroundColor:'grey'}}
+                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
+                      searchPlaceholder="Search..."
+                      // value={value}
+                      onFocus={() => this.setState({ isfocus: true })}
+                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+                        this.setState({ tray_sizes: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
+                        this.setState({ isfocus: false, isTraySelect: true });
+                      }}
+                      renderLeftIcon={() => (
+                        <AntDesign
+                          style={styles.icon}
+                          color={this.state.isFocus ? 'blue' : 'black'}
+                          name="Safety"
+                          size={20}
+                        />
+                      )}
+                    /> */}
+                  </View>
+
+                )}
+                {renderIf(this.state.body.view_type == 5)(
+                  <View>
+                    <Dropdown
+                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={this.state.sets_view_type_5}
+                      // search
+                      itemTextStyle={{ color: 'black' }}
+                      maxHeight={300}
+                      labelField="name"
+                      valueField="product_option_value_id"
+
+                      // itemContainerStyle={{backgroundColor:'grey'}}
+                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
+                      searchPlaceholder="Search..."
+                      // value={value}
+                      onFocus={() => this.setState({ isfocus: true })}
+                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+                        this.setState({ price: item.price })
+                        this.setState({ isfocus: false });
+                      }}
+                      renderLeftIcon={() => (
+                        <AntDesign
+                          style={styles.icon}
+                          color={this.state.isFocus ? 'blue' : 'black'}
+                          name="Safety"
+                          size={20}
+                        />
+                      )}
+                    />
+                  </View>
+                )}
+
 
                 {/* <Spinner visible={true} overlayColor='rgba(0, 0, 0, 0.25)' color='#6d6d6d' size='large'  /> */}
 
@@ -973,11 +1062,15 @@ class HomeAccent extends Component {
                 </Pressable>
               </View>
               <View style={portraitStyles.overViewAndShippingPolicyContainer}>
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.overViewContainer} onPress={() => this.isOPlus()}>
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.overViewContainer} onPress={() => this.setState({ plus_minus: this.state.plus_minus == "-" ? "+" : "-" })}>
                   <Text style={portraitStyles.overViewText}>Overview</Text>
-                  <Text style={portraitStyles.pText}>{this.state.o_plus_minus}</Text>
+                  <Text style={portraitStyles.pText}>{this.state.plus_minus}</Text>
                 </TouchableOpacity>
-                {this.accordianOverview()}
+                {renderIf(this.state.plus_minus == '-')(
+                  <View style={portraitStyles.accordianContainer}>
+                    <Text style={portraitStyles.accordianParagraph}>{this.state.body.description}</Text>
+                  </View>
+                )}
                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.shippingPolicyContainer} onPress={() => this.isSpPlus()}>
                   <Text style={portraitStyles.overViewText}>Shipping Policy</Text>
                   <Text style={portraitStyles.pText}>{this.state.sp_plus_minus}</Text>
@@ -987,7 +1080,7 @@ class HomeAccent extends Component {
               <View style={portraitStyles.noteContainer}>
 
                 <Text style={portraitStyles.noteText}>
-                  Note: {this.state.item.data.additional_line}
+                  Note: {this.state.item.body.additional_line}
                 </Text>
               </View>
               {/* </View> */}
