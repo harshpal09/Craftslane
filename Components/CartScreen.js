@@ -1,12 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, SafeAreaView, Button, ScrollView, Alert, Pressable, ActivityIndicator, RefreshControl, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, Alert, RefreshControl } from 'react-native';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { showMessage } from 'react-native-flash-message';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import EmptyCart from './screens/EmptyCart';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
@@ -15,7 +13,7 @@ import LoadingComponent from './screens/LoadingComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from './redux/Actions';
 
-export default function CartScreen() {
+export default function CartScreen({navigation}) {
 
 
   const [data, setData] = useState({});
@@ -62,6 +60,7 @@ export default function CartScreen() {
           setCart(resp2.data.products),
           setCartTotal(resp2.data),
           setLength(resp2.data.cart)
+          // console.log(cart)
 
       }
       ).catch(function (error) {
@@ -76,7 +75,7 @@ export default function CartScreen() {
   deleteConfirmation = (id) => {
     Alert.alert(
       'Delete',
-      'Do you really want to delete this address ?',
+      'Do you really want to delete this product from cart?',
       [{ text: "Not Now" },
       { text: "Delete", onPress: () => this.deleteCart(id) }
       ],
@@ -289,7 +288,7 @@ export default function CartScreen() {
                           <TouchableOpacity style={portraitStyles.incBtn} onPress={() => this.incFunction(item.product_id, item.quantity)}><Text style={portraitStyles.incButton}>+</Text></TouchableOpacity>
                         </View>
                         <TouchableOpacity style={portraitStyles.refDelButton}>
-                          <FontAwesome name="trash" size={30} color={'#5A5A5A'} onPress={() => this.deleteConfirmation(item.product_id)} />
+                          <FontAwesome name="trash" size={26} color={'grey'} onPress={() => this.deleteConfirmation(item.product_id)} />
                         </TouchableOpacity>
                       </View>
 
@@ -322,7 +321,7 @@ export default function CartScreen() {
 
               <View style={portraitStyles.logoutButtonContainer}>
 
-                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() => this.props.navigation.navigate('Checkout', { item: cart_total.total_items, total: cart_total.total })}>
+                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.button} onPress={() =>navigation.navigate('Checkout', { item: cart_total.total_items, total: cart_total.total })}>
 
                   <Text style={portraitStyles.buttonText} >Checkout</Text>
                 </TouchableOpacity>

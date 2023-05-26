@@ -760,7 +760,7 @@ class HomeAccent extends Component {
                       onFocus={() => this.setState({ isfocus: true })}
                       onBlur={() => this.setState({ isfocus: false })}
                       onChange={item => {
-                        console.log(item)
+                        // console.log(item)
                         this.setState({ isfocus: false, isTraySelect: true });
                       }}
                       renderLeftIcon={() => (
@@ -796,7 +796,7 @@ class HomeAccent extends Component {
                       onFocus={() => this.setState({ isfocus: true })}
                       onBlur={() => this.setState({ isfocus: false })}
                       onChange={item => {
-                        console.log(item)
+                        // console.log(item)
                         this.setState({ isfocus: false });
                       }}
                       renderLeftIcon={() => (

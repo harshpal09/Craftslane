@@ -84,7 +84,7 @@ class SignUpPage extends Component {
         // this.shouldComponentUpdate();
     }
     async getData() {
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customcountry/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android').then((resp) => this.setState({ countries: resp.data.body }));
+        await axios.get('https://craftslane.com/index.php?route=api/customcountry/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android').then((resp) => this.setState({ countries: resp.data.body }));
         this.setState({ isLoading: false });
         this.setState({ isLoadingState: false });
 
@@ -92,7 +92,7 @@ class SignUpPage extends Component {
     async selectCountry(idx) {
         this.setState({ s_country: idx.country_id });
 
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
+        await axios.get('https://craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
 
 
     }
@@ -126,7 +126,7 @@ class SignUpPage extends Component {
                 headers: { 'content-type': 'application/x-www-form-urlencoded' }
             }
 
-            await axios.post('https://demo.craftslane.com/index.php?route=api/customsignup/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android', data, header).then((resp) => this.setState({ response_data: resp.data }))
+            await axios.post('https://craftslane.com/index.php?route=api/customsignup/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android', data, header).then((resp) => this.setState({ response_data: resp.data }))
             //   console.warn(this.state.response_data);
             this.setState({ toggle: true })
             if (this.state.response_data.status != 200) {
@@ -153,7 +153,7 @@ class SignUpPage extends Component {
                 this.state = {
                     token: this.state.response_data.token,
                     key: 'Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q',
-                    url: 'https://demo.craftslane.com/index.php?route=api/'
+                    url: 'https://craftslane.com/index.php?route=api/'
                 }
 
                 AsyncStorage.setItem('user', JSON.stringify(this.state));
@@ -165,9 +165,9 @@ class SignUpPage extends Component {
 
     termAndConditions(val) {
         if (val == "terms")
-            return Linking.openURL('https://demo.craftslane.com/index.php?route=information/information&information_id=5');
+            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=5');
         else
-            return Linking.openURL('https://demo.craftslane.com/index.php?route=information/information&information_id=3');
+            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=3');
     }
     onRefresh() {
         this.getData();

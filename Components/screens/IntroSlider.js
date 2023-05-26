@@ -36,7 +36,7 @@ export default class IntroSlider extends Component {
     let parsed = JSON.parse(user);
     this.setState({ data: parsed })
 
-    console.warn(parsed.token);
+    // console.warn(parsed.token);
 
     if (this.state.data == null) {
       return this.props.navigation.replace('login')
@@ -48,7 +48,7 @@ export default class IntroSlider extends Component {
 
   getImage = async () => {
 
-    let resp = await axios.get('https://demo.craftslane.com/index.php?route=api/customslideshow/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q')
+    let resp = await axios.get('https://www.craftslane.com?route=api/customslideshow/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q')
     this.setState({ item_1: resp.data.url_1 })
     this.setState({ item_2: resp.data.url_2 })
     this.setState({ item_3: resp.data.url_3 })

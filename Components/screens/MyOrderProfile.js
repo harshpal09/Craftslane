@@ -36,7 +36,7 @@ class MyOrderProfile extends Component {
         catch (error) {
             Alert.alert(error)
         }
-        console.log(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
+        // console.log(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
         let resp2 = await axios.get(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
         this.setState({ cart: resp2.data.body })
 

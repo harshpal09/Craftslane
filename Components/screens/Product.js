@@ -10,6 +10,7 @@ import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from '../redux/Actions';
+import renderIf from './renderIf';
 
 
 
@@ -24,6 +25,8 @@ export default function Product({ route, navigation }) {
     const [name, setName] = useState("");
     const [response_data, setData] = useState({});
     const dispatch = useDispatch();
+    const [actualPrice, setPrice] = useState(0);
+    const [discountPrice, setDiscount] = useState('');
 
 
     useEffect(() => {
@@ -56,6 +59,22 @@ export default function Product({ route, navigation }) {
 
 
         let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key);
+        // console.log(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key)
+        console.log(r.data)
+
+        if (r.price_range != '') {
+            setPrice(r.price_range);
+            setDiscount(r.MRP_range)
+        }
+
+        else if (r.special != '') {
+            setPrice(r.special);
+            setDiscount(r.temp_price)
+        }
+        else {
+            setPrice(r.temp_price)
+            setDiscount('');
+        }
 
 
         setData(r.data);
@@ -139,19 +158,74 @@ export default function Product({ route, navigation }) {
                             <View style={portraitStyles.warpProductContainer}>
                                 {item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
-                                        {console.log(val.id)}
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color',id : val.id })} style={portraitStyles.productImageContainer}>
+                                        {/* {console.log(val.id)} */}
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })} style={portraitStyles.productImageContainer}>
                                             <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
                                             <LikeButton id={val.id} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
-                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color',id : val.id })}>{val.title}</Text>
+                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })}>{val.title}</Text>
                                         </TouchableOpacity>
+
                                         <View style={portraitStyles.priceContainer}>
-                                            <Text style={portraitStyles.priceText}>Rs. {val.price}</Text>
+                                            {val.price_range != '' ?
+                                                <View>
+                                                    <Text style={portraitStyles.priceText}>{val.price_range}</Text>
+                                                    <Text style={portraitStyles.discountPrice}>{val.MRP_range}</Text>
+                                                </View>
+                                                : val.special != false ?
+                                                    <View>
+                                                        <Text style={portraitStyles.priceText}>{val.special}</Text>
+                                                        <Text style={portraitStyles.discountPrice}> {val.temp_price}</Text>
+                                                    </View> :
+                                                    <Text style={portraitStyles.priceText}>{val.temp_price}</Text>
+
+                                            }
+
+
                                             <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
 
                                         </View>
+
+                                        {renderIf(val.handcrafted == 1)(
+                                            <View style={portraitStyles.tinyIconContainer}>
+                                                <View style={{ paddingRight: 10 }}>
+                                                    <Image
+                                                        style={portraitStyles.tinyIcon}
+                                                        source={require('../../assets/image_2023_05_24T11_19_50_230Z.png')}
+                                                    />
+                                                </View>
+                                                <Text style={portraitStyles.tinyText}>Handcrafted with Love</Text>
+                                            </View>
+
+                                        )}
+
+                                        {renderIf(val.sustain == 1)(
+                                            <View style={portraitStyles.tinyIconContainer}>
+                                                <View style={{ paddingRight: 10 }}>
+                                                    <Image
+                                                        style={portraitStyles.tinyIcon}
+                                                        source={require('../../assets/image_2023_05_24T11_24_37_976Z.png')}
+                                                    />
+                                                </View>
+                                                <Text style={portraitStyles.tinyText}>Sustainably Sourced</Text>
+                                            </View>
+                                        )}
+
+                                        {renderIf(val.is_gift_wrap == 1)(
+
+                                            <View style={portraitStyles.tinyIconContainer}>
+                                                <View style={{ paddingRight: 10 }}>
+                                                    <Image
+                                                        style={portraitStyles.tinyIcon}
+                                                        source={require('../../assets/image_2023_05_24T11_24_53_644Z.png')}
+                                                    />
+                                                </View>
+                                                <Text style={portraitStyles.tinyText}>Gift Wrapped</Text>
+                                            </View>
+
+                                        )}
+
                                     </View>
                                 ))}
                             </View>
@@ -185,18 +259,18 @@ const LikeButton = ({ id }) => {
         }
 
         await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=android", d, header)
-            .then((resp) => {
-                if (resp.data.success == 1) {
-                    showMessage({
-                        message: "Success",
-                        duration: 4000,
-                        type: 'success',
-                        color: 'white',
-                        icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-                        titleStyle: { fontSize: 18 }
-                    })
-                }
-            })
+            // .then((resp) => {
+            //     if (resp.data.success == 1) {
+            //         showMessage({
+            //             message: "Success",
+            //             duration: 4000,
+            //             type: 'success',
+            //             color: 'white',
+            //             icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+            //             titleStyle: { fontSize: 18 }
+            //         })
+            //     }
+            // })
 
     }
 
@@ -205,7 +279,7 @@ const LikeButton = ({ id }) => {
             <MaterialCommunityIcons
                 name={liked ? "heart" : "heart-outline"}
                 size={25}
-                color={liked ? "red" : "black"}
+                color={liked ? "#e60505" : "grey"}
             />
         </Pressable>
     );
