@@ -59,6 +59,7 @@ export default function Product({ route, navigation }) {
 
 
         let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key);
+
         // console.log(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key)
         console.log(r.data)
 
