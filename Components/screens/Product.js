@@ -21,6 +21,8 @@ export default function Product({ route, navigation }) {
     const [item, setItems] = useState([]);
     const [name, setName] = useState("");
     const [response_data, setData] = useState({});
+    const [cat_id, setCatId] = useState(undefined);
+
     const dispatch = useDispatch();
     const [actualPrice, setPrice] = useState(0);
     const [discountPrice, setDiscount] = useState('');
@@ -42,7 +44,7 @@ export default function Product({ route, navigation }) {
         let parsed = {}
 
         const { item_name, item_id } = route.params;
-
+        setCatId(item_id);
         setName(item_name);
 
 
@@ -160,10 +162,11 @@ export default function Product({ route, navigation }) {
                             <View style={portraitStyles.warpProductContainer}>
                                 {item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
-                                        {/* {console.log(val.id)} */}
-                                        {/* { val.stock == 0 ? setOp(0.5): setOp(1)} */}
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageBackground style={portraitStyles.productImage} imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} source={{ uri: val.image }} />
+
+                                        {/* {console.log("cat-id on product => ",cat_id)} */}
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:""+cat_id ,id : val.id })} style={portraitStyles.productImageContainer}>
+                                            <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
+
                                             <LikeButton id={val.id} />
                                             {/* {console.log(val.id)} */}
                                         </TouchableOpacity>
@@ -179,7 +182,9 @@ export default function Product({ route, navigation }) {
 
 
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
-                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })}>{val.title}</Text>
+
+                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat:JSON.stringify(cat_id),id : val.id })}>{val.title}</Text>
+
                                         </TouchableOpacity>
 
 

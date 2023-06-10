@@ -71,6 +71,7 @@ class Categories extends Component {
                                             <View style={portraitStyles.warpContainer} key={ind}>
                                             {item.sub_sub_category.map((val, i) => (
                                                 <View style={portraitStyles.warpImageTextContainer} key={i}>
+                                                    {/* {console.log(val.title ," => ",val.id)}      */}
                                                     <TouchableOpacity activeOpacity={0.9} onPress={() => this.props.navigation.navigate('product', { item_name: val.title, item_id: val.id })} >
                                                         <View style={portraitStyles.warpImageContainer}>
                                                             <ImageLazyLoading style={portraitStyles.warpRoundImage} source={{ uri: val.image }} onPress={() => this.props.navigation.navigate('product', { productName: val.title })} />
