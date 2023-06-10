@@ -346,7 +346,7 @@ export default function WishList() {
                         </View>
 
                         <View style={portraitStyles.cartTextContainer}>
-                          <Text style={portraitStyles.cartText} >stock: {item.stock}</Text>
+                          <Text style={portraitStyles.cartText} >{item.stock}</Text>
                         </View>
                         <View style={portraitStyles.incDecButtonContainer}>
                           <View style={portraitStyles.cartIncDecContainer}>

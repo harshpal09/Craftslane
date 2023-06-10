@@ -22,7 +22,7 @@ const SearchFilter = ({ data, input }) => {
                     return (
                         <View style={{ borderRadius: 15 }}>
                             <TouchableOpacity style={styles.box} onPress={() => item.parent_id == 0?navigation.navigate('categories',{ item_id: item.category_id}): navigation.navigate('product', { item_id: item.category_id})}>
-                                <Text style={{ fontSize: 16, fontFamily:'Georgia' }}>{item.name}</Text>
+                                <Text style={{ fontSize: 16, fontFamily: 'Baskervville-Regular', color:'black' }}>{item.name}</Text>
                             </TouchableOpacity>
                         </View>
 
