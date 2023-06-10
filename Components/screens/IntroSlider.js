@@ -36,7 +36,7 @@ export default class IntroSlider extends Component {
     let parsed = JSON.parse(user);
     this.setState({ data: parsed })
 
-    console.warn(parsed.token);
+    console.warn(this.state.data);
 
     if (this.state.data == null) {
       return this.props.navigation.replace('login')

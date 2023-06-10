@@ -24,7 +24,7 @@ export const portraitStyles = StyleSheet.create({
     fontSize: 30,
     width: 210,
     marginTop: -80,
-    backgroundColor: 'rgba(0, 0, 0, 0.18)',
+    backgroundColor: 'rgba(0, 0, 0, 0.58)',
     padding: 10,
     borderRadius: 10,
   },
@@ -772,6 +772,32 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'lightgreen',
     justifyContent:'center',
     alignItems:'center'
+  },
+  optionParentcontainer:{
+    display: 'flex',
+    flexDirection: 'row',
+    width:'100%',
+    justifyContent: 'space-between',
+    // padding:20,
+    // backgroundColor:'green'
+  },
+  optionIcon:{
+    width:20,
+    height:20,
+  },
+  optionText:{
+    fontFamily: 'Baskervville-Italic',
+    fontSize:DeviceInfo.isTablet() ? 11:8,
+    color:"#6d6d6d",
+    padding:5,
+    textAlignVertical:'center',
+    textAlign:'center'
+  },
+  optionContainer:{
+    display:'flex',
+    flexDirection:'row',
+    padding:5,
+    // backgroundColor:'red'
   },
   productProfileContainer: {
     // backgroundColor: 'red',
@@ -1759,7 +1785,6 @@ creditTableRow:
  defaultAddress:{
     color:'#6d6d6d',
     fontSize:13,
-
  }
 
 })

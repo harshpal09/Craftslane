@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Dropdown } from 'react-native-element-dropdown';
+import { Dropdown, SelectCountry } from 'react-native-element-dropdown';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Spinner from 'react-native-loading-spinner-overlay';
@@ -79,6 +79,7 @@ class HomeAccent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      options: [],
       traystyle: [],
       date: new Date(),
       body: {},
@@ -100,12 +101,15 @@ class HomeAccent extends Component {
       isFocus: false,
       item: {},
       itemcnt: 1,
-      isTraySelect: false,
+      is_Select: false,
       focused: false,
       o_plus_minus: '+',
       sp_plus_minus: '+',
       activity_indicator: true,
+      is_Select_color: false,
       product_option_value: [],
+      product_option_value_2: [],
+      product_option_value_3: [],
       style_in: {
         borderWidth: 1, borderRadius: 15, marginVertical: 4,
         marginHorizontal: 1, width: 147,
@@ -131,6 +135,44 @@ class HomeAccent extends Component {
         borderColor: '#EAD3B9',
         backgroundColor: '#EAD3B9'
       },
+      local_data: [
+        {
+          value: '1',
+          lable: 'Country 1',
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        },
+        {
+          value: '2',
+          lable: 'Country 2',
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        },
+        {
+          value: '3',
+          lable: 'Country 3',
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        },
+        {
+          value: '4',
+          lable: 'Country 4',
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        },
+        {
+          value: '5',
+          lable: 'Country 5',
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        },
+      ],
+
       size_style: {
         color: 'black',
         fontSize: 10,
@@ -199,6 +241,7 @@ class HomeAccent extends Component {
           value: 'Wedding',
         },
       ],
+      cat_id: 0,
 
 
 
@@ -676,7 +719,7 @@ class HomeAccent extends Component {
     this.getData()
   }
   async getData() {
-
+    // console.log("get data=>", this.state.body)
     let parsed = {}
     try {
       let user = await AsyncStorage.getItem('user');
@@ -685,22 +728,97 @@ class HomeAccent extends Component {
     catch (error) {
       Alert.alert(error)
     }
-    const { image, name, config_type, id } = this.props.route.params;
-    // this.setState({ name: name })
-    // console.log(id)
+    const { cat, id } = this.props.route.params;
+    let b = cat.substring(1, 3);
+    this.setState({ cat_id: parseInt(b) })
+    console.log("product_id=> ", id);
     await axios.get(parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id)
-      .then((resp) => this.setState({ item: resp.data, body: resp.data.body, image: resp.data.body.thumb, price: resp.data.body.price, product_option_value: resp.data.body.options.length > 0 ? resp.data.body.options[0].product_option_value : [], name: resp.data.body.heading_title, items_image: resp.data.body.images }))
+      .then((resp) => this.setState({ item: resp.data, body: resp.data.body, image: resp.data.body.thumb, price: resp.data.body.price, product_option_value: resp.data.body.options.length > 0 ? resp.data.body.options[0].product_option_value : [], name: resp.data.body.heading_title, items_image: resp.data.body.images, product_option_value_2: resp.data.body.options.length > 1 ? resp.data.body.options[1].product_option_value : [], product_option_value_3: resp.data.body.options.length > 2 ? resp.data.body.options[2].product_option_value : [], options: resp.data.body.options }))
 
-      if(this.state.body.view_type == 5)
-      {
-        this.setState({sets_view_type_5: this.state.item.body.options[2].product_option_value})
+    if (this.state.body.view_type == 1) {
+      this.setState({ product_option_value: this.getImageObject(this.state.product_option_value) })
+    }
+    else if (this.state.body.view_type == 2) {
+      if (this.state.options.length == 1) {
+        this.setState({ product_option_value: this.getImageObject(this.state.options[0].product_option_value) })
       }
+      else if (this.state.options.length == 2) {
+        // console.log("set")
+        this.setState({ product_option_value: this.getImageObject(this.state.options[0].product_option_value) })
+        // console.log("product_option_value=> ",this.state.product_option_value);
+      }
+    }
+    else if (this.state.body.view_type == 3) {
+      this.setState({ product_option_value_2: this.getImageObject(this.state.options[1].product_option_value) })
+    }
+    else if (this.state.body.view_type == 5) {
+      if (this.state.options.length >= 3) {
+        this.setState({ product_option_value: this.state.item.body.options[2].product_option_value })
+        this.setState({ product_option_value_2: this.state.item.body.options[0].product_option_value })
+      }
+    }
+  }
+  selectColor(item) {
+    // console.log('click on view type 2')
+    let arr = [];
+    if (this.state.options.length == 2) {
+      arr = this.state.options[1].product_option_value;
+    }
+    else if (this.state.options.length == 3) {
+      arr = this.state.options[2].product_option_value;
+    }
+
+
+    let temp = [];
+    // console.log("arr initial value =>", temp);
+    arr.map((data, i) => {
+      // arr[i].image = { uri: data.image }
+      if (data.parent_id == item.option_value_id) {
+        temp.push(arr[i]);
+      }
+    })
+    // temp.map((data, i) => {
+    //   temp[i].image = { uri: data.image }
+    // })
+    // console.log("temp after =>", temp);
+    let pov = this.getImageObject(temp)
+    this.setState({ product_option_value_3: pov });
+    // console.log("product opriton 3 =>", this.state.product_option_value_3);
+    this.setState({ is_Select_color: true });
+    // this.setState({ tray_sizes: this.state.body.options[2].product_option_value, price: item.price })
+
+  }
+  getImageObject(array) {
+    let arr = array;
+    arr.map((data, i) => {
+      arr[i].image = { uri: data.image }
+    }
+    )
+    return arr;
+  }
+  viewTypeSelect(item) {
+    // console.log("click on => ",this.state.options.length)
+    if (this.state.options.length == 1) {
+      // console.log("click on => ",1)
+    }
+    else if (this.state.options.length == 2) {
+      // console.log("click on => ",2)
+      this.setState({ tray_sizes: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
+      this.setState({ is_Select: true });
+    }
+    else if (this.state.options.length == 5) {
+      console.log("click on design")
+      this.setState({ design_image: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
+      this.setState({ showDesign: true });
+    }
+
   }
 
-
   render() {
-    const id = "424";
-    console.log("sets => ",this.state.sets_view_type_5);
+    // const id = "424";
+    // console.log("product option value 3 => ", this.state.product_option_value_3);
+    // console.log("cat-id => ",this.state.cat_id);
+
     // console.log(this.state.body.options[1].product_option_value_data_child);
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
@@ -717,7 +835,7 @@ class HomeAccent extends Component {
                       <ImageLazyLoading style={portraitStyles.homeAccentImage} source={{ uri: this.state.image }} />
                     </View>
                   </TouchableOpacity>
-                  {renderIf(false)(
+                  {/* {renderIf(false)(
                     <ScrollView horizontal={true}>
                       {
                         this.state.select_color.map((data, i) => (
@@ -727,14 +845,14 @@ class HomeAccent extends Component {
                         ))
                       }
                     </ScrollView>
-                  )}
-                  {renderIf(this.state.body.view_type == 2)(
+                  )} */}
+                  {renderIf(this.state.items_image.length > 0)(
                     <ScrollView horizontal={true} style={{ width: "100%" }}>
                       {this.state.items_image.map((data, i) => (
                         <View style={{ flexDirection: 'row' }} key={i}>
-                          <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[i].additional_popup })} >
+                          {/* <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[i].additional_popup })} >
                             <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.additional_popup }}></Image>
-                          </TouchableOpacity>
+                          </TouchableOpacity> */}
                           <TouchableOpacity onPress={() => this.setState({ image: this.state.items_image[i].popup })} >
                             <Image style={{ height: 100, width: 100, margin: 10 }} source={{ uri: data.popup }}></Image>
                           </TouchableOpacity>
@@ -750,87 +868,172 @@ class HomeAccent extends Component {
                       <Text >Gift Wrapped</Text>
                     </View> */}
                   </View>
+                  <View style={portraitStyles.optionParentcontainer}>
+                    {renderIf(this, this.state.body.is_gift_wrap == 1)(
+                      <View style={portraitStyles.optionContainer}>
+                        <Image style={portraitStyles.optionIcon} source={require('../../assets/images/options_icons/gift.png')} />
+                        <Text style={portraitStyles.optionText}>Gift Wrapped</Text>
+                      </View>
+                    )}
+                    {renderIf(this.state.body.handcrafted == 1)(
+                      <View style={portraitStyles.optionContainer}>
+                        <Image style={portraitStyles.optionIcon} source={require('../../assets/images/options_icons/handcrafted_icon.png')} />
+                        <Text style={portraitStyles.optionText}>Handcrafted with Love</Text>
+                      </View>
+                    )}
+                    {renderIf(this.state.body.sustain == 1)(
+                      <View style={portraitStyles.optionContainer}>
+                        <Image style={portraitStyles.optionIcon} source={require('../../assets/images/options_icons/sustainably_sourced_icon.png')} />
+                        <Text style={portraitStyles.optionText}>Sustainably Sourced</Text>
+                      </View>
+                    )}
+                  </View>
                 </View>
-                {renderIf(this.state.body.view_type == 2)(
+                {this.state.body.view_type == 2 ?
                   <View style={{ padding: 10 }}>
-                    <Dropdown
-                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                      placeholderStyle={styles.placeholderStyle}
+                    <SelectCountry
+                      style={styles.dropdown}
                       selectedTextStyle={styles.selectedTextStyle}
+                      placeholderStyle={styles.placeholderStyle}
+
+                      imageStyle={styles.imageStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
+                      maxHeight={200}
                       data={this.state.product_option_value}
-                      // search
-                      itemTextStyle={{ color: 'black' }}
-                      maxHeight={300}
-                      labelField="name"
                       valueField="product_option_value_id"
-
-                      // itemContainerStyle={{backgroundColor:'grey'}}
-                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
+                      labelField="name"
+                      imageField="image"
+                      placeholder={"Select a " + this.state.body.options[0].name}
                       searchPlaceholder="Search..."
-                      // value={value}
-                      onFocus={() => this.setState({ isfocus: true })}
-                      onBlur={() => this.setState({ isfocus: false })}
                       onChange={item => {
-                        this.setState({ tray_sizes: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
-                        this.setState({ isfocus: false, isTraySelect: true });
+                        this.state.cat_id === 47 ? this.selectColor(item) : this.viewTypeSelect(item);
                       }}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
                     />
                   </View>
-                )}
-                {renderIf(this.state.isTraySelect)(
+                  :
+                  <></>
+                }
+                {this.state.body.view_type == 3 ?
+                  <View>
+                    {/* {this.state.options.length == 3} */}
+                    <View style={{ padding: 10 }}>
+                      <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+
+                        imageStyle={styles.imageStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        data={this.state.product_option_value}
+                        valueField="product_option_value_id"
+                        labelField="name"
+                        imageField="image"
+                        placeholder={"Select a " + this.state.body.options[0].name}
+                        searchPlaceholder="Search..."
+                        onChange={item => {
+                          // this.selectColor(item)
+                          // this.setState({ is_Select_color: true });
+                        }}
+                      />
+                    </View>
+                    <View style={{ padding: 10 }}>
+                      <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+
+                        imageStyle={styles.imageStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        data={this.state.product_option_value_2}
+                        valueField="product_option_value_id"
+                        labelField="name"
+                        imageField="image"
+                        placeholder={"Select a " + this.state.body.options[1].name}
+                        searchPlaceholder="Search..."
+                        onChange={item => {
+                          this.selectColor(item)
+                          this.setState({ is_Select_color: true });
+                        }}
+                      />
+                    </View>
+                  </View>
+                  :
+                  <></>
+                }
+                {this.state.is_Select_color ?
                   <View style={{ padding: 10 }}>
-                    <Dropdown
-                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                      placeholderStyle={styles.placeholderStyle}
+                    <SelectCountry
+                      style={styles.dropdown}
                       selectedTextStyle={styles.selectedTextStyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      imageStyle={styles.imageStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
-                      data={this.state.tray_sizes}
-                      // search
-                      itemTextStyle={{ color: 'black' }}
-                      maxHeight={300}
-                      labelField="name"
+                      maxHeight={200}
+                      data={this.state.product_option_value_3}
                       valueField="product_option_value_id"
-
-                      // itemContainerStyle={{backgroundColor:'grey'}}
-                      placeholder={!this.state.isFocus ? 'Select a Size' : '...'}
+                      labelField="name"
+                      imageField="image"
+                      placeholder={"Select a " + this.state.options.length != 3 ? this.state.body.options[1].name : this.state.body.options[2].name}
                       searchPlaceholder="Search..."
-                      // value={value}
-                      onFocus={() => this.setState({ isfocus: true })}
-                      onBlur={() => this.setState({ isfocus: false })}
+                      onChange={item => {
+
+                      }}
+                    />
+                  </View>
+                  :
+                  <></>
+                }
+                {this.state.is_Select ?
+                  <View style={{ padding: 10 }}>
+                    <SelectCountry
+                      style={styles.dropdown}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      imageStyle={styles.imageStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      maxHeight={200}
+                      data={this.state.tray_sizes}
+                      valueField="product_option_value_id"
+                      labelField="name"
+                      imageField="image"
+                      placeholder={"Select a " + this.state.body.options[1].name}
+                      searchPlaceholder="Search..."
                       onChange={item => {
                         this.setState({ price: item.price })
-                        this.setState({ isfocus: false });
                       }}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
                     />
                   </View>
-                )}
-                {this.state.body.view_type == 1 ?
-                  <View style={portraitStyles.trayStyleContainer}>
-                    <Text style={portraitStyles.headerTrayStyle}>Select a Color</Text>
-                    <View style={portraitStyles.trayStyleChild}>
-                      {this.state.product_option_value.map((data, i) => (
-                        <Image style={{ height: 20, width: 20, borderRadius: 10, margin: 20 }} source={{ uri: data.image }} />
-                      ))}
-                    </View>
+                  :
+                  <></>
+                }
+
+                {this.state.body.view_type == 1 && this.state.options.length > 0 ?
+                  <View style={{ padding: 10 }}>
+                    <SelectCountry
+                      style={styles.dropdown}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      imageStyle={styles.imageStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      maxHeight={200}
+                      data={this.state.product_option_value}
+                      valueField="product_option_value_id"
+                      labelField="name"
+                      imageField="image"
+                      placeholder={"Select a " + this.state.body.options[0].name}
+                      searchPlaceholder="Search..."
+                      onChange={item => {
+
+                      }}
+                    />
                   </View>
                   :
                   <></>
@@ -838,49 +1041,88 @@ class HomeAccent extends Component {
                 {renderIf(false)(
                   <View style={{ padding: 10 }}>
                     <Text style={{ color: 'black', padding: 10, fontSize: 16 }}>How would you like us to Personalize it for you?</Text>
-                    <Dropdown
-                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={this.state.occasion}
-                      // search
-                      itemTextStyle={{ color: 'black' }}
-                      maxHeight={300}
-                      labelField="value"
-                      valueField="id"
-
-                      // itemContainerStyle={{backgroundColor:'grey'}}
-                      placeholder={!this.state.isFocus ? 'Select an Occasion' : '...'}
-                      searchPlaceholder="Search..."
-                      // value={value}
-                      onFocus={() => this.setState({ isfocus: true })}
-                      onBlur={() => this.setState({ isfocus: false })}
-                      onChange={item => {
-                        this.setState({ index: item.id, showDesign: true });
-                        this.setState({ isfocus: false });
-                      }}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
-                    />
                   </View>
                 )}
+                {renderIf(false)(
+                  <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', padding: 10, display: 'flex', flexDirection: 'row' }}>
+                    <View>
+                      <MaterialIcons name='navigate-before' color={'#6D6D6D'} size={35} />
+                    </View>
+                    <ScrollView horizontal={true} style={{ width: "80%" }} >
+                      {this.state.design_image.map((data, i) => (
+                        <TouchableOpacity style={{ height: 110, width: 110, borderWidth: 1, justifyContent: "center", alignItems: 'center', borderColor: this.state.image == data.image ? "black" : "lightgrey", margin: 5 }} onPress={() => this.setState({ image: this.state.design_image[i].image, showPersonalization: true, border_color: 'black' })} key={i}>
+                          <Image style={{ height: 100, width: 100, }} source={{ uri: data.image }}></Image>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                    <View>
+                      <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={35} />
+                    </View>
+                  </View>
+                )}
+
+
+                {this.state.body.view_type == 5 ?
+                  <View style={{ padding: 10 }}>
+                    <View>
+                      <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+
+                        imageStyle={styles.imageStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        data={this.state.product_option_value}
+                        valueField="product_option_value_id"
+                        labelField="name"
+                        imageField="image"
+                        placeholder={"Select a " + this.state.body.options[2].name}
+                        searchPlaceholder="Search..."
+                        onChange={item => {
+                          this.setState({ price: item.price })
+                        }}
+                      />
+                    </View>
+                    <View style={{ padding: 10 }}>
+                      <Text style={{ color: 'black', padding: 10, fontSize: 16 }}>How would you like us to Personalize it for you?</Text>
+                    </View>
+                    <View>
+                      <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+
+                        imageStyle={styles.imageStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        data={this.state.product_option_value_2}
+                        valueField="product_option_value_id"
+                        labelField="name"
+                        imageField="image"
+                        placeholder={"Select a " + this.state.body.options[0].name}
+                        searchPlaceholder="Search..."
+                        onChange={item => {
+                          this.viewTypeSelect(item)
+                          // console.log("click")
+                        }}
+                      />
+                    </View>
+                  </View>
+                  :
+                  <></>
+                }
                 {renderIf(this.state.showDesign)(
                   <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', padding: 10, display: 'flex', flexDirection: 'row' }}>
                     <View>
                       <MaterialIcons name='navigate-before' color={'#6D6D6D'} size={35} />
                     </View>
                     <ScrollView horizontal={true} style={{ width: "80%" }} >
-                      {this.state.design_image[this.state.index].map((data, i) => (
-                        <TouchableOpacity style={{ height: 110, width: 110, borderWidth: 1, justifyContent: "center", alignItems: 'center', borderColor: this.state.image == data.value ? "black" : "lightgrey", margin: 5 }} onPress={() => this.setState({ image: this.state.design_image[this.state.index][data.id].value, showPersonalization: true, border_color: 'black' })} key={i}>
-                          <Image style={{ height: 100, width: 100, }} source={{ uri: data.value }}></Image>
+                      {this.state.design_image.map((data, i) => (
+                        <TouchableOpacity style={{ height: 110, width: 110, borderWidth: 1, justifyContent: "center", alignItems: 'center', borderColor: this.state.image == data.image ? "black" : "lightgrey", margin: 5 }} onPress={() => this.setState({ image: this.state.design_image[i].image, showPersonalization: true, border_color: 'black' })} key={i}>
+                          <Image style={{ height: 100, width: 100, }} source={{ uri: data.image }}></Image>
                         </TouchableOpacity>
                       ))}
                     </ScrollView>
@@ -918,80 +1160,11 @@ class HomeAccent extends Component {
                     </View>
                   </View>
                 )}
-
-                {renderIf(this.state.body.view_type == 5)(
-                  <View style={{ padding: 10 }}>
-                    {/* <Dropdown
-                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={this.state.product_option_value}
-                      // search
-                      itemTextStyle={{ color: 'black' }}
-                      maxHeight={300}
-                      labelField="name"
-                      valueField="product_option_value_id"
-
-                      // itemContainerStyle={{backgroundColor:'grey'}}
-                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
-                      searchPlaceholder="Search..."
-                      // value={value}
-                      onFocus={() => this.setState({ isfocus: true })}
-                      onBlur={() => this.setState({ isfocus: false })}
-                      onChange={item => {
-                        this.setState({ tray_sizes: this.state.body.options[1].product_option_value_data_child[item.option_value_id], price: item.price })
-                        this.setState({ isfocus: false, isTraySelect: true });
-                      }}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
-                    /> */}
-                  </View>
-
-                )}
-                {renderIf(this.state.body.view_type == 5)(
+                {/* {renderIf(this.state.body.view_type == 5)(
                   <View>
-                    <Dropdown
-                      style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={this.state.sets_view_type_5}
-                      // search
-                      itemTextStyle={{ color: 'black' }}
-                      maxHeight={300}
-                      labelField="name"
-                      valueField="product_option_value_id"
-
-                      // itemContainerStyle={{backgroundColor:'grey'}}
-                      placeholder={!this.state.isFocus ? 'Select Tray Styles' : '...'}
-                      searchPlaceholder="Search..."
-                      // value={value}
-                      onFocus={() => this.setState({ isfocus: true })}
-                      onBlur={() => this.setState({ isfocus: false })}
-                      onChange={item => {
-                        this.setState({ price: item.price })
-                        this.setState({ isfocus: false });
-                      }}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
-                    />
+                    
                   </View>
-                )}
+                )} */}
 
 
                 {/* <Spinner visible={true} overlayColor='rgba(0, 0, 0, 0.25)' color='#6d6d6d' size='large'  /> */}

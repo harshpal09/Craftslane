@@ -114,6 +114,7 @@ export default function HomeScreen({navigation}){
                       {data.categories.map((item, ind) => {
                         return (
                           <View style={portraitStyles.imageTextContainer} key={ind} >
+                            {/* {console.log(item.title)} */}
                             <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('categories', {cat_id:item.id })} style={portraitStyles.imageContainer}>
                               <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
