@@ -36,6 +36,7 @@ class LogInPage extends Component {
     }
 
     async loginCall() {
+        // console.log(this.state.email)
         this.setState({ toggle: false })
         const data = {
             email: this.state.email,
@@ -43,8 +44,11 @@ class LogInPage extends Component {
         }
 
         await axios.post('https://www.craftslane.com?route=api/customlogin/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android',
-            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) =>
+
+            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => 
+
                 this.setState({ response_data: response.data })
+               
             )
         // console.warn(this.state.response_data);
         this.setState({ toggle: true })
@@ -59,6 +63,7 @@ class LogInPage extends Component {
             })
         }
         else {
+
 
             // showMessage({
             //     message: this.state.response_data.message,
@@ -112,7 +117,7 @@ class LogInPage extends Component {
                                 </View>
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Email Address" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Email Address" placeholderTextColor={'grey'} autoCapitalize='none' onChangeText={(text) => this.setState({ email: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
                                 

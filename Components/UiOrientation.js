@@ -32,7 +32,7 @@ class UiOrientation extends ApiCall {
         this.setState({screen: Dimensions.get('window')});
       }
     render() {
-      console.warn(this.state.url);
+      // console.warn(this.state.url);
         return (
             <View>
                 

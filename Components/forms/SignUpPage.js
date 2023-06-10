@@ -84,7 +84,7 @@ class SignUpPage extends Component {
         // this.shouldComponentUpdate();
     }
     async getData() {
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customcountry/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android').then((resp) => this.setState({ countries: resp.data.body }));
+        await axios.get('https://craftslane.com/index.php?route=api/customcountry/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android').then((resp) => this.setState({ countries: resp.data.body }));
         this.setState({ isLoading: false });
         this.setState({ isLoadingState: false });
 
@@ -92,7 +92,7 @@ class SignUpPage extends Component {
     async selectCountry(idx) {
         this.setState({ s_country: idx.country_id });
 
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
+        await axios.get('https://craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
 
 
     }
@@ -118,7 +118,7 @@ class SignUpPage extends Component {
                 'postcode_required': this.state.postcode_required,
                 'postcode': this.state.postal_code,
                 'agree': this.state.agree,
-                'fax': this.state.fax,
+                'fax': this.state.gstn,
                 'company': this.state.company_name,
                 'gst': this.state.gstn,
             }
@@ -127,7 +127,7 @@ class SignUpPage extends Component {
             }
 
             await axios.post('https://demo.craftslane.com/index.php?route=api/customsignup/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android', data, header).then((resp) => this.setState({ response_data: resp.data }))
-            //   console.warn(this.state.response_data);
+              console.warn(this.state.response_data);
             this.setState({ toggle: true })
             if (this.state.response_data.status != 200) {
                 showMessage({
@@ -141,14 +141,14 @@ class SignUpPage extends Component {
             }
             else {
 
-                showMessage({
-                    message: this.state.response_data.message,
-                    duration: 4000,
-                    type: 'success',
-                    color: 'white',
-                    icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
-                    titleStyle: { fontSize: 18 }
-                })
+                // showMessage({
+                //     message: this.state.response_data.message,
+                //     duration: 4000,
+                //     type: 'success',
+                //     color: 'white',
+                //     icon: props => <MaterialIcons name="done-outline" size={18} color={'white'} {...props} />,
+                //     titleStyle: { fontSize: 18 }
+                // })
 
                 this.state = {
                     token: this.state.response_data.token,
@@ -165,9 +165,9 @@ class SignUpPage extends Component {
 
     termAndConditions(val) {
         if (val == "terms")
-            return Linking.openURL('https://demo.craftslane.com/index.php?route=information/information&information_id=5');
+            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=5');
         else
-            return Linking.openURL('https://demo.craftslane.com/index.php?route=information/information&information_id=3');
+            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=3');
     }
     onRefresh() {
         this.getData();
@@ -224,10 +224,10 @@ class SignUpPage extends Component {
                                 <TextInput style={portraitStyles.input} placeholder="Company Name (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ company_name: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ gstn: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} maxLength={15}  onChangeText={(text) => this.setState({ gstn: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'}  maxLength={10}  onChangeText={(text) => this.setState({ contact_number: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
                                 <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} />

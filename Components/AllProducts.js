@@ -89,7 +89,7 @@ export default class AllProducts extends PureComponent {
       .then(res => {
 
         this.setState({ all_data: res.data })
-        // console.log(this.state.all_data)
+        console.log(this.state.all_data)
 
 
       })
@@ -229,9 +229,9 @@ export default class AllProducts extends PureComponent {
               <View>
 
                 <TouchableOpacity onPress={() => this.setState(this.state.isShowForm ? { isShowForm: false } : { isShowForm: true })} style={{ width: '100%', justifyContent: 'flex-end', alignItems: 'flex-end', paddingRight: 20, paddingTop: 10, }} >
-                  <View style={{ display: 'flex', marginTop: 10, flexDirection: 'row', borderRadius: 7, padding: 5, backgroundColor: '#B48D56' }} >
-                    <MaterialCommunityIcons style={{ padding: 5 }} name="filter-menu-outline" size={18} />
-                    <Text style={{ fontSize: 18, padding: 5 }}  >Filter</Text>
+                  <View style={{ display: 'flex', marginTop: 10, flexDirection: 'row', borderRadius: 7, padding: 5, backgroundColor: '#B48D56', alignItems:'center'}} >
+                    <MaterialCommunityIcons style={{ padding: 3 }} name="filter-menu-outline" size={18} color={'white'} />
+                    <Text style={{ fontSize: 18, padding: 3, color:'white' }}  >Filter</Text>
                   </View>
                 </TouchableOpacity>
 

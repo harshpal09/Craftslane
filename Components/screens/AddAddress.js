@@ -139,7 +139,7 @@ class AddAddress extends Component {
     async selectCountry(idx) {
         console.warn({s_country:idx.countries_id});
         this.setState({ s_country: idx });
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
+        await axios.get('https://www.craftslane.com?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
         // console.log(this.state.zones);
         
     }
@@ -164,7 +164,7 @@ class AddAddress extends Component {
 
         await axios.post(this.state.data.url + "customaddressbook/add&key=" + this.state.data.key + "&token=" + this.state.data.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
         this.setState({ toggle: true })
-        console.warn(this.state.response_data)
+        // console.warn(this.state.response_data)
         if (this.state.response_data.status != 200) {
             showMessage({
                 message: this.state.response_data.message,
@@ -203,7 +203,7 @@ class AddAddress extends Component {
         this.setState({isLoadingState:true});
     }
     render() {
-        console.log(this.state.radio);
+        // console.log(this.state.radio);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <KeyboardAvoidingView>
@@ -258,7 +258,7 @@ class AddAddress extends Component {
                             // containerStyle={{backgroundColor:'#f2ebd5'}}
                             onChange={e => 
                             {
-                                console.log(e),
+                                // console.log(e),
                                 this.selectCountry(e);
                             }} 
                             keyboardAvoiding={false}

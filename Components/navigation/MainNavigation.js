@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LogInPage from '../forms/LogInPage';
 import SignUpPage from '../forms/SignUpPage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
 import { MyCredits, MyOrders, MyProfile, EditProfile, Password, TrackOrders, WishList, AddressBook, TabRoutes, IntroSlider, ForgotPassword, MyOrderProfile, EditAddress, AddAddress } from '../../export'
-// import { PasswordCreated } from '../forgot-password/ForgotPassword';
 import NewProduct from '../screens/NewProduct';
 import LogOut from '../screens/LogOut';
 import Success from '../forgot-password/Success';
@@ -53,7 +49,7 @@ class MainNavigation extends Component {
         }} />
         <Stack.Screen name="wishlist" component={WishList} options={{
           headerShown: true,
-           headerTitle: 'My Wish List',
+           headerTitle: 'My WishList',
            headerTintColor: '#B48D56',
            headerTitleStyle: { color: 'black'}
          

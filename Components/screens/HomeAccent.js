@@ -15,7 +15,16 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Dropdown, SelectCountry } from 'react-native-element-dropdown';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import Spinner from 'react-native-loading-spinner-overlay';
+// import { Colors } from 'react-native/Libraries/NewAppScreen';
+// import AntDesign from 'react-native-vector-icons/AntDesign'
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+// import { Dropdown } from 'react-native-element-dropdown';
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// // import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 import { Axios } from 'axios';

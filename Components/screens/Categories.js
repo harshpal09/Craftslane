@@ -7,7 +7,7 @@ import LoadingComponent from './LoadingComponent';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-
+ 
 
 class Categories extends Component {
     constructor() {
@@ -38,6 +38,7 @@ class Categories extends Component {
       let resp = await axios.get(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id="+cat_id)
     //   console.log(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id=4")
       this.setState({ categories: resp.data.data })
+    //   console.log(this.state.categories)
     }
 
     render() {
@@ -84,7 +85,7 @@ class Categories extends Component {
                                                     </View>
                                                 </View>
                                             ))}
-                                            </View>
+                                            </View> 
                                             </View>
                                         ))}
                                     </View>

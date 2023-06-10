@@ -346,17 +346,17 @@ export default function WishList() {
                         </View>
 
                         <View style={portraitStyles.cartTextContainer}>
-                          <Text style={portraitStyles.cartText} >stock: {item.stock}</Text>
+                          <Text style={portraitStyles.cartText} >{item.stock}</Text>
                         </View>
                         <View style={portraitStyles.incDecButtonContainer}>
                           <View style={portraitStyles.cartIncDecContainer}>
                             <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
                           </View>
                           <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                            <MaterialCommunityIcons name='cart-variant' color={'grey'} size={30} onPress={() => addTocart(item.product_id)} />
+                            <MaterialCommunityIcons name='cart-variant' color={'grey'} size={26} onPress={() => addTocart(item.product_id)} />
                           </TouchableOpacity>
                           <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton} onPress={() => deleteConfirmation(item.product_id)}>
-                            <FontAwesome name="trash-o" size={30} color={'grey'} />
+                            <FontAwesome name="trash-o" size={26} color={'grey'} />
                           </TouchableOpacity>
                         </View>
                       </View>

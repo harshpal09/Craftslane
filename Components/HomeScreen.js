@@ -24,6 +24,7 @@ export default function HomeScreen({navigation}){
 
   getData();
   searchArray();
+  // setInput("");
 
   }, [])
 
@@ -42,7 +43,7 @@ export default function HomeScreen({navigation}){
   }
 
     let res = await axios.get(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token);
-  
+    // console.log(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token)
     setSearch(res.data.body);
 
   }
@@ -97,16 +98,16 @@ export default function HomeScreen({navigation}){
               </View>
 
 
-              <View style={portraitStyles.searchBarFilter}>
+              <TouchableOpacity onPress={() => setInput("")} style={portraitStyles.searchBarFilter}>
 
-
+ 
                 <SearchFilter data={search} input={input} />
 
-              </View>  
+              </TouchableOpacity>  
 
               <View style={portraitStyles.headerTextContainer}>
                 <Text style={portraitStyles.headerText}>Categories</Text>
-              </View>
+              </View> 
               <View>
                 <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
                   {alldata.map((data, idx) => (
@@ -195,7 +196,7 @@ export default function HomeScreen({navigation}){
                   <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.instagram.com/craftslane/?hl=en')}>
                     <ImageLazyLoading style={portraitStyles.bannerImage} source={{ uri: item.footer_banner_1 }} />
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.facebook.com/CraftslaneIndia/')}>
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://www.facebook.com/CraftslaneIndia/?hl=en')}>
                     <Image style={portraitStyles.bannerImage} source={{ uri: item.footer_banner_2 }} />
                   </TouchableOpacity>
                 </View>
