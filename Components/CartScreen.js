@@ -49,7 +49,7 @@ export default function CartScreen({navigation}) {
     catch (error) {
       Alert.alert(error)
     }
-
+    console.log(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
     await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
       .then((resp2) => {
         const values = {

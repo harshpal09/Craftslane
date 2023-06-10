@@ -8,13 +8,10 @@ import { portraitStyles } from '../../Style/globleCss';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../redux/Actions';
 import renderIf from './renderIf';
-
-
-
-
+// import { addItemToCart } from '../redux/Actions';
 
 
 
@@ -27,8 +24,11 @@ export default function Product({ route, navigation }) {
     const dispatch = useDispatch();
     const [actualPrice, setPrice] = useState(0);
     const [discountPrice, setDiscount] = useState('');
+    const [op, setOp] = useState(1);
 
+    
 
+// console.log(badgeCount)
     useEffect(() => {
 
         getdata();
@@ -60,8 +60,9 @@ export default function Product({ route, navigation }) {
 
         let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key);
 
+
         // console.log(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key)
-        console.log(r.data)
+        // console.log(r.data)
 
         if (r.price_range != '') {
             setPrice(r.price_range);
@@ -160,13 +161,27 @@ export default function Product({ route, navigation }) {
                                 {item.map((val, i) => (
                                     <View style={portraitStyles.productContainer} key={i}>
                                         {/* {console.log(val.id)} */}
+                                        {/* { val.stock == 0 ? setOp(0.5): setOp(1)} */}
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
+                                            <ImageBackground style={portraitStyles.productImage} imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} source={{ uri: val.image }} />
                                             <LikeButton id={val.id} />
+                                            {/* {console.log(val.id)} */}
                                         </TouchableOpacity>
+
+                                        {renderIf(val.stock == 0)(
+                                            <View style={{ width: 151 }}>
+                                                <View style={{ backgroundColor: '#af0b1f', width: '100%', padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Out Of Stock</Text>
+                                                </View>
+                                            </View>
+
+                                        )}
+
+
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
                                             <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })}>{val.title}</Text>
                                         </TouchableOpacity>
+
 
                                         <View style={portraitStyles.priceContainer}>
                                             {val.price_range != '' ?
@@ -183,49 +198,14 @@ export default function Product({ route, navigation }) {
 
                                             }
 
-
-                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => this.addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-
+                                            {renderIf(val.stock != 0)(
+                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                            )}
                                         </View>
 
-                                        {renderIf(val.handcrafted == 1)(
-                                            <View style={portraitStyles.tinyIconContainer}>
-                                                <View style={{ paddingRight: 10 }}>
-                                                    <Image
-                                                        style={portraitStyles.tinyIcon}
-                                                        source={require('../../assets/image_2023_05_24T11_19_50_230Z.png')}
-                                                    />
-                                                </View>
-                                                <Text style={portraitStyles.tinyText}>Handcrafted with Love</Text>
-                                            </View>
 
-                                        )}
 
-                                        {renderIf(val.sustain == 1)(
-                                            <View style={portraitStyles.tinyIconContainer}>
-                                                <View style={{ paddingRight: 10 }}>
-                                                    <Image
-                                                        style={portraitStyles.tinyIcon}
-                                                        source={require('../../assets/image_2023_05_24T11_24_37_976Z.png')}
-                                                    />
-                                                </View>
-                                                <Text style={portraitStyles.tinyText}>Sustainably Sourced</Text>
-                                            </View>
-                                        )}
 
-                                        {renderIf(val.is_gift_wrap == 1)(
-
-                                            <View style={portraitStyles.tinyIconContainer}>
-                                                <View style={{ paddingRight: 10 }}>
-                                                    <Image
-                                                        style={portraitStyles.tinyIcon}
-                                                        source={require('../../assets/image_2023_05_24T11_24_53_644Z.png')}
-                                                    />
-                                                </View>
-                                                <Text style={portraitStyles.tinyText}>Gift Wrapped</Text>
-                                            </View>
-
-                                        )}
 
                                     </View>
                                 ))}
@@ -244,6 +224,8 @@ export default function Product({ route, navigation }) {
 }
 
 const LikeButton = ({ id }) => {
+    const dispatch = useDispatch();
+    const badgeCount = useSelector(i => i);
     const [liked, setLiked] = useState(false);
 
     const addToWishlist = async (id) => {
@@ -254,33 +236,44 @@ const LikeButton = ({ id }) => {
 
         const d = {
             product_id: id,
+            
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-
-        await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=android", d, header)
-            // .then((resp) => {
-            //     if (resp.data.success == 1) {
-            //         showMessage({
-            //             message: "Success",
-            //             duration: 4000,
-            //             type: 'success',
-            //             color: 'white',
-            //             icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-            //             titleStyle: { fontSize: 18 }
-            //         })
-            //     }
-            // })
+        // console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
+        await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
+            then((response) => {
+                const values = {
+                    cart_items: badgeCount.cart_items,
+                    wishlist_items: response.data.total
+                  }
+                  console.log(response.data)
+                dispatch(addItemToCart(values))
+            })
+        // dispatch(addItemToCart(values))
+        // .then((resp) => {
+        //     if (resp.data.success == 1) {
+        //         showMessage({
+        //             message: "Success",
+        //             duration: 4000,
+        //             type: 'success',
+        //             color: 'white',
+        //             icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
+        //             titleStyle: { fontSize: 18 }
+        //         })
+        //     }
+        // })
 
     }
 
     return (
-        <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10 }}>
+        <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10, margin: 10, borderRadius: 50, backgroundColor: "rgba(255, 250, 236, 0.5)" }}>
+
             <MaterialCommunityIcons
                 name={liked ? "heart" : "heart-outline"}
                 size={25}
-                color={liked ? "#e60505" : "grey"}
+                color={liked ? "#e60505" : "#3D3D3D"}
             />
         </Pressable>
     );

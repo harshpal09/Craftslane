@@ -43,7 +43,7 @@ export default function HomeScreen({navigation}){
   }
 
     let res = await axios.get(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token);
-  
+    // console.log(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token)
     setSearch(res.data.body);
 
   }

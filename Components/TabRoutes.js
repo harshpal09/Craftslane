@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
 
 import { useSelector } from 'react-redux';
+// import IosFonts from './IosFonts';
 
 
 
