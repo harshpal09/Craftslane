@@ -30,7 +30,7 @@ export default function Product({ route, navigation }) {
 
     const badge_value = useSelector(i => i);
 
-// console.log(badge_value)
+    // console.log(badge_value)
     useEffect(() => {
 
         getdata();
@@ -100,8 +100,8 @@ export default function Product({ route, navigation }) {
 
     }
 
-   
-    
+
+
 
 
     return (
@@ -125,11 +125,9 @@ export default function Product({ route, navigation }) {
                                     <View style={portraitStyles.productContainer} key={i}>
 
                                         {/* {console.log("cat-id on product => ",cat_id)} */}
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:""+cat_id ,id : val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageBackground style={portraitStyles.productImage}  imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} source={{ uri: val.image }} />
-
+                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: val.id })} style={portraitStyles.productImageContainer}>
+                                            <ImageBackground  imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 15, borderTopLeftRadius:18, borderTopRightRadius: 18,width:149,height:149 }} source={{ uri: val.image }} />
                                             <LikeButton id={val.id} />
-                                            {/* {console.log(val.id)} */}
                                         </TouchableOpacity>
 
                                         {renderIf(val.stock == 0)(
@@ -144,7 +142,7 @@ export default function Product({ route, navigation }) {
 
                                         <TouchableOpacity style={portraitStyles.productTextContainer}>
 
-                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat:JSON.stringify(cat_id),id : val.id })}>{val.title}</Text>
+                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: val.id })}>{val.title}</Text>
 
                                         </TouchableOpacity>
 
@@ -165,7 +163,7 @@ export default function Product({ route, navigation }) {
                                             }
 
                                             {renderIf(val.stock != 0)(
-                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
                                             )}
                                         </View>
 
@@ -202,7 +200,7 @@ const LikeButton = ({ id }) => {
 
         const d = {
             product_id: id,
-            
+
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
@@ -213,8 +211,8 @@ const LikeButton = ({ id }) => {
                 const values = {
                     cart_items: badgeCount.cart_items,
                     wishlist_items: response.data.total
-                  }
-                  console.log(response.data)
+                }
+                console.log(response.data)
                 dispatch(addItemToCart(values))
             })
         // dispatch(addItemToCart(values))
