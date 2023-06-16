@@ -28,9 +28,9 @@ export default function Product({ route, navigation }) {
     const [discountPrice, setDiscount] = useState('');
     const [op, setOp] = useState(1);
 
-    
+    const badge_value = useSelector(i => i);
 
-// console.log(badgeCount)
+// console.log(badge_value)
     useEffect(() => {
 
         getdata();
@@ -100,47 +100,8 @@ export default function Product({ route, navigation }) {
 
     }
 
-    addTocart = async (id) => {
-
-
-        let parsed = {}
-        try {
-            let user = await AsyncStorage.getItem('user');
-            parsed = JSON.parse(user);
-
-        }
-        catch (error) {
-            Alert.alert(error)
-        }
-
-        const d = {
-            product_id: id,
-        }
-
-        const header = {
-            headers: { 'content-type': 'application/x-www-form-urlencoded' }
-        }
-        let rsp = await axios.post(parsed.url + "customcart/add&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
-            .then((response) => {
-                dispatch(addItemToCart(response.data.total_cart)),
-
-                    showMessage({
-                        message: 'Product added successfully',
-                        type: 'success',
-                        color: 'white',
-                        icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-                        backgroundColor: 'green',
-                        titleStyle: { fontSize: 18 }
-                    })
-            })
-            .catch((error) => {
-                console.warn(error);
-            })
-
-
-        navigation.navigate('Cart')
-    }
-
+   
+    
 
 
     return (
@@ -172,7 +133,7 @@ export default function Product({ route, navigation }) {
                                         </TouchableOpacity>
 
                                         {renderIf(val.stock == 0)(
-                                            <View style={{ width: 151 }}>
+                                            <View style={{ width: 150 }}>
                                                 <View style={{ backgroundColor: '#af0b1f', width: '100%', padding: 10, justifyContent: 'center', alignItems: 'center' }}>
                                                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Out Of Stock</Text>
                                                 </View>
@@ -204,7 +165,7 @@ export default function Product({ route, navigation }) {
                                             }
 
                                             {renderIf(val.stock != 0)(
-                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { image: val.image, name: val.title, config_type: 'color', id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                            <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
                                             )}
                                         </View>
 

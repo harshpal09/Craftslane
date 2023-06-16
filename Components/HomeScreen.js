@@ -64,7 +64,7 @@ export default function HomeScreen({navigation}){
   }
 
     let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
-    // console.log(resp.data)
+    // console.log("home url=>",parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
     setData(resp.data.data)
   }
 
@@ -144,10 +144,10 @@ export default function HomeScreen({navigation}){
                       {data.new_arrivals.map((item, ind) => {
                         return (
                           <View style={portraitStyles.imageTextContainer} key={ind} >
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product', )} style={portraitStyles.imageContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() =>  navigation.navigate('homeaccent', {  cat:"",id : item.id })} style={portraitStyles.imageContainer}>
                               <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.textContainer}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:"",id : item.id })} style={portraitStyles.textContainer}>
                               <Text
                                 style={portraitStyles.categoryType}
                                 onPress={() => navigation.navigate('categories')}
@@ -175,10 +175,10 @@ export default function HomeScreen({navigation}){
                     {data.popular_trends.map((item, ind) => {
                       return (
                         <View style={portraitStyles.warpImageTextContainer} key={ind} >
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.squareImageContainer}>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:"",id : item.id })} style={portraitStyles.squareImageContainer}>
                             <ImageLazyLoading style={portraitStyles.popularImage} source={{ uri: item.image }} />
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('product')} style={portraitStyles.textContainer}>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:"",id : item.id })} style={portraitStyles.textContainer}>
                             <Text style={portraitStyles.categoryType}>{item.title}</Text>
                           </TouchableOpacity>
                         </View>
