@@ -737,7 +737,7 @@ const HomeAccent = ({ route, navigation }) => {
       .then((resp) => {
         setItem(resp.data);
         setBody(resp.data.body);
-        setSku(resp.data.body.sku.includes("_") ? resp.data.body.sku.split("_")[0] : resp.data.body.sku);
+        setSku(resp.data.body.sku);
         setImage(resp.data.body.thumb);
         setPrice(resp.data.body.range_price == "" ? resp.data.body.price : resp.data.body.range_price);
         setProductOptionValue(resp.data.body.options.length > 0 ? resp.data.body.options[0].product_option_value : []);
@@ -834,12 +834,12 @@ const HomeAccent = ({ route, navigation }) => {
       occasions_type[occasions.indexOf(item.name)] == 1 ? setShowDate(true) : setShowDate(false);
       if (cat_id == 16) {
         setDesignImage(body.options[2].product_option_value_data_child[item.option_value_id]);
-        setImage(body.options[2].product_option_value_data_child[item.option_value_id][0].image)
+        setImage(body.options[2].product_option_value_data_child[item.option_value_id][0].original_image)
 
       }
       else {
         setDesignImage(body.options[1].product_option_value_data_child[item.option_value_id]);
-        setImage(body.options[1].product_option_value_data_child[item.option_value_id][0].image)
+        setImage(body.options[1].product_option_value_data_child[item.option_value_id][0].original_image)
       }
       setPrice(item.price != false ? item.price : price)
       setShowDesign(true);
@@ -880,7 +880,7 @@ const HomeAccent = ({ route, navigation }) => {
       .catch((error) => {
         console.warn(error);
       })
-      setOverlay(false);
+    setOverlay(false);
 
     navigation.navigate('Cart')
   }
@@ -897,16 +897,17 @@ const HomeAccent = ({ route, navigation }) => {
     const header = {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
+    console.log("url = ",parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios")
     await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
       then((response) => {
         const values = {
           cart_items: badgeCount.cart_items,
           wishlist_items: response.data.total
         }
-        console.log(response.data)
+        console.log("zxcvnm=>", response.data)
         dispatch(addItemToCart(values))
       })
-      setOverlay(false);
+    setOverlay(false);
   }
   // console.log(body.uu)
   return (
@@ -914,12 +915,12 @@ const HomeAccent = ({ route, navigation }) => {
       {item.success == undefined ? <LoadingComponent /> :
         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
           <ScrollView style={portraitStyles.container} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
-          <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{color: 'white'}}/>
+            <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
             <View style={portraitStyles.homeAccentContainer}>
               <View style={portraitStyles.productProfileContainer} >
                 <TouchableOpacity>
                   <View style={portraitStyles.homeAccentImageContainer}>
-                    <Image style={portraitStyles.homeAccentImage} source={{ uri: image }} />
+                    <ImageLazyLoading style={portraitStyles.homeAccentImage} source={{ uri: image }} />
                   </View>
                 </TouchableOpacity>
                 {renderIf(items_image.length > 0)(
@@ -1183,7 +1184,7 @@ const HomeAccent = ({ route, navigation }) => {
                   <ScrollView horizontal={true} style={{ width: "80%" }} >
                     {design_image.map((data, i) => (
                       <TouchableOpacity style={{ height: 110, width: 110, borderWidth: 1, justifyContent: "center", alignItems: 'center', borderColor: image == data.image ? "black" : "lightgrey", margin: 5 }} onPress={() => {
-                        setImage(design_image[i].image);
+                        setImage(design_image[i].original_image);
                         setShowPersonalization(true);
                         setBorderColor('black');
                       }} key={i}>
@@ -1262,20 +1263,74 @@ const HomeAccent = ({ route, navigation }) => {
                 <Text style={portraitStyles.overViewText}>Overview</Text>
                 <Text style={portraitStyles.pText}>{plus_minus}</Text>
               </TouchableOpacity>
-              {renderIf(plus_minus == '-')(
+              {plus_minus == '-' ?
                 <View style={portraitStyles.accordianContainer}>
-                  <Text style={portraitStyles.accordianParagraph}>{body.description}</Text>
+                  <Text style={portraitStyles.accordianParagraph}>{body.description.split("+++").length >= 0 ? body.description.split("+++")[0] : ""}</Text>
+                  <Text style={portraitStyles.accordianParagraph}>{body.description.split("+++").length > 1 ? body.description.split("+++")[1] : ""}</Text>
+                  <Text style={portraitStyles.accordianParagraph}>{body.description.split("+++").length > 2 ? body.description.split("+++")[2] : ""}</Text>
+                  <Text style={portraitStyles.accordianText}>:- Handcrafted out of high quality MDF</Text>
+                  <Text style={portraitStyles.accordianText}>:- Embellished with a 24K Gold trim</Text>
+                  <Text style={portraitStyles.accordianText}>:- Eco-friendly and sustainably sourced</Text>
+                  <Text style={portraitStyles.accordianText}>:- Sold Individually</Text>
+                  <Text style={portraitStyles.accordianText}>:- Do not rinse under water, wipe clean with a soft damp cloth</Text>
+                  <Text style={portraitStyles.accordianText}>:- Dishwasher safe</Text>
+                  <Text style={portraitStyles.accordianText}>:- Not Microwaveable</Text>
+                  <Text style={portraitStyles.accordianText}>:- Country of Origin: Sri Lanka</Text>
+                  <Text style={portraitStyles.accordianText}>:- Due to the differences in displays on tech devices, the colours of the product you receive may vary marginally from the colours seen on our website</Text>
+                  <Text style={portraitStyles.accordianText}>:- SKU: {body.sku}</Text>
                 </View>
-              )}
+                :
+                <></>
+              }
               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.shippingPolicyContainer} onPress={() => setSpPlusMinus(sp_plus_minus == "-" ? "+" : "-")}>
                 <Text style={portraitStyles.overViewText}>Shipping Policy</Text>
                 <Text style={portraitStyles.pText}>{sp_plus_minus}</Text>
               </TouchableOpacity>
-              {renderIf(sp_plus_minus == '-')(
+              {sp_plus_minus == '-' ?
                 <View style={portraitStyles.accordianContainer}>
-                  <Text style={portraitStyles.accordianParagraph}>{body.description}</Text>
+                  <Text style={portraitStyles.shippingHeadings}>Shipping Policy</Text>
+                  <Text style={portraitStyles.accordianText}>Shipping within mainland India is Free!</Text>
+                  <Text style={portraitStyles.shippingHeadings}>Shipping</Text>
+                  <Text style={portraitStyles.accordianText}>We generally ship within 1 or 2 days after the payment has been received</Text>
+                  <Text style={portraitStyles.accordianText}>Application of a coat of Primer takes 2 days and Orders will be dispatched within 3 - 4 days after the Order has been placed</Text>
+                  <Text style={portraitStyles.accordianText}>For Painted products kindly budget at least 4 - 5 days extra, and Orders will be dispatched 5 - 6 days after the Order has been placed</Text>
+                  <Text style={portraitStyles.accordianText}>For Personalized products kindly budget 7 days extra, and Orders will be dispatched 7 - 8 days after the Order has been placed</Text>
+                  <Text style={portraitStyles.accordianText}>Dispatches for the day are boxed by 5.00 p.m. and are picked up at 6.00 p.m.</Text>
+                  <Text style={portraitStyles.accordianText}>There are no dispatches on the weekends or public holidays</Text>
+                  <Text style={portraitStyles.accordianText}>Orders once placed cannot be cancelled under any circumstance</Text>
+                  <Text style={portraitStyles.shippingHeadings}>Handling</Text>
+                  <Text style={portraitStyles.accordianText}>
+                    There is a small Handling Charge of Rs.99 on Orders less than Rs.250 (excluding GST)
+                  </Text>
+                  <Text style={portraitStyles.shippingHeadings}>Delivery</Text>
+                  <Text style={portraitStyles.accordianText}>Delivery generally takes 5 – 6 working days, once we ship, based on the delivery locations</Text>
+                  <Text style={portraitStyles.accordianText}>There is an extra charge for Expedited Delivery which can only be assessed once the goods are ready for dispatch</Text>
+                  <Text style={portraitStyles.accordianText}>In the event that Expedited Delivery is required, the extra amount payable will be communicated, and goods dispatched once the extra amount has been credited into our Bank Account</Text>
+                  <Text style={portraitStyles.accordianText}>Our logistics partners are FedEx and Speed Post</Text>
+                  <Text style={portraitStyles.accordianText}>You may track your shipments on www.fedex.com/in and www.indiapost.gov.in</Text>
+                  <Text style={portraitStyles.shippingHeadings}>International Shipping</Text>
+                  <Text style={portraitStyles.accordianText}>For International Shipping, the Product Prices will be as displayed on the Website
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>The Prices will be visible in USD, Pound Sterling and Euro based on your IP address
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>There are no GST (Local Sales Taxes) applicable on International Orders
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>The Currency is dynamically computed on a daily basis
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>The minimum Order Value is INR 1,500 or approximately USD 20
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>The Freight will be computed once the order has been Boxed
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>An Invoice for the Freight amount will be raised and emailed separately through our secure Payment Gateway CCAvenue
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>The Order will be dispatched once we have received the Freight payment
+                  </Text>
+                  <Text style={portraitStyles.accordianText}>On Orders with a value over INR 1,00,000, we would request you to please email us at customercare@craftslane.com
+                  </Text>
                 </View>
-              )}
+                :
+                <></>
+              }
             </View>
             <View style={portraitStyles.noteContainer}>
 

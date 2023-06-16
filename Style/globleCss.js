@@ -708,6 +708,7 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor: 'yellow'
 
   },
+  
   productImageContainer: {
     height: 150,
     width: 150,
@@ -725,6 +726,7 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'#f2ebd5',
    
   },
+  
   priceContainer: {
     // backgroundColor:'blue',
     width: 150,
@@ -859,7 +861,7 @@ export const portraitStyles = StyleSheet.create({
   },
   homeAccentImage: {
     width: '100%',
-    height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.5 : Dimensions.get("screen").height/2.4,
+    height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.7 : Dimensions.get("screen").height/2.4,
   },
   homeAccentTextContainer: {
     // backgroundColor:'skyblue',
@@ -1074,18 +1076,21 @@ export const portraitStyles = StyleSheet.create({
   },
   accordianContainer: {
     // backgroundColor:"skyblue",
+    width:'100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    padding:15
   },
   accordianParagraph: {
     // backgroundColor:'green',
-    marginVertical: 15,
-    marginHorizontal: 13,
+    // marginVertical: 15,
+    // marginHorizontal: 13,
+    paddingVertical:5,
     color: 'black'
   },
   accordianText: {
     // backgroundColor:'white',
-    color: 'black',
+    color: '#3d3d3d',
     marginHorizontal: 13,
     marginVertical: 5
   },
@@ -1519,6 +1524,13 @@ cartIncDecContainer: {
     fontSize:15,
     fontWeight:'600',
     width:Dimensions.get('screen').width/2.2,
+    // backgroundColor:'red'
+  },
+  shippingHeadings:{
+    color:'#3d3d3d',
+    fontSize:12,
+    fontWeight:'600',
+    width:"100%",
     // backgroundColor:'red'
   },
   tableColumnTextInput:{
