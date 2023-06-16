@@ -49,11 +49,11 @@ export default class LogOut extends Component {
       
       return (
         
-         <View style = {portraitStyles.screenBackground}>
+         <View style = {portraitStyles.screenBackgroundStackTab}>
    
             <ActivityIndicator
                animating = {animating}
-               color = '#bc2b78'
+               color = '#B48D56'
                size = "large"
                style = {portraitStyles.activityIndicator}/>
          </View>

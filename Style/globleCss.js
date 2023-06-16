@@ -241,8 +241,9 @@ export const portraitStyles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: '400',
+    // fontWeight: '600',
     // letterSpacing: 2,
+    fontFamily: 'Baskervville-Regular',
     fontSize:18
   },
   selectedText:{color:'grey'},
@@ -702,22 +703,25 @@ export const portraitStyles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     borderWidth: 0.5,
+    // borderTopWidth:0,
     borderColor: '#706c62',
     // backgroundColor: 'yellow'
 
   },
   productImageContainer: {
-    height: 149,
-    width: 149,
-    marginTop:0,
+    height: 150,
+    width: 150,
+    // justifyContent:'center'
+    // marginTop:0,
     // borderRadius: 12,
     
     // backgroundColor: 'red'
   },
   productImage: {
-    height: 149,
-    width: 149,
-    // borderRadius: 12,
+    height: 150,
+    width: 150,
+    borderTopLeftRadius: 17,
+    borderTopRightRadius:17,
     // backgroundColor:'#f2ebd5',
    
   },
@@ -855,7 +859,7 @@ export const portraitStyles = StyleSheet.create({
   },
   homeAccentImage: {
     width: '100%',
-    height: Dimensions.get("screen").height/2.4,
+    height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.5 : Dimensions.get("screen").height/2.4,
   },
   homeAccentTextContainer: {
     // backgroundColor:'skyblue',
@@ -1010,7 +1014,7 @@ export const portraitStyles = StyleSheet.create({
   },
   cartbutton: {
     backgroundColor: '#B48D56',
-    width: Dimensions.get("screen").width/1.3,
+    width: Dimensions.get("screen").width/1.7,
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
