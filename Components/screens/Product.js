@@ -205,7 +205,7 @@ const LikeButton = ({ id }) => {
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-        // console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
+        console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
         await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
             then((response) => {
                 const values = {
