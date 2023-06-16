@@ -126,7 +126,7 @@ export default function Product({ route, navigation }) {
 
                                         {/* {console.log("cat-id on product => ",cat_id)} */}
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', {  cat:""+cat_id ,id : val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageLazyLoading style={portraitStyles.productImage} source={{ uri: val.image }} />
+                                            <ImageBackground style={portraitStyles.productImage}  imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} source={{ uri: val.image }} />
 
                                             <LikeButton id={val.id} />
                                             {/* {console.log(val.id)} */}
