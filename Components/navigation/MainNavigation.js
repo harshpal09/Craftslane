@@ -3,12 +3,13 @@ import { StyleSheet } from 'react-native';
 import LogInPage from '../forms/LogInPage';
 import SignUpPage from '../forms/SignUpPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MyCredits, MyOrders, MyProfile, EditProfile, Password, TrackOrders, WishList, AddressBook, TabRoutes, IntroSlider, ForgotPassword, MyOrderProfile, EditAddress, AddAddress } from '../../export'
+import { MyCredits, MyOrders, MyProfile, EditProfile, Password, TrackOrders, WishList, AddressBook, TabRoutes, ForgotPassword, MyOrderProfile, EditAddress, AddAddress } from '../../export'
 import NewProduct from '../screens/NewProduct';
 import LogOut from '../screens/LogOut';
 import Success from '../forgot-password/Success';
 import CheckOut from '../screens/CheckOut';
 import PlaceOrder from '../screens/PlaceOrder';
+import OTPScreen from '../OTPscreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,10 +17,29 @@ const Stack = createNativeStackNavigator();
 class MainNavigation extends Component {
   render() {
     return (
-      <Stack.Navigator initialRouteName='intro'>
-        <Stack.Screen name="intro" component={IntroSlider} options={{ headerShown: false }} />
-        <Stack.Screen name="login" component={LogInPage} options={{ headerShown: false }} />
-        <Stack.Screen name="signup" component={SignUpPage} options={{ headerShown: true,headerTitle:"", headerTintColor: '#B48D56' }} />
+      <Stack.Navigator initialRouteName='Tab'>
+        {/* <Stack.Screen name="intro" component={IntroSlider} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="login" component={LogInPage} options={{ 
+            headerShown: true, 
+            headerTintColor: '#B48D56',
+            headerTitle: 'Login',
+            headerTitleStyle: { color: 'black'}
+         }} />
+
+        <Stack.Screen name="otp" component={OTPScreen} options={{ 
+           headerShown: true, 
+           headerTintColor: '#B48D56',
+           headerTitle: 'Verify OTP',
+           headerTitleStyle: { color: 'black'}
+        }} />
+
+        <Stack.Screen name="signup" component={SignUpPage} options={{ 
+           headerShown: true, 
+           headerTintColor: '#B48D56',
+           headerTitle: 'SignUp',
+           headerTitleStyle: { color: 'black'}
+         }} />
+         
         <Stack.Screen name="Tab" component={TabRoutes} options={{ headerShown: false }} />
         <Stack.Screen name="myprofile" component={MyProfile} options={{
           headerShown: true, headerTitle: 'My Profile', headerTintColor: '#B48D56',

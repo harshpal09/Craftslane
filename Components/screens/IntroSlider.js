@@ -222,6 +222,9 @@ const IntroSlider = ({navigation}) => {
     let user = await AsyncStorage.getItem('user');
     let parsed = JSON.parse(user);
     setData(parsed);
+
+    // console.log("data = > ",parsed);
+
     if (parsed == null) {
       return navigation.replace('login')
     }

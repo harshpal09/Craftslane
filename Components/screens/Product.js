@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, ImageBackground, TouchableOpacity, SafeAreaView, Pressable } from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, SafeAreaView, Pressable, Dimensions } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -9,8 +9,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import { useDispatch, useSelector } from 'react-redux';
-import { addItemToCart } from '../redux/Actions';
+import { addItemToCart, checkToken } from '../redux/Actions';
 import renderIf from './renderIf';
+
+import { BottomSheet } from '@gorhom/bottom-sheet';
+import Spinner from 'react-native-loading-spinner-overlay';
+// import UserAuth from '../UserAuth';
+import Modal from "react-native-modal";
+import { CHECK_TOKEN } from '../redux/ActionTypes';
+import { TextInput } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+// import { addItemToCart } from '../redux/Actions';
+
 
 export default function Product({ route, navigation }) {
 
@@ -24,6 +34,8 @@ export default function Product({ route, navigation }) {
     const [actualPrice, setPrice] = useState(0);
     const [discountPrice, setDiscount] = useState('');
     const [op, setOp] = useState(1);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [showUserAuth, setShowUserAuth] = useState(false);
 
     const badge_value = useSelector(i => i);
 
@@ -31,9 +43,35 @@ export default function Product({ route, navigation }) {
     useEffect(() => {
 
         getdata();
+        checkToken();
     }, [])
 
+    const [isModalVisible, setModalVisible] = useState(false);
 
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    const checkToken = async () => {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+        } else {
+            setShowUserAuth(true);
+        }
+    };
+
+    const handleSignIn = () => {
+        // Navigate to the login screen
+    };
+
+    const handleCreateAccount = () => {
+        // Navigate to the sign up screen
+    };
+
+    const handleCloseUserAuth = () => {
+        setShowUserAuth(false);
+    };
 
 
     getdata = async () => {
@@ -123,7 +161,7 @@ export default function Product({ route, navigation }) {
 
                                         {/* {console.log("cat-id on product => ",cat_id)} */}
                                         <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageBackground  imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 15, borderTopLeftRadius:18, borderTopRightRadius: 18,width:149,height:149 }} source={{ uri: val.image }} />
+                                            <ImageBackground imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 15, borderTopLeftRadius: 18, borderTopRightRadius: 18, width: 149, height: 149 }} source={{ uri: val.image }} />
                                             <LikeButton id={val.id} />
                                         </TouchableOpacity>
 
@@ -160,7 +198,9 @@ export default function Product({ route, navigation }) {
                                             }
 
                                             {renderIf(val.stock != 0)(
-                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+
+                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+
                                             )}
                                         </View>
 
@@ -179,20 +219,36 @@ export default function Product({ route, navigation }) {
                     </ScrollView>
                 </ImageBackground>
             }
+
+
         </SafeAreaView>
     );
 
 }
 
-const LikeButton = ({ id }) => {
+const LikeButton = ({ id, tog }) => {
     const dispatch = useDispatch();
     const badgeCount = useSelector(i => i);
     const [liked, setLiked] = useState(false);
+    const [overlay, setOverlay] = useState(false)
+    const [isTrue, setIsTrue] = useState(tog)
+
+    useEffect(() => {
+        setIsTrue(false)
+        setReduxValue();
+    }, [liked])
+
+    const setReduxValue = () => {
+        dispatch(checkToken(liked));
+    }
 
     const addToWishlist = async (id) => {
         liked ? setLiked(false) : setLiked(true);
         let user = await AsyncStorage.getItem('user');
         let parsed = JSON.parse(user);
+        setIsTrue(true);
+        // setOverlay(true);
+
 
 
         const d = {
@@ -212,25 +268,15 @@ const LikeButton = ({ id }) => {
                 console.log(response.data)
                 dispatch(addItemToCart(values))
             })
-        // dispatch(addItemToCart(values))
-        // .then((resp) => {
-        //     if (resp.data.success == 1) {
-        //         showMessage({
-        //             message: "Success",
-        //             duration: 4000,
-        //             type: 'success',
-        //             color: 'white',
-        //             icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-        //             titleStyle: { fontSize: 18 }
-        //         })
-        //     }
-        // })
+
+        // setOverlay(false)
 
     }
 
     return (
         <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10, margin: 10, borderRadius: 50, backgroundColor: "rgba(255, 250, 236, 0.5)" }}>
-
+            <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
+            <UserAuth isTrue={isTrue} />
             <MaterialCommunityIcons
                 name={liked ? "heart" : "heart-outline"}
                 size={25}
@@ -239,5 +285,81 @@ const LikeButton = ({ id }) => {
         </Pressable>
     );
 };
+
+const UserAuth = ({ isTrue }) => {
+    useEffect(() => {
+        setModalVisible(isTrue)
+    }, [isTrue])
+
+    const dispatch = useDispatch();
+    const [isModalVisible, setModalVisible] = useState(isTrue);
+    const navigation = useNavigation();
+
+    const val = useSelector(s => s)
+
+    // console.log(val);
+
+    return (
+        <View style={{ flex: 1 }}>
+            {/* <Button title="Show modal" onPress={toggleModal} /> */}
+
+            <Modal isVisible={val}
+                onBackdropPress={() => setModalVisible(false)}
+                style={{ width: '100%', marginLeft: 0, marginBottom: 0 }}
+            >
+                <View style={portraitStyles.modalContainer}>
+
+                    <View style={{ paddingTop: 20 }}>
+                        <Text style={portraitStyles.loginWelcomeText}>Welcome to Craftslane</Text>
+                    </View>
+
+
+                    <TouchableOpacity style={portraitStyles.closeContainer} onPress={() => { dispatch(checkToken(false)) }} >
+                        <Text style={portraitStyles.closeIcon}>X</Text>
+                    </TouchableOpacity>
+
+                    <View style={{ padding: 10 }}>
+                        <Text style={portraitStyles.mobileMessage}>Please enter your mobile number</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+
+                        <View style={portraitStyles.mobileFieldContainer}>
+                            <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
+                            <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'></TextInput>
+                        </View>
+
+                        <View style={portraitStyles.otpButtonContainer}>
+                            <TouchableOpacity style={portraitStyles.otpButton} onPress={()=> navigation.navigate('otp', dispatch(checkToken(false)))}>
+                                <Text style={{ color: 'white' }} >Get OTP</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+
+
+                    <View style={{ padding: 15 }}>
+                        <Text style={{ fontSize: 18 }}>OR</Text>
+                    </View>
+
+
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={()=> navigation.navigate('login', dispatch(checkToken(false)))}>
+                        <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
+                    </TouchableOpacity>
+
+                    <View style={{ padding: 5 }}>
+                        <Text style={{ fontSize: 18, padding: 5 }}>OR</Text>
+                    </View>
+
+                    <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', dispatch(checkToken(false)))}>
+                        <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
+                    </TouchableOpacity>
+
+                    {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}
+                </View>
+            </Modal>
+        </View>
+    );
+}
 
 

@@ -10,7 +10,6 @@ import SearchFilter from './SearchFilter'
 import { LogBox } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from './redux/Actions';
-import renderIf from "./screens/renderIf";
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
@@ -20,12 +19,18 @@ export default function HomeScreen({ navigation }) {
   const [alldata, setData] = useState([]);
   const [search, setSearch] = useState([]);
   const [input, setInput] = useState("");
-  const [showMessage, setShowMessage] = useState(true);
+  const images = [
+    'https://cdn.pixabay.com/photo/2017/08/18/16/38/paper-2655579_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/07/23/16/01/nature-2531761_1280.jpg',
+    'https://cdn.pixabay.com/photo/2018/06/07/09/01/emotions-3459666_1280.jpg'
+  ]
+  const [imgActive, setimgActive] = useState(0);
 
   useEffect(() => {
 
     getData();
     searchArray();
+    // setInput("");
 
   }, [])
 
@@ -36,13 +41,26 @@ export default function HomeScreen({ navigation }) {
     try {
       let user = await AsyncStorage.getItem('user');
       parsed = JSON.parse(user);
+
     }
+
     catch (error) {
       Alert.alert(error)
     }
+
     let res = await axios.get(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token);
     // console.log(parsed.url + "customcateautosuggestion/index&key=" + parsed.key + "&token=" + parsed.token)
     setSearch(res.data.body);
+
+  }
+
+  onchange = (nativeEvent) => {
+    if (nativeEvent) {
+      const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+      if (slide != images) {
+        setimgActive(slide);
+      }
+    }
   }
 
 
@@ -63,6 +81,8 @@ export default function HomeScreen({ navigation }) {
     let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
     // console.log("home url=>",parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
     setData(resp.data.data)
+
+
   }
 
 
@@ -77,6 +97,7 @@ export default function HomeScreen({ navigation }) {
 
 
   return (
+
     <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
 
       {alldata.length == false ? <LoadingComponent /> :
@@ -86,21 +107,23 @@ export default function HomeScreen({ navigation }) {
             onRefresh={() => _onRefresh()}
           />}>
 
+
             <View style={portraitStyles.searchBar}>
+
               <TextInput style={portraitStyles.textField} placeholder='Search' placeholderTextColor={'grey'} onChangeText={(t) => setInput(t)} />
               <TouchableOpacity onPress={() => navigation.navigate('allProducts', { order_by: "" })} style={portraitStyles.searchButton}><Feather name="search" color="#000" size={22} /></TouchableOpacity>
+
             </View>
+
 
             <TouchableOpacity onPress={() => setInput("")} style={portraitStyles.searchBarFilter}>
-              <SearchFilter data={search} input={input} />
-            </TouchableOpacity>
-            {renderIf(showMessage)(
-            <View style={{justifyContent:'center',alignItems:'center',margin:10,padding:10}}>
-              <Text style={{color:'#3d3d3d',fontSize:16,fontFamily:'Baskervville-Regular'}}>Welcome Back Shilpi !</Text>
-            </View>
-            )}
 
-            <View style={portraitStyles.headerTextContainer}> 
+
+              <SearchFilter data={search} input={input} />
+
+            </TouchableOpacity>
+
+            <View style={portraitStyles.headerTextContainer}>
               <Text style={portraitStyles.headerText}>Categories</Text>
             </View>
 
@@ -126,6 +149,41 @@ export default function HomeScreen({ navigation }) {
                   </View>
                 ))}
               </ScrollView>
+            </View>
+
+            <View style={{ width: "100%",  }}>
+              <View style={portraitStyles.wrap}>
+                <ScrollView onScroll={({ nativeEvent }) =>
+                  onchange(nativeEvent)}
+                  showsHorizontalScrollIndicator={false}
+                  pagingEnabled
+                  scrollEventThrottle={0}
+                  horizontal
+                  style={portraitStyles.wrap}
+                >
+                  {
+                    images.map((e, index) =>
+                      <Image
+                        key={e}
+                        resizeMethod="stretch"
+                        style={portraitStyles.wrap}
+                        source={{ uri: e }}
+                      />
+                    )
+                  }
+
+                </ScrollView>
+                <View style={portraitStyles.wrapDot}>
+                  {
+                    images.map((e, index) =>
+                      <Text key={e}
+                        style={imgActive == index ? portraitStyles.dotActive : portraitStyles.dot}>
+                        ●
+                      </Text>
+                    )
+                  }
+                </View>
+              </View>
             </View>
 
             <View style={portraitStyles.headerTextContainer}>
@@ -157,10 +215,14 @@ export default function HomeScreen({ navigation }) {
               </ScrollView>
             </View>
 
+
+
             <View style={portraitStyles.headerTextContainer}>
               <Text style={portraitStyles.headerText}>Popular Trends</Text>
               <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'popular_trends' })}>See All</Text>
             </View>
+
+
             <View >
               {alldata.map((data, idx) => (
                 <View style={portraitStyles.warpContainer} key={idx}>
@@ -179,7 +241,6 @@ export default function HomeScreen({ navigation }) {
                 </View>
               ))}
             </View>
-
             <View style={portraitStyles.headerTextContainer}>
               <Text style={portraitStyles.headerText}>Follow on Facebook & Instagram</Text>
             </View>
@@ -205,4 +266,3 @@ export default function HomeScreen({ navigation }) {
 
 
 }
-

@@ -52,6 +52,7 @@ export const portraitStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor:'#f9f0df',
+    padding: 5,
     // backgroundColor:'green', 
     // paddingBottom:'33%',
   },
@@ -62,10 +63,8 @@ export const portraitStyles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
-    // backgroundColor:'#f2ebd5',
-    // backgroundColor:'#f2ebd5',
     // backgroundColor:'skyblue',
-    padding:2,
+    // padding:2,
     paddingBottom:80,
   },
   selectDropdownContainer:{
@@ -343,7 +342,7 @@ export const portraitStyles = StyleSheet.create({
     color: '#6D6D6D',
   },
   headerTextContainer: {
-    // marginTop: 20,
+    marginTop: 20,
     display: 'flex',
     // backgroundColor:'blue',
     flexDirection: 'row',
@@ -1835,10 +1834,7 @@ creditTableRow:
  tinyIconContainer:{
   display: 'flex',
    flexDirection: 'row',
-  //  justifyContent:'space-evenly',
-    // width:'100%',
     padding:10,
-    // backgroundColor:'red'
  },
  tinyText:{
   textAlign: 'center',
@@ -1847,6 +1843,78 @@ creditTableRow:
    width:'80%',
   //  backgroundColor: 'yellow'
 
+ },
+ wrap:{
+  width: Dimensions.get('screen').width,
+  height: Dimensions.get('screen').width/2.3,
+  // backgroundColor: 'red',
+ },
+ wrapDot:{
+  position:'absolute',
+  bottom: 0,
+  flexDirection: 'row',
+  alignSelf:'center'
+ },
+ dotActive:{
+  margin:3,
+  color: 'black'
+ },
+ dot:{
+  margin:3,
+  color: 'white'
+ },
+
+ modalContainer:{
+  flex: 1,
+  backgroundColor: 'white', 
+  height: Dimensions.get('screen').height / 2.3,
+  position: 'absolute', 
+  alignItems: 'center',
+  bottom: 0,
+  right: 0,
+  left: 0,
+  width: '100%'
+ },
+ loginWelcomeText:{
+  fontSize: 24,
+  fontWeight: 'bold', 
+  fontFamily: 'Baskervville-Regular' 
+ },
+ closeContainer:{
+  position: 'absolute', 
+  top: 10,
+  right: 10,
+  padding: 5
+ },
+ closeIcon:{
+  fontSize: 20, 
+  fontWeight: 'bold', 
+  color: '#333'
+ },
+ mobileMessage:{
+  fontSize: 18, 
+  color: 'grey', 
+  fontFamily: 'Baskervville-Regular' 
+ }, 
+ mobileFieldContainer:{
+  marginTop: 20, 
+  width: '70%', 
+  height: 50, 
+  alignItems: 'center', 
+  flexDirection: 'row', 
+  justifyContent: 'flex-start', 
+  borderBottomWidth: 0.5, 
+  borderBottomColor: 'grey',
+ },
+ otpButtonContainer:{
+  alignItems: 'center',
+  justifyContent:'center',
+  height:50,
+  marginTop:20 
+ },
+ otpButton:{
+  backgroundColor: '#B48D56', 
+  padding: 8 
  }
 
 })
