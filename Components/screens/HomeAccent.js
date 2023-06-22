@@ -708,6 +708,8 @@ const HomeAccent = ({ route, navigation }) => {
   );
   const [show_date, setShowDate] = useState(false);
   const [overlay, setOverlay] = useState(false);
+  const [old_sku, setOldSku] = useState('');
+
 
   const dispatch = useDispatch();
   const badgeCount = useSelector(i => i);
@@ -737,7 +739,9 @@ const HomeAccent = ({ route, navigation }) => {
       .then((resp) => {
         setItem(resp.data);
         setBody(resp.data.body);
-        setSku(resp.data.body.sku);
+        let temp = resp.data.body.popup.split("/");
+        let new_sku = temp[temp.length - 1].replace("-1000x1000.png", "");
+        setSku(new_sku);
         setImage(resp.data.body.thumb);
         setPrice(resp.data.body.range_price == "" ? resp.data.body.price : resp.data.body.range_price);
         setProductOptionValue(resp.data.body.options.length > 0 ? resp.data.body.options[0].product_option_value : []);
@@ -778,6 +782,10 @@ const HomeAccent = ({ route, navigation }) => {
           setProductOptionValue2(item.body.options[0].product_option_value)
         }
       }
+      else if(options.length == 2)
+      {
+        
+      }
     }
   }
 
@@ -786,11 +794,13 @@ const HomeAccent = ({ route, navigation }) => {
 
     if (options.length == 2) {
       arr = options[1].product_option_value;
+      console.log("if conditions =>", body.options[1].product_option_value)
     }
     else if (options.length == 3) {
       arr = options[2].product_option_value;
     }
 
+    // console.log("arr => ", arr)
     let temp = [];
 
     arr.map((data, i) => {
@@ -798,7 +808,6 @@ const HomeAccent = ({ route, navigation }) => {
         temp.push(arr[i]);
       }
     })
-
     let pov = getImageObject(temp)
     setProductOptionValue3(pov)
     setIsSelectColor(true)
@@ -806,44 +815,47 @@ const HomeAccent = ({ route, navigation }) => {
   getImageObject = (array) => {
     let arr = array;
     arr.map((data, i) => {
-      arr[i].image = { uri: data.image }
+      if(arr[i].image.uri == undefined)
+        arr[i].image = { uri: data.image }
     }
     )
     return arr;
   }
-  viewTypeSelect = (item) => {
+  changeImage = (item_val) => {
+    console.log("sku =>",sku)
+    let string = image.split(sku + "-")
+    console.log("String => ",string)
+    let img = string[0] + item_val.option_image_name.split('.')[0] + "-" + string[1];
+    console.log("complete url => ",img)
+    setImage(item_val.option_image_name.split('.')[0] == "" ? image : img);
+    setSku(item_val.option_image_name.split('.')[0] == "" ? sku :item_val.option_image_name.split('.')[0] );
+    setPrice(item_val.price != false ? item_val.price : price);
+  }
+  viewTypeSelect = (item_val) => {
 
     if (options.length == 1) {
-
+      changeImage(item_val)
     }
     else if (options.length == 2) {
-
-      let string = image.split(sku + "-")
-      let img = string[0] + item.option_image_name.split('.')[0] + "-" + string[1];
-
+      changeImage(item_val)
       if (body.options[1].product_option_value_data_child.length == undefined) {
-        setTraySizes(body.options[1].product_option_value_data_child[item.option_value_id]);
+        setTraySizes(body.options[1].product_option_value_data_child[item_val.option_value_id]);
         setIsSelect(true);
       }
-      setPrice(item.price != false ? item.price : price);
-      setImage(img);
-      setSku(item.option_image_name.split('.')[0]);
-
     }
     else if (options.length == 5) {
-      occasions_type[occasions.indexOf(item.name)] == 1 ? setShowDate(true) : setShowDate(false);
+      occasions_type[occasions.indexOf(item_val.name)] == 1 ? setShowDate(true) : setShowDate(false);
       if (cat_id == 16) {
-        setDesignImage(body.options[2].product_option_value_data_child[item.option_value_id]);
-        setImage(body.options[2].product_option_value_data_child[item.option_value_id][0].original_image)
+        setDesignImage(body.options[2].product_option_value_data_child[item_val.option_value_id]);
+        setImage(body.options[2].product_option_value_data_child[item_val.option_value_id][0].original_image)
 
       }
       else {
-        setDesignImage(body.options[1].product_option_value_data_child[item.option_value_id]);
-        setImage(body.options[1].product_option_value_data_child[item.option_value_id][0].original_image)
+        setDesignImage(body.options[1].product_option_value_data_child[item_val.option_value_id]);
+        setImage(body.options[1].product_option_value_data_child[item_val.option_value_id][0].original_image)
       }
-      setPrice(item.price != false ? item.price : price)
+      setPrice(item_val.price != false ? item_val.price : price)
       setShowDesign(true);
-
     }
 
   }
@@ -897,7 +909,7 @@ const HomeAccent = ({ route, navigation }) => {
     const header = {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
-    console.log("url = ",parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios")
+    console.log("url = ", parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios")
     await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
       then((response) => {
         const values = {
@@ -909,7 +921,7 @@ const HomeAccent = ({ route, navigation }) => {
       })
     setOverlay(false);
   }
-  // console.log(body.uu)
+  // console.log(options.length)
   return (
     <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
       {item.success == undefined ? <LoadingComponent /> :
@@ -982,6 +994,8 @@ const HomeAccent = ({ route, navigation }) => {
                     placeholder={"Select a " + body.options[0].name}
                     searchPlaceholder="Search..."
                     onChange={item => {
+                      console.log("aa raha hai")
+                      setIsSelectColor(false)
                       cat_id === 47 ? selectColor(item) : viewTypeSelect(item);
                     }}
                   />
@@ -1009,8 +1023,8 @@ const HomeAccent = ({ route, navigation }) => {
                       placeholder={"Select a " + body.options[0].name}
                       searchPlaceholder="Search..."
                       onChange={item => {
-                        // selectColor(item)
-                        // setState({ is_Select_color: true });
+                        changeImage(item)
+                        setOldSku(item.option_image_name.split("/")[0])
                       }}
                     />
                   </View>
@@ -1057,7 +1071,7 @@ const HomeAccent = ({ route, navigation }) => {
                     placeholder={"Select a " + options.length != 3 ? body.options[1].name : body.options[2].name}
                     searchPlaceholder="Search..."
                     onChange={item => {
-
+                      changeImage(item)
                     }}
                   />
                 </View>
@@ -1081,11 +1095,7 @@ const HomeAccent = ({ route, navigation }) => {
                     placeholder={"Select a " + body.options[1].name}
                     searchPlaceholder="Search..."
                     onChange={item => {
-                      setPrice(item.price)
-                      let string = image.split(sku + "-")
-                      let img = string[0] + item.option_image_name.split('.')[0] + "-" + string[1];
-                      setImage(img);
-                      setSku(item.option_image_name.split('.')[0]);
+                      changeImage(item)
                     }}
                   />
                 </View>
@@ -1110,7 +1120,7 @@ const HomeAccent = ({ route, navigation }) => {
                     placeholder={"Select a " + body.options[0].name}
                     searchPlaceholder="Search..."
                     onChange={item => {
-
+                      viewTypeSelect(item)
                     }}
                   />
                 </View>
@@ -1241,7 +1251,7 @@ const HomeAccent = ({ route, navigation }) => {
             </View>
             <View style={portraitStyles.cartButtonContainer}>
               <Pressable style={portraitStyles.cartbutton} onPress={() => addToCart(product_id)}>
-                <Text style={portraitStyles.buttonText}>Add to Basket</Text>
+                <Text style={portraitStyles.buttonText}>Add to Cart</Text>
               </Pressable>
               <Pressable onPress={() => addToWishlist(product_id)}>
                 <MaterialCommunityIcons

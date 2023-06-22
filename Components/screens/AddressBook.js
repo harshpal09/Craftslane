@@ -202,13 +202,13 @@ class AddressBook extends Component {
                                                     <Text style={portraitStyles.addressText}>{item.country}</Text>
                                                 </View>
                                                 <View style={{ flexDirection: 'row', display: 'flex', width: "80%", justifyContent: 'space-between', padding: 20 }}>
-                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 5, padding: 5 }} onPress={() => this.props.navigation.replace('editaddress', { item_id: item.address_id })}>
+                                                    <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 5, padding: 5 }} onPress={() => this.props.navigation.navigate('editaddress', { item_id: item.address_id })}>
                                                         <Text style={portraitStyles.addressButton}>Edit</Text>
                                                     </TouchableOpacity>
                                                     {this.state.address.length > 0 ?
                                                         <TouchableOpacity activeOpacity={0.9} style={{ width: '40%', backgroundColor: '#B48D56', borderRadius: 5, padding: 5 }} onPressIn={() => this.deleteConfirmation(item.address_id)}>
                                                             <Text style={portraitStyles.addressButton}>Delete</Text>
-                                                        </TouchableOpacity>
+                                                        </TouchableOpacity> 
                                                         :
                                                         <>
                                                         </>

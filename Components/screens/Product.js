@@ -11,9 +11,6 @@ import ImageLazyLoading from "react-native-image-lazy-loading";
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../redux/Actions';
 import renderIf from './renderIf';
-// import { addItemToCart } from '../redux/Actions';
-
-
 
 export default function Product({ route, navigation }) {
 
@@ -108,7 +105,7 @@ export default function Product({ route, navigation }) {
         <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
             {item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} >
+                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} onTouchEnd={() => console.log("chal raha hai")} onMomentumScrollEnd={() => console.log("momentum")} onScroll={()=> console.log("on scroll")} onScrollEndDrag={()=> console.log("on end")} >
 
 
                         <View style={portraitStyles.categoryHeaderContainer} >
@@ -163,7 +160,7 @@ export default function Product({ route, navigation }) {
                                             }
 
                                             {renderIf(val.stock != 0)(
-                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => addTocart(val.id)} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
                                             )}
                                         </View>
 
