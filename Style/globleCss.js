@@ -343,7 +343,7 @@ export const portraitStyles = StyleSheet.create({
     color: '#6D6D6D',
   },
   headerTextContainer: {
-    marginTop: 20,
+    // marginTop: 20,
     display: 'flex',
     // backgroundColor:'blue',
     flexDirection: 'row',
@@ -860,6 +860,7 @@ export const portraitStyles = StyleSheet.create({
     // height: 250,
   },
   homeAccentImage: {
+    backgroundColor:"transparent",
     width: '100%',
     height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.7 : Dimensions.get("screen").height/2.4,
   },
