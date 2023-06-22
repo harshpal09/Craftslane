@@ -117,7 +117,7 @@ class ProfileScreen extends Component {
                                 </TouchableOpacity>
                             </DataTable.Cell>
                         </DataTable.Row>
-                        <DataTable.Row style={portraitStyles.rowStyles}>
+                        {/* <DataTable.Row style={portraitStyles.rowStyles}>
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('wishlist')} >
                                     <MaterialIcons style={portraitStyles.gestureIcon} name='favorite-border' size={23} color={'#6D6D6D'} />
@@ -125,7 +125,7 @@ class ProfileScreen extends Component {
                                     <MaterialIcons name='navigate-next' color={'#6D6D6D'} size={25} style={portraitStyles.profileIcons} />
                                 </TouchableOpacity>
                             </DataTable.Cell>
-                        </DataTable.Row>
+                        </DataTable.Row> */}
                         <DataTable.Row style={portraitStyles.rowStyles} >
                             <DataTable.Cell>
                                 <TouchableOpacity activeOpacity={0.9} style={portraitStyles.profileHeadings} onPress={() => this.props.navigation.navigate('myorder')}>

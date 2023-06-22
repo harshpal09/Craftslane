@@ -6,8 +6,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
-
+import UserAuth from './UserAuth';
 import { useSelector } from 'react-redux';
+import OTPScreen from './OTPscreen';
 // import IosFonts from './IosFonts';
 
 
@@ -61,7 +62,7 @@ const TabRoutes = () => {
                     tabBarBadge: items.cart_items > 0 ? items.cart_items : undefined
                 }
                 } />
-            <Tab.Screen name="Favourite" component={WishList}
+            <Tab.Screen name="Favourite" component={OTPScreen}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (

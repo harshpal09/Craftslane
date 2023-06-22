@@ -117,7 +117,7 @@ class LogInPage extends Component {
                                 </View>
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Email Address" placeholderTextColor={'grey'} autoCapitalize='none' onChangeText={(text) => this.setState({ email: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Email Address or Mobile number" placeholderTextColor={'grey'} autoCapitalize='none' onChangeText={(text) => this.setState({ email: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
                                 
