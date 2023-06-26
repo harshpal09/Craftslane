@@ -49,9 +49,10 @@ export default function CartScreen({navigation}) {
     catch (error) {
       Alert.alert(error)
     }
-    console.log(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
+    console.log("Cart url=>",parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
     await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
       .then((resp2) => {
+        console.log(resp2.data)
         const values = {
           cart_items: resp2.data.total_cart,
           wishlist_items: item.wishlist_items
@@ -106,9 +107,10 @@ export default function CartScreen({navigation}) {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
 
-
+    console.log("Delete Url =>",parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header)
     await axios.post(parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed.token + '&os_type=android', d, header).
       then((response) => {
+        console.log(response)
         const values = {
           cart_items: response.data.total_cart,
           wishlist_items: item.wishlist_items

@@ -27,8 +27,8 @@ export default class LogOut extends Component {
      await axios.get(this.state.data.url+"customlogout/index&key="+this.state.data.key+'&token='+this.state.data.token).then((resp)=>(this.setState({response_data:resp.data}))).catch((erro)=>console.warn(erro))
 
 
-        await AsyncStorage.removeItem('user');  
-        return this.props.navigation.replace('login');
+        await AsyncStorage.removeItem('token');  
+        return this.props.navigation.jumpTo('Home');
   
    
   }

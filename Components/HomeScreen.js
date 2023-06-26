@@ -71,6 +71,7 @@ export default function HomeScreen({ navigation }) {
     try {
       let user = await AsyncStorage.getItem('user');
       parsed = JSON.parse(user);
+      // console.log(parsed)
 
     }
 
@@ -79,7 +80,8 @@ export default function HomeScreen({ navigation }) {
     }
 
     let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
-    // console.log("home url=>",parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
+    console.log("home url=>",parsed.url + "customhome/index&key=" + parsed.key)
+    // console.log(resp.data)
     setData(resp.data.data)
 
 

@@ -1867,7 +1867,7 @@ creditTableRow:
  modalContainer:{
   flex: 1,
   backgroundColor: 'white', 
-  height: Dimensions.get('screen').height / 2.3,
+  height: Dimensions.get('screen').height/ 2.3,
   position: 'absolute', 
   alignItems: 'center',
   bottom: 0,
@@ -1915,6 +1915,11 @@ creditTableRow:
  otpButton:{
   backgroundColor: '#B48D56', 
   padding: 8 
- }
+ },
+ blankScreen: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 
 })

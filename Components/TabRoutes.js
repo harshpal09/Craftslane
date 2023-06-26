@@ -1,109 +1,138 @@
-import React, { useEffect, useState,Component } from 'react';
-import { View, StyleSheet, Image,Text } from 'react-native';
-import { ProfileScreen, AuthNavigator, WishList,CartScreen } from '../export'
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Image, Text, Button, Modal } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LogOut from './screens/LogOut';
-import UserAuth from './UserAuth';
-import { useSelector } from 'react-redux';
-import OTPScreen from './OTPscreen';
-// import IosFonts from './IosFonts';
-
-
-
-
-
-
-
-
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProfileScreen, AuthNavigator,LogInPage, WishList, CartScreen, HomeScreen } from '../export'
+import { useIsFocused } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
+  const [tokenAvailable, setTokenAvailable] = useState(false);
+//   const [showModal, setShowModal] = useState(false);
+//   const [tabKey, setTabKey] = useState('Home');
+const isFocused = useIsFocused();
 
-    // const items = []
- const items = useSelector(state => state)
-//  const item2 = useSelector(s2 => s2);
+  useEffect(() => {
+    
+    const checkTokenAvailability = async () => {
+        const isToken = await AsyncStorage.getItem('token');
+        console.log(isToken)
 
-//  console.log("item => ",items.cart_items);
+        if (!isToken) {
+            setTokenAvailable(false);
+            
+        }
+        else {
+            setTokenAvailable(true);
+            
+        }
 
-    return (
-        <Tab.Navigator  screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: '#B48D56',
-            tabBarInactiveTintColor: 'black',
-        }}
-        >
-            <Tab.Screen name="Home" component={AuthNavigator} options={{
-                tabBarIcon: ({ focused }) => {
-                    return (
-                        <FontAwesome name="home" size={25} color={focused ? '#b48d56' : '#666666'} />
-                    )
-                }
-            }} />
-            <Tab.Screen name="Cart" component={CartScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <MaterialCommunityIcons name="cart" size={25} color={focused ? '#B48D56' : '#666666'} />
-                        )
-                    },
-                    unmountOnBlur: true,
-                    headerShown: true,
-                    headerTitle: 'Shopping Cart',
-                    headerTitleStyle: { fontSize: 20 },
+    };
+
+    checkTokenAvailability();
+  }, [isFocused]);
 
 
-                    tabBarBadge: items.cart_items > 0 ? items.cart_items : undefined
-                }
-                } />
-            <Tab.Screen name="Favourite" component={OTPScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <MaterialCommunityIcons name="heart" size={25} color={focused ? '#B48D56' : '#666666'} />
-                        )
-                    },
-                    headerShown: true,
-                    headerTitleStyle: { fontSize: 20 },
-                    tabBarBadge: items.wishlist_items > 0 ? items.wishlist_items : undefined,
 
-                    
+  
 
+  return (
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarActiveTintColor: '#B48D56',
+          tabBarInactiveTintColor: 'black',
+          tabBarIcon: ({ focused }) => {
+            let iconName;
 
-                }} />
-            <Tab.Screen name="Account" component={ProfileScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <MaterialIcons name="person" size={25} color={focused ? '#B48D56' : '#666666'} />
-                        )
-                    }
-                }} />
-            <Tab.Screen name="logout" component={LogOut}
+            if (route.name === 'Home') {
+              iconName = 'home';
+              return (
+                <FontAwesome
+                  name={iconName}
+                  size={25}
+                  color={focused ? '#b48d56' : '#666666'}
+                />
+              );
+            } else if (route.name === 'Cart') {
+              iconName = 'cart';
+              return (
+                <MaterialCommunityIcons
+                  name={iconName}
+                  size={25}
+                  color={focused ? '#B48D56' : '#666666'}
+                />
+              );
+            } else if (route.name === 'Favourite') {
+              iconName = 'heart';
+              return (
+                <MaterialCommunityIcons
+                  name={iconName}
+                  size={25}
+                  color={focused ? '#B48D56' : '#666666'}
+                />
+              );
+            } else if (route.name === 'Account') {
+              iconName = 'person';
+              return (
+                <MaterialIcons
+                  name={iconName}
+                  size={25}
+                  color={focused ? '#B48D56' : '#666666'}
+                />
+              );
+            } else if (route.name === 'Login') {
+              iconName = 'login';
+              return (
+                <MaterialIcons
+                  name={iconName}
+                  size={25}
+                  color={focused ? '#B48D56' : '#666666'}
+                />
+              );
+            } else if (route.name === 'Logout') {
+                iconName = 'logout';
+                return (
+                  <MaterialIcons
+                    name={iconName}
+                    size={25}
+                    color={focused ? '#B48D56' : '#666666'}
+                  />
+                );
+              }
 
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <MaterialIcons name="logout" size={25} color={focused ? '#B48D56' : '#666666'} />
-                        )
-                    }
-                }} />
+          },
+        })}
+      >
+        <Tab.Screen name="Home" component={AuthNavigator} />
+        <Tab.Screen name="Cart" component={CartScreen} />
+        <Tab.Screen name="Favourite" component={WishList} />
+        {tokenAvailable ? (
+          <Tab.Screen name="Account" component={ProfileScreen} />
+        ) : (
+          <Tab.Screen name="Login" component={LogInPage} />
+        )}
+        {tokenAvailable && (
+          <Tab.Screen name="Logout" component={LogOut} />
+        )}
+      </Tab.Navigator>
 
-
-        </Tab.Navigator>
-    );
+    </View>
+  );
 }
 
-const decor = StyleSheet.create({
-    main: {
-        borderRadius: 20
-    }
-})
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default TabRoutes;

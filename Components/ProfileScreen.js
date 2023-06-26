@@ -46,14 +46,14 @@ class ProfileScreen extends Component {
         }
 
         await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
-            .then((resp) => this.setState({ info: resp.data.body }))
-            .catch((error) => console.warn(error));
+            .then((resp) => {this.setState({ info: resp.data.body }),console.log(resp.data)})
+            .catch((error) => console.log(error));
         this.setState({ refreshing: false })
         // console.warn(this.state.data);
     }
    
     render() {
-        // console.warn(Dimensions.get('screen').width/2.5);
+        console.log(this.state.info);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 {this.state.info.length == false ?<LoadingComponent />:
