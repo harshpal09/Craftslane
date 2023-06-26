@@ -631,7 +631,7 @@
 //   },
 // });
 import React, { Component, Fragment, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, ImageBackground, TextInput, TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, ImageBackground,Share, TextInput, TouchableOpacity, RefreshControl, TouchableOpacityComponent, ActivityIndicator, useColorScheme, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import DatePicker from 'react-native-date-picker';
@@ -734,7 +734,7 @@ const HomeAccent = ({ route, navigation }) => {
     let b = cat.substring(1, 3);
     setCatId(parseInt(b));
     setProductId(id)
-
+    console.log(parsed.url + "customproductprofile/index&key=" + parsed.key + "&product_id=" + id)
     await axios.get(parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id)
       .then((resp) => {
         setItem(resp.data);
@@ -860,6 +860,45 @@ const HomeAccent = ({ route, navigation }) => {
 
   }
   console.log(product_id);
+
+  shareProduct = async () => {
+
+    let parsed = {}
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+    }
+    catch (error) {
+      Alert.alert(error)
+    }
+    const { cat, id } = route.params;
+    
+
+      // let user = await AsyncStorage.getItem('user');
+      // let parsed = JSON.parse(user);
+      // this.setState({ data: parsed })
+      // console.warn(this.state.data)
+
+      const result = await Share.share({
+
+        message: parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id
+
+
+      });
+
+
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          //shared with activity type of result.activityType
+        }
+        else { }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    
+  }
+
   addToCart = async (id) => {
 
     setOverlay(true);
@@ -1260,13 +1299,13 @@ const HomeAccent = ({ route, navigation }) => {
                   color={liked ? "red" : "black"}
                 />
               </Pressable>
-              <Pressable >
+              <TouchableOpacity onPress={()=> shareProduct()}>
                 <MaterialCommunityIcons
                   name="share-variant"
                   size={32}
                   color="black"
                 />
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={portraitStyles.overViewAndShippingPolicyContainer}>
               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.overViewContainer} onPress={() => setPlusMinus(plus_minus == "-" ? "+" : "-")}>

@@ -219,6 +219,8 @@ export default function WishList() {
     }
     await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed.token)
     .then((resp) => {
+
+      console.log(resp.data)
       const values = {
         cart_items: item.cart_items,
         wishlist_items : Array.isArray(resp.data.body) ? resp.data.body.length : 0

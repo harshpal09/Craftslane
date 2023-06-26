@@ -19,12 +19,12 @@ class MainNavigation extends Component {
     return (
       <Stack.Navigator initialRouteName='Tab'>
         {/* <Stack.Screen name="intro" component={IntroSlider} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="login" component={LogInPage} options={{ 
+        {/* <Stack.Screen name="login" component={LogInPage} options={{ 
             headerShown: true, 
             headerTintColor: '#B48D56',
             headerTitle: 'Login',
             headerTitleStyle: { color: 'black'}
-         }} />
+         }} /> */}
 
         <Stack.Screen name="otp" component={OTPScreen} options={{ 
            headerShown: true, 

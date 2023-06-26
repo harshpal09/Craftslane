@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, Alert, Dimensions, Keyboard } from 'react-native';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OTPScreen = () => {
+const OTPScreen = ({ route }) => {
   const [otp, setOTP] = useState(['', '', '', '']);
   const [isOTPVerified, setIsOTPVerified] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [timer, setTimer] = useState(60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const otpInputRefs = useRef([]);
+  const [token, setToken] = useState('');
+  const navigation = useNavigation();
 
   const OTP_LENGTH = 4;
 
@@ -41,42 +46,118 @@ const OTPScreen = () => {
     }
   };
 
-  const handleVerifyOTP = () => {
+
+  const handleVerifyOTP = async () => {
+
+    const { mobile } = route.params;
+    console.log(mobile);
+
     const enteredOTP = otp.join('');
-    if (enteredOTP.length !== OTP_LENGTH) {
-      setIsOTPVerified(false);
-      setErrorMessage('Invalid OTP. Please enter all 4 digits.');
-      return;
+    let parsed = {}
+    const data = {
+      otp: enteredOTP,
+      mobile: mobile
     }
 
-    // Simulating API call to verify OTP
-    // Replace with your actual OTP verification logic
-    // If OTP verification fails, set the error message
-    if (enteredOTP !== '1234') {
-      setIsOTPVerified(false);
-      setErrorMessage('Invalid OTP. Please try again.');
-    } else {
-      // OTP verification successful
-      setIsOTPVerified(true);
-      setErrorMessage(''); // Reset error message
-      // Navigate to the next screen
-      // Replace 'NextScreen' with the appropriate screen name or navigation action
-      // navigation.navigate('NextScreen');
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
 
-      // Start the timer for resend code
-      startTimer();
     }
+    catch (error) {
+      Alert.alert(error)
+    }
+
+    console.log(data)
+    console.log("Verify OTP url=>", parsed.url + "customlogin/validate_otp&key=" + parsed.key)
+    await axios.post(parsed.url + "customlogin/validate_otp&key=" + parsed.key,
+
+      data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => {
+
+        console.log(response.data),
+        setToken(response.data.token)
+      }
+
+      )
+
+    // console.log("token generated =>", token)
+
+    
   };
+
+  useEffect(() => {
+    // console.log("token generated =>", token);
+  
+    if (token !== '') {
+      console.log('token created', token);
+      setIsOTPVerified(true);
+      setErrorMessage('');
+      Keyboard.dismiss();
+      
+      setTimeout(async () => {
+        // const storedData = await AsyncStorage.getItem('user');
+        // let userData = {};
+  
+        // if (storedData) {
+        //   userData = JSON.parse(storedData);
+        // }
+  
+        // userData.token = token; 
+        
+        await AsyncStorage.setItem('token', JSON.stringify(token)); 
+        const retrievedData = await AsyncStorage.getItem('token'); 
+
+      console.log('Retrieved Data:',retrievedData );
+  
+        navigation.navigate('product');
+      }, 1000);
+    }
+
+    else{
+
+      console.log('Token is null or undefined');
+      console.log('token not created');
+      setIsOTPVerified(false);
+      // setErrorMessage('Please enter the OTP!');
+      Keyboard.dismiss();
+    }
+  }, [token]);
 
   const startTimer = () => {
     setIsTimerRunning(true);
     setTimer(60);
   };
 
-  const resendCode = () => {
-    // Simulating API call to resend OTP
-    // Replace with your actual API call logic
-    // On success, start the timer
+
+
+  const resendCode = async () => {
+    const { mobile } = route.params;
+    console.log(mobile);
+
+    let parsed = {}
+    const data = {
+      mobile: mobile,
+
+    }
+
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+
+    }
+    catch (error) {
+      Alert.alert(error)
+    }
+    console.log(data)
+    console.log("Resend OTP url=>", parsed.url + "customlogin/send_otp&key=" + parsed.key)
+    await axios.post(parsed.url + "customlogin/resend_otp&key=" + parsed.key,
+
+      data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) =>
+
+        console.log(response.data)
+
+
+      )
     startTimer();
   };
 
@@ -95,9 +176,11 @@ const OTPScreen = () => {
           onChangeText={(value) => handleOTPChange(value, i)}
           ref={(ref) => (otpInputRefs.current[i] = ref)}
           value={otp[i]}
-          editable={!isOTPVerified} // Disable input if OTP is already verified
-          autoFocus={i === 0} // Autofocus on the first input field
+          editable={!isOTPVerified}
+          autoFocus={i === 0}
         />
+
+
       );
     }
     return inputs;

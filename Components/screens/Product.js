@@ -61,13 +61,7 @@ export default function Product({ route, navigation }) {
         }
     };
 
-    const handleSignIn = () => {
-        // Navigate to the login screen
-    };
-
-    const handleCreateAccount = () => {
-        // Navigate to the sign up screen
-    };
+   
 
     const handleCloseUserAuth = () => {
         setShowUserAuth(false);
@@ -135,9 +129,7 @@ export default function Product({ route, navigation }) {
 
     }
 
-
-
-
+    
 
     return (
         <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
@@ -242,6 +234,8 @@ const LikeButton = ({ id, tog }) => {
         dispatch(checkToken(liked));
     }
 
+     
+
     const addToWishlist = async (id) => {
         liked ? setLiked(false) : setLiked(true);
         let user = await AsyncStorage.getItem('user');
@@ -293,11 +287,44 @@ const UserAuth = ({ isTrue }) => {
 
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(isTrue);
+    const [mobile, setNumber] = useState('');
     const navigation = useNavigation();
 
     const val = useSelector(s => s)
 
-    // console.log(val);
+    getCode = async() =>{
+        // console.log("it's working")
+        // console.log("Mobile number",mobile)
+        let parsed = {}
+        //  console.log(mobile)
+        const data = {
+            mobile: mobile,
+            
+        }
+
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+        // console.log(data)
+        // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
+        await axios.post(parsed.url + "customlogin/send_otp&key=" + parsed.key,
+
+            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => 
+
+               console.log(response.data)
+               
+               
+            )
+
+            navigation.navigate('otp',{ mobile: mobile }, dispatch(checkToken(false)))
+
+    }
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -326,11 +353,13 @@ const UserAuth = ({ isTrue }) => {
 
                         <View style={portraitStyles.mobileFieldContainer}>
                             <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
-                            <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'></TextInput>
+                            <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'
+                            onChangeText={(text) => setNumber(text)}
+                            ></TextInput>
                         </View>
 
                         <View style={portraitStyles.otpButtonContainer}>
-                            <TouchableOpacity style={portraitStyles.otpButton} onPress={()=> navigation.navigate('otp', dispatch(checkToken(false)))}>
+                            <TouchableOpacity style={portraitStyles.otpButton} onPress={()=> getCode()}>
                                 <Text style={{ color: 'white' }} >Get OTP</Text>
                             </TouchableOpacity>
                         </View>
