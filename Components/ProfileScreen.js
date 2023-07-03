@@ -44,7 +44,7 @@ class ProfileScreen extends Component {
         catch (error) {
             Alert.alert(error)
         }
-
+        console.log(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
         await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
             .then((resp) => {this.setState({ info: resp.data.body }),console.log(resp.data)})
             .catch((error) => console.log(error));

@@ -57,7 +57,7 @@ export default function CartScreen({navigation}) {
           cart_items: resp2.data.total_cart,
           wishlist_items: item.wishlist_items
         }
-        dispatch(addItemToCart(values)),
+        // dispatch(addItemToCart(values)),
           setCart(resp2.data.products),
           setCartTotal(resp2.data),
           setLength(resp2.data.cart)
@@ -115,7 +115,7 @@ export default function CartScreen({navigation}) {
           cart_items: response.data.total_cart,
           wishlist_items: item.wishlist_items
         }
-        dispatch(addItemToCart(values)),
+        // dispatch(addItemToCart(values)),
 
           setCart(response.data.products),
           setCartTotal(response.data),
@@ -157,7 +157,7 @@ export default function CartScreen({navigation}) {
           cart_items: response.data.total_cart,
           wishlist_items: item.wishlist_items
         }
-        dispatch(addItemToCart(values)),
+        // dispatch(addItemToCart(values)),
 
           setCart(response.data.products),
           setCartTotal(response.data),
@@ -213,7 +213,7 @@ export default function CartScreen({navigation}) {
             cart_items: response.data.total_cart,
             wishlist_items: item.wishlist_items
           }
-          dispatch(addItemToCart(values)),
+          // dispatch(addItemToCart(values)),
 
             setCart(response.data.products),
             setCartTotal(response.data),
