@@ -735,7 +735,9 @@ const HomeAccent = ({ route, navigation }) => {
       Alert.alert(error)
     }
     const { cat, id } = route.params;
+
     let b = cat.replaceAll('"', "");
+
     setCatId(parseInt(b));
     setProductId(id)
     // console.log(parsed.url + "customproductprofile/index&key=" + parsed.key + "&product_id=" + id)
@@ -796,6 +798,7 @@ const HomeAccent = ({ route, navigation }) => {
       setProductOptionValue2(getImageObject(body.options_require_yes[1].product_option_value))
       // setProductOptionValue3(getImageObject(body.options_require_yes[1].product_option_value))
     }
+
     // else if (body.view_type == 5) {
 
     //   if (options.length >= 3) {
@@ -812,6 +815,7 @@ const HomeAccent = ({ route, navigation }) => {
 
     //   }
     // }
+
   }
   console.log("product option value 2 => ", product_option_value_2)
   selectColor = (item) => {
@@ -873,6 +877,7 @@ const HomeAccent = ({ route, navigation }) => {
       }
     }
 
+
     // else if (body.options_require_no != undefined) {
     //   occasions_type[occasions.indexOf(item_val.name)] == 1 ? setShowDate(true) : setShowDate(false);
 
@@ -884,6 +889,7 @@ const HomeAccent = ({ route, navigation }) => {
     // }
 
   }
+
   selectOccasions = (item_val) => {
     occasions_type[occasions.indexOf(item_val.name)] == 1 ? setShowDate(true) : setShowDate(false);
 
@@ -904,6 +910,7 @@ const HomeAccent = ({ route, navigation }) => {
     console.log("stock =>  ", body.stock);
 
     console.log("itemcnt=>  ", itemcnt);
+
 
 
   shareProduct = async () => {

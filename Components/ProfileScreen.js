@@ -23,6 +23,7 @@ class ProfileScreen extends Component {
         toggle:undefined,
         info: [],
         refreshing: false,
+        token:{}
     }
     componentDidMount() {
         this.getdata();
@@ -39,13 +40,19 @@ class ProfileScreen extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            let asyncToken = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(asyncToken);
+            this.setState({ token: parsed2 })
+
             // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
-        console.log(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
-        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+
+        console.log("Account Url=>",this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.token.token)
+        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.token.token)
+
             .then((resp) => {this.setState({ info: resp.data.body }),console.log(resp.data)})
             .catch((error) => console.log(error));
         this.setState({ refreshing: false })

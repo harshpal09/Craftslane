@@ -50,14 +50,15 @@ const OTPScreen = ({ route }) => {
   const handleVerifyOTP = async () => {
 
     const { mobile } = route.params;
-    console.log(mobile);
+    console.log("Entered mobile number",mobile);
 
     const enteredOTP = otp.join('');
     let parsed = {}
-    const data = {
-      otp: enteredOTP,
-      mobile: mobile
-    }
+
+    // const data = {
+    //   otp: enteredOTP,
+    //   mobile: mobile
+    // }
 
     try {
       let user = await AsyncStorage.getItem('user');
@@ -68,17 +69,9 @@ const OTPScreen = ({ route }) => {
       Alert.alert(error)
     }
 
-    console.log(data)
-    console.log("Verify OTP url=>", parsed.url + "customlogin/validate_otp&key=" + parsed.key)
-    await axios.post(parsed.url + "customlogin/validate_otp&key=" + parsed.key,
-
-      data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => {
-
-        console.log(response.data),
-        setToken(response.data.token)
-      }
-
-      )
+    // console.log(data)
+    // console.log("Verify OTP url=>", parsed.url + "customlogin/validate_otp&key=" + parsed.key)
+    await axios.get(parsed.url + "customlogin/validate_otp&key=" + parsed.key+"&mobile=" +mobile).then((r)=> console.log(r.data))
 
     // console.log("token generated =>", token)
 
@@ -135,10 +128,10 @@ const OTPScreen = ({ route }) => {
     console.log(mobile);
 
     let parsed = {}
-    const data = {
-      mobile: mobile,
+    // const data = {
+    //   mobile: mobile,
 
-    }
+    // }
 
     try {
       let user = await AsyncStorage.getItem('user');
@@ -148,11 +141,9 @@ const OTPScreen = ({ route }) => {
     catch (error) {
       Alert.alert(error)
     }
-    console.log(data)
-    console.log("Resend OTP url=>", parsed.url + "customlogin/send_otp&key=" + parsed.key)
-    await axios.post(parsed.url + "customlogin/resend_otp&key=" + parsed.key,
-
-      data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) =>
+    // console.log(data)
+    console.log("Resend OTP url=>", parsed.url + "customlogin/send_otp&key=" + parsed.key+"&mobile="+mobile)
+    await axios.get(parsed.url + "customlogin/resend_otp&key=" + parsed.key+"&mobile="+mobile).then((response) =>
 
         console.log(response.data)
 

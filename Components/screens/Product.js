@@ -1,6 +1,8 @@
 
+
 import React, { useEffect, useState, memo } from 'react';
 import { View, Text, Button, ScrollView, StyleSheet, Image, ImageBackground, RefreshControl, TouchableOpacity, SafeAreaView, Pressable, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -11,11 +13,10 @@ import ImageLazyLoading from "react-native-image-lazy-loading";
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart, checkToken } from '../redux/Actions';
 import renderIf from './renderIf';
-
-import { BottomSheet } from '@gorhom/bottom-sheet';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import UserAuth from '../UserAuth';
 import Modal from "react-native-modal";
+import { setTokenAvailability } from '../redux/Actions';
 import { CHECK_TOKEN } from '../redux/ActionTypes';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -38,11 +39,12 @@ export default function Product({ route, navigation }) {
 
 
     const dispatch = useDispatch();
-    const [actualPrice, setPrice] = useState(0);
-    const [discountPrice, setDiscount] = useState('');
+    // const [actualPrice, setPrice] = useState(0);
+    // const [discountPrice, setDiscount] = useState('');
     const [op, setOp] = useState(1);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [showUserAuth, setShowUserAuth] = useState(false);
+
 
     const badge_value = useSelector(i => i);
 
@@ -106,15 +108,17 @@ export default function Product({ route, navigation }) {
             setDiscount(r.MRP_range)
         }
 
-        else if (r.special != '') {
-            setPrice(r.special);
-            setDiscount(r.temp_price)
-        }
-        else {
-            setPrice(r.temp_price)
-            setDiscount('');
-        }
 
+        // else if (r.special != '') {
+        //     setPrice(r.special);
+        //     setDiscount(r.temp_price)
+        // }
+        // else {
+        //     setPrice(r.temp_price)
+        //     setDiscount('');
+        // }
+
+        // console.log()
 
         setData(r.data);
 
@@ -138,6 +142,7 @@ export default function Product({ route, navigation }) {
     }
   
 
+
     renderItem = ({ item }) => {
         return (
             <View style={portraitStyles.productContainer} >
@@ -145,6 +150,7 @@ export default function Product({ route, navigation }) {
                     <ImageBackground imageStyle={{ opacity: item.stock == 0 ? 0.5 : 1, borderRadius: item.stock == 0 ? 0 : 15, borderTopLeftRadius: 18, borderTopRightRadius: 18, width: 149, height: 149 }} source={{ uri: item.image }} />
                     <LikeButton id={item.id} />
                 </TouchableOpacity>
+
 
                 {renderIf(item.stock == 0)(
                     <View style={{ width: 150 }}>
@@ -196,6 +202,7 @@ export default function Product({ route, navigation }) {
         <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
             {item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
+
                     <View style={portraitStyles.categoryHeaderContainer} >
                         <Text style={portraitStyles.productHeaderText}>{name}</Text>
                     </View>
@@ -213,6 +220,7 @@ export default function Product({ route, navigation }) {
                         </View> : null}
                         onEndReachedThreshold={0}
                     />
+
                 </ImageBackground>
             }
 
@@ -228,12 +236,20 @@ const LikeButton = ({ id, tog }) => {
     const [liked, setLiked] = useState(false);
     const [overlay, setOverlay] = useState(false)
 
+    const [isTrue, setIsTrue] = useState(false)
+    const tokenAvailable = useSelector(
+        (state) => state.tokenAvailable
+    );
+
     useEffect(() => {
-        setReduxValue();
+        // setIsTrue(false)
+        setIsTrue(false);
+
     }, [liked])
 
     const setReduxValue = () => {
-        dispatch(checkToken(liked));
+        // dispatch(checkToken(liked));
+        // setIsTrue(true);
     }
 
 
@@ -242,28 +258,45 @@ const LikeButton = ({ id, tog }) => {
         liked ? setLiked(false) : setLiked(true);
         let user = await AsyncStorage.getItem('user');
         let parsed = JSON.parse(user);
-        setIsTrue(true);
+        
         // setOverlay(true);
 
+        console.log("On like press value of isTrue =>", isTrue)
 
+        if (tokenAvailable) {
+            setIsTrue(false);
+            // console.log("If token available isTrue =>", isTrue)
 
-        const d = {
-            product_id: id,
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
 
+            const d = {
+                product_id: id,
+            }
+
+            const header = {
+                headers: { 'content-type': 'application/x-www-form-urlencoded' }
+            }
+            console.log("Product id =>", id)
+            console.log("Add to wishlist url=>",parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios",)
+            await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios", d, header).
+                then((response) => {
+                    console.log("Success"),
+                    // const values = {
+                    //     cart_items: badgeCount.cart_items,
+                    //     wishlist_items: response.data.total
+                    // }
+                    console.log("Add to wishlist response=>",response.data)
+                    // dispatch(addItemToCart(values))
+                })
         }
-        const header = {
-            headers: { 'content-type': 'application/x-www-form-urlencoded' }
-        }
-        // console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
-        await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
-            then((response) => {
-                const values = {
-                    cart_items: badgeCount.cart_items,
-                    wishlist_items: response.data.total
-                }
-                // console.log(response.data)
-                dispatch(addItemToCart(values))
-            })
+
+         else {
+            // dispatch(setTokenAvailability(false));
+             setIsTrue(true);
+             console.log("Token Unavailable =>", tokenAvailable)
+         }
+
 
         // setOverlay(false)
 
@@ -272,33 +305,45 @@ const LikeButton = ({ id, tog }) => {
     return (
         <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10, margin: 10, borderRadius: 50, backgroundColor: "rgba(255, 250, 236, 0.5)" }}>
             <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
-            <UserAuth />
+
+            {renderIf(isTrue)(<UserAuth isTrue={isTrue}/>)}
+
             <MaterialCommunityIcons
-                name={liked ? "heart" : "heart-outline"}
+                name={liked && tokenAvailable ? "heart" : "heart-outline"}
                 size={25}
-                color={liked ? "#e60505" : "#3D3D3D"}
+                color={liked && tokenAvailable ? "#e60505" : "#3D3D3D"}
             />
         </Pressable>
     );
 };
 
-const UserAuth = ({ }) => {
+
+const UserAuth = ({ isTrue }) => {
 
     const dispatch = useDispatch();
+    const [isModalVisible, setModalVisible] = useState(false);
+
     const [mobile, setNumber] = useState('');
     const navigation = useNavigation();
 
-    const val = useSelector(s => s)
+    // const val = useSelector(s => s.tokenAvailable)
+    // console.log(val)
+
+    useEffect(() => {
+        // console.log("UseEffect =>", val)
+        setModalVisible(isTrue)
+    }, [isTrue])
+
 
     getCode = async () => {
-        // console.log("it's working")
-        // console.log("Mobile number",mobile)
-        let parsed = {}
-        //  console.log(mobile)
-        const data = {
-            mobile: mobile,
 
-        }
+        dispatch(checkToken(false))
+        // console.log('After dispatch =>', val)
+
+
+        let parsed = {}
+
+
 
         try {
             let user = await AsyncStorage.getItem('user');
@@ -310,15 +355,11 @@ const UserAuth = ({ }) => {
         }
         // console.log(data)
         // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
-        await axios.post(parsed.url + "customlogin/send_otp&key=" + parsed.key,
-
-            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => { }
-                // console.log(response.data)
+        await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
 
 
-            )
+        navigation.navigate('otp', { mobile: mobile + "" })
 
-        navigation.navigate('otp', { mobile: mobile }, dispatch(checkToken(false)))
 
     }
 
@@ -327,7 +368,10 @@ const UserAuth = ({ }) => {
         <View style={{ flex: 1 }}>
             {/* <Button title="Show modal" onPress={toggleModal} /> */}
 
-            <Modal isVisible={val}
+        {/* {console.log("Modal val=>",val)} */}
+            <Modal isVisible={isModalVisible}
+                onBackdropPress={() => setModalVisible(false)}
+
                 style={{ width: '100%', marginLeft: 0, marginBottom: 0 }}
             >
                 <View style={portraitStyles.modalContainer}>
@@ -337,7 +381,7 @@ const UserAuth = ({ }) => {
                     </View>
 
 
-                    <TouchableOpacity style={portraitStyles.closeContainer} onPress={() => { dispatch(checkToken(false)) }} >
+                    <TouchableOpacity style={portraitStyles.closeContainer} onPress={() => { setModalVisible(false) }} >
                         <Text style={portraitStyles.closeIcon}>X</Text>
                     </TouchableOpacity>
 
@@ -368,7 +412,9 @@ const UserAuth = ({ }) => {
                     </View>
 
 
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('login', dispatch(checkToken(false)))}>
+
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('Login', setModalVisible(false))}>
+
                         <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
                     </TouchableOpacity>
 

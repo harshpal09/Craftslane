@@ -18,6 +18,11 @@ export const removeItemFromCart = data => ({
     payload: data,
 });
 
+export const setTokenAvailability = (isTokenAvailable) => ({
+    type: 'SET_TOKEN_AVAILABILITY',
+    payload: isTokenAvailable,
+  });
+
 export const checkToken = data => ({
     type:CHECK_TOKEN,
     payload: data,

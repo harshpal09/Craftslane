@@ -12,7 +12,8 @@ class CheckOut extends Component {
   state = {
     recived_data: 10,
     recived_data2: "",
-    data: {}
+    data: {},
+    token:{}
     
   }
 
@@ -22,12 +23,16 @@ class CheckOut extends Component {
       let parsed = JSON.parse(user);
       this.setState({ data: parsed })
 
+      let AsyncToken = await AsyncStorage.getItem('token');
+      let parsed2 = JSON.parse(AsyncToken);
+      this.setState({ token: parsed2 })
+
   }
   catch (error) {
       Alert.alert(error)
   }
  
-  this.setState({webView: this.state.data.url+"checkout/customerLogin&token="+this.state.data.token}) 
+  this.setState({webView: this.state.data.url+"checkout/customerLogin&token="+this.state.token.token}) 
  
 
   }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
+import { Dimensions,windowWidth } from "react-native";
 import { get } from "react-native/Libraries/Utilities/PixelRatio";
 import { HomeAccent } from "../export";
 import DeviceInfo from 'react-native-device-info';
@@ -649,7 +649,7 @@ export const portraitStyles = StyleSheet.create({
     justifyContent:'space-evenly',
     // marginLeft: 10,
     width: "100%",
-    // backgroundColor:'green',
+    // backgroundColor:'red',
   },
   warpProductContainer: {
     flex: 1,
@@ -1172,21 +1172,21 @@ cartHeaderText: {
 cartProductContainer: {
   // backgroundColor:'blue',
   // marginHorizontal:15,
-  // justifyContent:'center',
-  alignItems:'center',
+  justifyContent:'space-between',
+  // alignItems:'center',
   marginVertical: 5,
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
   borderBottomWidth: 1,
-  paddingHorizontal:15,
+  // paddingHorizontal:15,
   
   // paddingBottom:200,
   borderBottomColor: '#bba890'
 },
 cartImageContainer: {
   // backgroundColor:'green',
-  width: Dimensions.get("screen").width/4,
+  width: Dimensions.get("screen").width/3.6,
   height: Dimensions.get("screen").height/7.3,
   paddingVertical: 10,
   paddingHorizontal: 5,
@@ -1194,9 +1194,9 @@ cartImageContainer: {
   alignItems:'center'
 },
 cartImage: {
-  width: Dimensions.get("screen").width/5,
+  width: Dimensions.get("screen").width/4,
   height: Dimensions.get("screen").height/8.3,
-  borderRadius: 10,
+  borderRadius: 6,
 },
 contentContainer: {
   // backgroundColor:'grey',
@@ -1230,6 +1230,12 @@ cartTextContainer: {
   justifyContent: 'center',
   alignItems: 'center'
 },
+optionTextContainer: {
+//  display:'flex',
+ flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center'
+},
 cartText: {
   // margin: 2,
   // marginLeft: 2,
@@ -1237,6 +1243,19 @@ cartText: {
   color: '#3d3d3d',
   fontFamily: 'Baskervville-Regular',
   fontSize:13,
+  width: '100%',
+  // height:70,
+  // textAlign:"center",
+  textAlignVertical: "center",
+  // backgroundColor:'white',
+},
+cartProductTitle: {
+  // margin: 2,
+  // marginLeft: 2,
+  padding:5,
+  color: 'black',
+  fontFamily: 'Baskervville-Regular',
+  fontSize:15,
   width: '100%',
   // height:70,
   // textAlign:"center",
@@ -1954,5 +1973,22 @@ creditTableRow:
   justifyContent: 'center',
   alignItems: 'center',
 },
+loginMessageText:{
+  fontSize:22, 
+  fontWeight: 'bold',
+  fontFamily: 'Baskervville-Italic' 
+},
+loginButton:{
+  backgroundColor: '#B48D56',
+    paddingVertical: windowWidth < 600 ? 10 : 15,
+    paddingHorizontal: windowWidth < 600 ? 20 : 30,
+    borderRadius: 5,
+    marginTop: windowWidth < 600 ? 10 : 20,
+},
+loginButtonText:{
+  color: 'white',
+    fontSize: windowWidth < 600 ? 16 : 18,
+    fontWeight: 'bold',
+}
 
 })
