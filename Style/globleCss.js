@@ -52,7 +52,7 @@ export const portraitStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor:'#f9f0df',
-    padding: 5,
+    // padding: 5,
     // backgroundColor:'green', 
     // paddingBottom:'33%',
   },
@@ -63,9 +63,14 @@ export const portraitStyles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
-    // backgroundColor:'skyblue',
-    // padding:2,
     paddingBottom:80,
+  },
+  flatListContainer: {
+    // height: Dimensions.get("screen").height,
+    width: "100%",
+    padding:100,
+    justifyContent:'center',
+
   },
   selectDropdownContainer:{
     backgroundColor:'#f2ebd5',
@@ -255,6 +260,7 @@ export const portraitStyles = StyleSheet.create({
   hyperlinkText: {
     color: '#B48D56' ,fontStyle:'italic',textDecorationLine:'underline',fontSize:15,
     paddingTop: 10
+    
   },
   hyperlinkWithText: {
     display: 'flex',
@@ -616,7 +622,7 @@ export const portraitStyles = StyleSheet.create({
   underline: {
     backgroundColor: 'grey',
     height: 1,
-    width: '95%',
+    width:Dimensions.get('window').width,
     marginHorizontal: 5,
 
   },
@@ -651,7 +657,7 @@ export const portraitStyles = StyleSheet.create({
     flexWrap: 'wrap',
     marginVertical: 10,
     justifyContent:'center',
-    paddingBottom:DeviceInfo.isTablet() ? 180:100,
+    // paddingBottom:DeviceInfo.isTablet() ? 180:100,
     width: "100%",
     // backgroundColor:'green',
   },
@@ -787,6 +793,9 @@ export const portraitStyles = StyleSheet.create({
     // lineHeight: 30,
     borderRadius: 10
   },
+  loaderStyle:{
+    paddingBottom:70
+  },
   //-------------------------------------------------------end product page ----------------------------------------------------------------------
   //-------------------------------------------------------start homeaccents page ----------------------------------------------------------------------
 
@@ -802,7 +811,7 @@ export const portraitStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width:'100%',
-    justifyContent: 'space-between',
+    justifyContent: "space-evenly",
     // padding:20,
     // backgroundColor:'green'
   },
@@ -963,14 +972,14 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical: 'center',
     color: 'black'
   },
-  incButton: {
+  decButtonFade: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: 'black',
+    color: '#6d6d6d',
     lineHeight: 30,
   },
   decButton: {
-    color: 'black',
+    color: '#3d3d3d',
     textAlign: 'center',
     textAlignVertical: 'center',
     lineHeight: 30
@@ -997,9 +1006,22 @@ export const portraitStyles = StyleSheet.create({
     margin: 5,
   },
   quantityText: {
-    color: 'black',
+    color: '#3d3d3d',
     fontSize:11,
-   
+    fontFamily: 'Georgia',
+  },
+  oopsText: {
+    paddingHorizontal:10,
+    textAlign:'center',
+    textAlignVertical:'center',
+    color: '#6d6d6d',
+    fontSize:11,
+    fontFamily: 'Georgia',
+    fontStyle:'italic',
+  },
+  quantityTextFade: {
+    color: '#6d6d6d',
+    fontSize:11,
     fontFamily: 'Georgia',
   },
   cartButtonContainer: {
@@ -1056,7 +1078,7 @@ export const portraitStyles = StyleSheet.create({
   },
   overViewText: {
     // backgroundColor:'green',
-    color: 'black',
+    color: '#3d3d3d',
     marginLeft: 10,
     width: '85%',
     height: 35,
@@ -1375,7 +1397,7 @@ refDelButton: {
 
 decBtn: {
   borderWidth: 1,
-  borderColor: 'grey',
+  borderColor: '#3d3d3d',
   width: 35,
   backgroundColor: '#FFFFFF',
   borderRadius: 5,
@@ -1383,13 +1405,13 @@ decBtn: {
   // borderTopLeftRadius: 40,
 
 },
-incBtn: {
+decBtnFade: {
   width: 35,
   borderWidth: 1,
-  borderColor: 'grey',
+  borderColor: '#6d6d6d',
   backgroundColor: '#FFFFFF',
   borderRadius: 5,
-  fontSize: 18
+  // fontSize: 18
   // borderBottomRightRadius: 40,
   // borderTopRightRadius: 40,
 },
@@ -1402,7 +1424,18 @@ incDecField: {
   lineHeight: 35,
   textAlign: 'center',
   textAlignVertical: 'center',
-  color: 'black'
+  color: '#3d3d3d'
+},
+incDecFieldFade: {
+  borderColor: '#780000',
+  width: 30,
+  fontSize: 16,
+  fontWeight: 'bold',
+  height: 35,
+  lineHeight: 35,
+  textAlign: 'center',
+  textAlignVertical: 'center',
+  color: '#6d6d6d'
 },
 
 cartIncDecContainer: {

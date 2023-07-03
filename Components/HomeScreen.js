@@ -167,7 +167,7 @@ export default function HomeScreen({ navigation }) {
                     images.map((e, index) =>
                       <Image
                         key={e}
-                        resizeMethod="stretch"
+                        resizeMethod="auto"
                         style={portraitStyles.wrap}
                         source={{ uri: e }}
                       />

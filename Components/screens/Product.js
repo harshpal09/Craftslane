@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, SafeAreaView, Pressable, Dimensions } from 'react-native';
+import React, { useEffect, useState, memo } from 'react';
+import { View, Text, Button, ScrollView, StyleSheet, Image, ImageBackground, RefreshControl, TouchableOpacity, SafeAreaView, Pressable, Dimensions, ActivityIndicator, FlatList } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -19,6 +19,8 @@ import Modal from "react-native-modal";
 import { CHECK_TOKEN } from '../redux/ActionTypes';
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import DeviceInfo from 'react-native-device-info';
+import { useMemo } from 'react';
 // import { addItemToCart } from '../redux/Actions';
 
 
@@ -29,6 +31,11 @@ export default function Product({ route, navigation }) {
     const [name, setName] = useState("");
     const [response_data, setData] = useState({});
     const [cat_id, setCatId] = useState(undefined);
+    const [page, setPage] = useState(1);
+    const [toggle, setToggle] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const dispatch = useDispatch();
     const [actualPrice, setPrice] = useState(0);
@@ -42,7 +49,7 @@ export default function Product({ route, navigation }) {
     // console.log(badge_value)
     useEffect(() => {
 
-        getdata();
+        getdata(1);
         checkToken();
     }, [])
 
@@ -61,17 +68,20 @@ export default function Product({ route, navigation }) {
         }
     };
 
-   
+
 
     const handleCloseUserAuth = () => {
         setShowUserAuth(false);
     };
 
 
-    getdata = async () => {
+    getdata = async (p) => {
 
+        setIsLoading(true)
+
+        console.log("product.......")
         let parsed = {}
-
+        setToggle(true);
         const { item_name, item_id } = route.params;
         setCatId(item_id);
         setName(item_name);
@@ -87,13 +97,9 @@ export default function Product({ route, navigation }) {
         catch (error) {
             Alert.alert(error)
         }
+        let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key + "&page=" + p + "&limit=" + 10);
+        setIsLoading(false);
 
-
-        let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key);
-
-
-        // console.log(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key)
-        // console.log(r.data)
 
         if (r.price_range != '') {
             setPrice(r.price_range);
@@ -124,91 +130,89 @@ export default function Product({ route, navigation }) {
         }
         else {
 
-            setItems(r.data.categories)
+            setItems(item.concat(r.data.categories))
         }
+        setPage(p)
+        setToggle(false);
 
     }
+  
 
-    
+    renderItem = ({ item }) => {
+        return (
+            <View style={portraitStyles.productContainer} >
+                <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: item.id })} style={portraitStyles.productImageContainer}>
+                    <ImageBackground imageStyle={{ opacity: item.stock == 0 ? 0.5 : 1, borderRadius: item.stock == 0 ? 0 : 15, borderTopLeftRadius: 18, borderTopRightRadius: 18, width: 149, height: 149 }} source={{ uri: item.image }} />
+                    <LikeButton id={item.id} />
+                </TouchableOpacity>
 
+                {renderIf(item.stock == 0)(
+                    <View style={{ width: 150 }}>
+                        <View style={{ backgroundColor: '#af0b1f', width: '100%', padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Out Of Stock</Text>
+                        </View>
+                    </View>
+
+                )}
+
+
+                <TouchableOpacity style={portraitStyles.productTextContainer}>
+
+                    <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: item.id })}>{item.title}</Text>
+
+                </TouchableOpacity>
+
+
+                <View style={portraitStyles.priceContainer}>
+                    {item.price_range != '' ?
+                        <View>
+                            <Text style={portraitStyles.priceText}>{item.price_range}</Text>
+                            <Text style={portraitStyles.discountPrice}>{item.MRP_range}</Text>
+                        </View>
+                        : item.special != false ?
+                            <View>
+                                <Text style={portraitStyles.priceText}>{item.special}</Text>
+                                <Text style={portraitStyles.discountPrice}> {item.temp_price}</Text>
+                            </View> :
+                            <Text style={portraitStyles.priceText}>{item.temp_price}</Text>
+
+                    }
+
+                    {renderIf(item.stock != 0)(
+
+                        <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: item.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
+
+                    )}
+                </View>
+            </View>
+        );
+    };
+
+
+
+    // console.log("all data => ", item.length);
+    const memoizedValue = useMemo(() => renderItem, [item]);
     return (
         <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
             {item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
-                    <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false} onTouchEnd={() => console.log("chal raha hai")} onMomentumScrollEnd={() => console.log("momentum")} onScroll={()=> console.log("on scroll")} onScrollEndDrag={()=> console.log("on end")} >
-
-
-                        <View style={portraitStyles.categoryHeaderContainer} >
-                            <Text style={portraitStyles.productHeaderText} >{name}</Text>
-                        </View>
-
-
-                        <View style={portraitStyles.underline}></View>
-
-                        <View >
-
-                            <View style={portraitStyles.warpProductContainer}>
-                                {item.map((val, i) => (
-                                    <View style={portraitStyles.productContainer} key={i}>
-
-                                        {/* {console.log("cat-id on product => ",cat_id)} */}
-                                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: val.id })} style={portraitStyles.productImageContainer}>
-                                            <ImageBackground imageStyle={{ opacity: val.stock == 0 ? 0.5 : 1, borderRadius: val.stock == 0 ? 0 : 15, borderTopLeftRadius: 18, borderTopRightRadius: 18, width: 149, height: 149 }} source={{ uri: val.image }} />
-                                            <LikeButton id={val.id} />
-                                        </TouchableOpacity>
-
-                                        {renderIf(val.stock == 0)(
-                                            <View style={{ width: 150 }}>
-                                                <View style={{ backgroundColor: '#af0b1f', width: '100%', padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-                                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Out Of Stock</Text>
-                                                </View>
-                                            </View>
-
-                                        )}
-
-
-                                        <TouchableOpacity style={portraitStyles.productTextContainer}>
-
-                                            <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: val.id })}>{val.title}</Text>
-
-                                        </TouchableOpacity>
-
-
-                                        <View style={portraitStyles.priceContainer}>
-                                            {val.price_range != '' ?
-                                                <View>
-                                                    <Text style={portraitStyles.priceText}>{val.price_range}</Text>
-                                                    <Text style={portraitStyles.discountPrice}>{val.MRP_range}</Text>
-                                                </View>
-                                                : val.special != false ?
-                                                    <View>
-                                                        <Text style={portraitStyles.priceText}>{val.special}</Text>
-                                                        <Text style={portraitStyles.discountPrice}> {val.temp_price}</Text>
-                                                    </View> :
-                                                    <Text style={portraitStyles.priceText}>{val.temp_price}</Text>
-
-                                            }
-
-                                            {renderIf(val.stock != 0)(
-
-                                                <TouchableOpacity activeOpacity={0.9} style={portraitStyles.addButton} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: val.id })} ><MaterialCommunityIcons name='cart-variant' size={25} color={'white'} /></TouchableOpacity>
-
-                                            )}
-                                        </View>
-
-
-
-
-
-                                    </View>
-                                ))}
-                            </View>
-
-                        </View>
-
-
-
-                    </ScrollView>
+                    <View style={portraitStyles.categoryHeaderContainer} >
+                        <Text style={portraitStyles.productHeaderText}>{name}</Text>
+                    </View>
+                    <View style={portraitStyles.underline}></View>
+                    <FlatList
+                        data={item}
+                        renderItem={memoizedValue}
+                        keyExtractor={i => i.id}
+                        numColumns={DeviceInfo.isTablet() ? 3 : 2}
+                        columnWrapperStyle={{ width: '100%', justifyContent: 'space-around' }}
+                        onEndReached={() => { if(item.length >= 10){ getdata(page + 1),console.log("end")} }}
+                        refreshControl={<RefreshControl refreshing={false} onRefresh={() => { if(item.length >= 10){ getdata(),console.log("refresh pull  ")} }} />}
+                        ListFooterComponent={isLoading ? <View style={styles.loaderStyle}>
+                            <ActivityIndicator size="large" color="#aaa" />
+                        </View> : null}
+                        onEndReachedThreshold={0}
+                    />
                 </ImageBackground>
             }
 
@@ -223,10 +227,8 @@ const LikeButton = ({ id, tog }) => {
     const badgeCount = useSelector(i => i);
     const [liked, setLiked] = useState(false);
     const [overlay, setOverlay] = useState(false)
-    const [isTrue, setIsTrue] = useState(tog)
 
     useEffect(() => {
-        setIsTrue(false)
         setReduxValue();
     }, [liked])
 
@@ -234,7 +236,7 @@ const LikeButton = ({ id, tog }) => {
         dispatch(checkToken(liked));
     }
 
-     
+
 
     const addToWishlist = async (id) => {
         liked ? setLiked(false) : setLiked(true);
@@ -252,14 +254,14 @@ const LikeButton = ({ id, tog }) => {
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-        console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
+        // console.log(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios",)
         await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
             then((response) => {
                 const values = {
                     cart_items: badgeCount.cart_items,
                     wishlist_items: response.data.total
                 }
-                console.log(response.data)
+                // console.log(response.data)
                 dispatch(addItemToCart(values))
             })
 
@@ -270,7 +272,7 @@ const LikeButton = ({ id, tog }) => {
     return (
         <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10, margin: 10, borderRadius: 50, backgroundColor: "rgba(255, 250, 236, 0.5)" }}>
             <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
-            <UserAuth isTrue={isTrue} />
+            <UserAuth />
             <MaterialCommunityIcons
                 name={liked ? "heart" : "heart-outline"}
                 size={25}
@@ -280,26 +282,22 @@ const LikeButton = ({ id, tog }) => {
     );
 };
 
-const UserAuth = ({ isTrue }) => {
-    useEffect(() => {
-        setModalVisible(isTrue)
-    }, [isTrue])
+const UserAuth = ({ }) => {
 
     const dispatch = useDispatch();
-    const [isModalVisible, setModalVisible] = useState(isTrue);
     const [mobile, setNumber] = useState('');
     const navigation = useNavigation();
 
     const val = useSelector(s => s)
 
-    getCode = async() =>{
+    getCode = async () => {
         // console.log("it's working")
         // console.log("Mobile number",mobile)
         let parsed = {}
         //  console.log(mobile)
         const data = {
             mobile: mobile,
-            
+
         }
 
         try {
@@ -314,14 +312,13 @@ const UserAuth = ({ isTrue }) => {
         // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
         await axios.post(parsed.url + "customlogin/send_otp&key=" + parsed.key,
 
-            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => 
+            data, { 'Content-Type': 'application/x-www-form-urlencoded' }).then((response) => { }
+                // console.log(response.data)
 
-               console.log(response.data)
-               
-               
+
             )
 
-            navigation.navigate('otp',{ mobile: mobile }, dispatch(checkToken(false)))
+        navigation.navigate('otp', { mobile: mobile }, dispatch(checkToken(false)))
 
     }
 
@@ -331,7 +328,6 @@ const UserAuth = ({ isTrue }) => {
             {/* <Button title="Show modal" onPress={toggleModal} /> */}
 
             <Modal isVisible={val}
-                onBackdropPress={() => setModalVisible(false)}
                 style={{ width: '100%', marginLeft: 0, marginBottom: 0 }}
             >
                 <View style={portraitStyles.modalContainer}>
@@ -354,12 +350,12 @@ const UserAuth = ({ isTrue }) => {
                         <View style={portraitStyles.mobileFieldContainer}>
                             <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
                             <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'
-                            onChangeText={(text) => setNumber(text)}
+                                onChangeText={(text) => setNumber(text)}
                             ></TextInput>
                         </View>
 
                         <View style={portraitStyles.otpButtonContainer}>
-                            <TouchableOpacity style={portraitStyles.otpButton} onPress={()=> getCode()}>
+                            <TouchableOpacity style={portraitStyles.otpButton} onPress={() => getCode()}>
                                 <Text style={{ color: 'white' }} >Get OTP</Text>
                             </TouchableOpacity>
                         </View>
@@ -372,7 +368,7 @@ const UserAuth = ({ isTrue }) => {
                     </View>
 
 
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={()=> navigation.navigate('login', dispatch(checkToken(false)))}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('login', dispatch(checkToken(false)))}>
                         <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
                     </TouchableOpacity>
 
@@ -391,4 +387,31 @@ const UserAuth = ({ isTrue }) => {
     );
 }
 
+const styles = StyleSheet.create({
+    itemWrapperStyle: {
+        flexDirection: "row",
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
+    },
+    itemImageStyle: {
+        width: 50,
+        height: 50,
+        marginRight: 16,
+    },
+    contentWrapperStyle: {
+        justifyContent: "space-around",
+    },
+    txtNameStyle: {
+        fontSize: 16,
+    },
+    txtEmailStyle: {
+        color: "#777",
+    },
+    loaderStyle: {
+        marginVertical: 16,
+        alignItems: "center",
+    },
+});
 
