@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState, memo } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, Image, ImageBackground, RefreshControl, TouchableOpacity, SafeAreaView, Pressable, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, Button, ScrollView, Alert, StyleSheet, Image, ImageBackground, RefreshControl, TouchableOpacity, SafeAreaView, Pressable, Dimensions, ActivityIndicator, FlatList } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -22,7 +22,8 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import { useMemo } from 'react';
-// import { addItemToCart } from '../redux/Actions';
+import { addItemToWishlist } from '../../Components/redux/Actions';
+import LoadingComponent from './LoadingComponent';
 
 
 export default function Product({ route, navigation }) {
@@ -34,7 +35,7 @@ export default function Product({ route, navigation }) {
     const [cat_id, setCatId] = useState(undefined);
     const [page, setPage] = useState(1);
     const [toggle, setToggle] = useState(false);
-
+    
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -44,6 +45,7 @@ export default function Product({ route, navigation }) {
     const [op, setOp] = useState(1);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [showUserAuth, setShowUserAuth] = useState(false);
+    const [diff, setDiff] = useState(0);
 
 
     const badge_value = useSelector(i => i);
@@ -81,7 +83,7 @@ export default function Product({ route, navigation }) {
 
         setIsLoading(true)
 
-        console.log("product.......")
+        // console.log("product.......")
         let parsed = {}
         setToggle(true);
         const { item_name, item_id } = route.params;
@@ -99,27 +101,10 @@ export default function Product({ route, navigation }) {
         catch (error) {
             Alert.alert(error)
         }
+        console.log("Category Products calling url=>",parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key + "&page=" + p + "&limit=" + 10 )
         let r = await axios.get(parsed.url + "categoryproducts/index&cat_id=" + id + "&key=" + parsed.key + "&page=" + p + "&limit=" + 10);
         setIsLoading(false);
-
-
-        if (r.price_range != '') {
-            setPrice(r.price_range);
-            setDiscount(r.MRP_range)
-        }
-
-
-        // else if (r.special != '') {
-        //     setPrice(r.special);
-        //     setDiscount(r.temp_price)
-        // }
-        // else {
-        //     setPrice(r.temp_price)
-        //     setDiscount('');
-        // }
-
-        // console.log()
-
+        console.log("Product pafge response=>", r.data)
         setData(r.data);
 
         if (response_data.success == 0) {
@@ -133,21 +118,21 @@ export default function Product({ route, navigation }) {
             })
         }
         else {
-
+            setDiff(r.data.categories.length);
             setItems(item.concat(r.data.categories))
         }
         setPage(p)
         setToggle(false);
 
     }
-  
+
 
 
     renderItem = ({ item }) => {
         return (
             <View style={portraitStyles.productContainer} >
                 <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "" + cat_id, id: item.id })} style={portraitStyles.productImageContainer}>
-                    <ImageBackground imageStyle={{ opacity: item.stock == 0 ? 0.5 : 1, borderRadius: item.stock == 0 ? 0 : 15, borderTopLeftRadius: 18, borderTopRightRadius: 18, width: 149, height: 149 }} source={{ uri: item.image }} />
+                    <ImageBackground imageStyle={{ opacity: item.stock == 0 ? 0.5 : 1, borderRadius: item.stock == 0 ? 0 : 15, borderTopLeftRadius: 12, borderTopRightRadius: 12, width: 149, height: 149 }} source={{ uri: item.image }} />
                     <LikeButton id={item.id} />
                 </TouchableOpacity>
 
@@ -164,7 +149,7 @@ export default function Product({ route, navigation }) {
 
                 <TouchableOpacity style={portraitStyles.productTextContainer}>
 
-                    <Text style={portraitStyles.productText} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: item.id })}>{item.title}</Text>
+                    <Text style={portraitStyles.productText} numberOfLines={2} onPress={() => navigation.navigate('homeaccent', { cat: JSON.stringify(cat_id), id: item.id })}>{item.title}</Text>
 
                 </TouchableOpacity>
 
@@ -195,12 +180,14 @@ export default function Product({ route, navigation }) {
     };
 
 
-
-    // console.log("all data => ", item.length);
+    const renderSeparator = () => {
+        return <View style={portraitStyles.separator} />;
+      };
+    
     const memoizedValue = useMemo(() => renderItem, [item]);
     return (
         <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-            {item.length == false ? <View style={portraitStyles.loadingScreen}><Image source={require('../../assets/loader-main-small.gif')} style={portraitStyles.cartImage} /></View> :
+            {item.length == false ? <LoadingComponent />:
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >
 
                     <View style={portraitStyles.categoryHeaderContainer} >
@@ -210,15 +197,16 @@ export default function Product({ route, navigation }) {
                     <FlatList
                         data={item}
                         renderItem={memoizedValue}
-                        keyExtractor={i => i.id}
+                        keyExtractor={i => i.id.toString()}
                         numColumns={DeviceInfo.isTablet() ? 3 : 2}
-                        columnWrapperStyle={{ width: '100%', justifyContent: 'space-around' }}
-                        onEndReached={() => { if(item.length >= 10){ getdata(page + 1),console.log("end")} }}
-                        refreshControl={<RefreshControl refreshing={false} onRefresh={() => { if(item.length >= 10){ getdata(),console.log("refresh pull  ")} }} />}
+                        columnWrapperStyle={{ width: '100%', justifyContent: 'space-evenly' }}
+                        onEndReached={() => { if (diff >= 10) { getdata(page + 1), console.log("end") } }}
+                        refreshControl={<RefreshControl refreshing={false} onRefresh={() => { if (diff >= 10) { getdata(), console.log("refresh pull  ") } }} />}
                         ListFooterComponent={isLoading ? <View style={styles.loaderStyle}>
                             <ActivityIndicator size="large" color="#aaa" />
                         </View> : null}
                         onEndReachedThreshold={0}
+                        ItemSeparatorComponent={renderSeparator}
                     />
 
                 </ImageBackground>
@@ -242,15 +230,11 @@ const LikeButton = ({ id, tog }) => {
     );
 
     useEffect(() => {
-        // setIsTrue(false)
+        
         setIsTrue(false);
 
     }, [liked])
 
-    const setReduxValue = () => {
-        // dispatch(checkToken(liked));
-        // setIsTrue(true);
-    }
 
 
 
@@ -258,7 +242,7 @@ const LikeButton = ({ id, tog }) => {
         liked ? setLiked(false) : setLiked(true);
         let user = await AsyncStorage.getItem('user');
         let parsed = JSON.parse(user);
-        
+
         // setOverlay(true);
 
         console.log("On like press value of isTrue =>", isTrue)
@@ -278,24 +262,21 @@ const LikeButton = ({ id, tog }) => {
                 headers: { 'content-type': 'application/x-www-form-urlencoded' }
             }
             console.log("Product id =>", id)
-            console.log("Add to wishlist url=>",parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios",)
+            console.log("Add to wishlist url=>", parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios",d)
             await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios", d, header).
                 then((response) => {
                     console.log("Success"),
-                    // const values = {
-                    //     cart_items: badgeCount.cart_items,
-                    //     wishlist_items: response.data.total
-                    // }
-                    console.log("Add to wishlist response=>",response.data)
+                        dispatch(addItemToWishlist(response.data.total));
+                    console.log("Add to wishlist response=>", response.data)
                     // dispatch(addItemToCart(values))
                 })
         }
 
-         else {
+        else {
             // dispatch(setTokenAvailability(false));
-             setIsTrue(true);
-             console.log("Token Unavailable =>", tokenAvailable)
-         }
+            setIsTrue(true);
+            console.log("Token Unavailable =>", tokenAvailable)
+        }
 
 
         // setOverlay(false)
@@ -306,7 +287,7 @@ const LikeButton = ({ id, tog }) => {
         <Pressable onPress={() => addToWishlist(id)} style={{ position: 'absolute', padding: 10, margin: 10, borderRadius: 50, backgroundColor: "rgba(255, 250, 236, 0.5)" }}>
             <Spinner visible={overlay} size={'large'} overlayColor='rgba(0,0,0,0.30)' textContent='Please wait..' textStyle={{ color: 'white' }} />
 
-            {renderIf(isTrue)(<UserAuth isTrue={isTrue}/>)}
+            {renderIf(isTrue)(<UserAuth isTrue={isTrue} />)}
 
             <MaterialCommunityIcons
                 name={liked && tokenAvailable ? "heart" : "heart-outline"}
@@ -322,7 +303,7 @@ const UserAuth = ({ isTrue }) => {
 
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
-
+    const [toggle, setToggle] = useState(undefined);
     const [mobile, setNumber] = useState('');
     const navigation = useNavigation();
 
@@ -336,7 +317,7 @@ const UserAuth = ({ isTrue }) => {
 
 
     getCode = async () => {
-
+        setToggle(false);
         dispatch(checkToken(false))
         // console.log('After dispatch =>', val)
 
@@ -354,11 +335,24 @@ const UserAuth = ({ isTrue }) => {
             Alert.alert(error)
         }
         // console.log(data)
-        // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
-        await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
+        // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key+"&mobile="+mobile)
+        let resp = await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
+            setToggle(true);
 
-
-        navigation.navigate('otp', { mobile: mobile + "" })
+        if (resp.data.status == 200) {
+            
+            setModalVisible(false)
+            navigation.navigate('otp', { mobile: mobile + "" })
+        } else {
+            Alert.alert('Alert ', resp.data.success, [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
+        }
 
 
     }
@@ -366,9 +360,7 @@ const UserAuth = ({ isTrue }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            {/* <Button title="Show modal" onPress={toggleModal} /> */}
 
-        {/* {console.log("Modal val=>",val)} */}
             <Modal isVisible={isModalVisible}
                 onBackdropPress={() => setModalVisible(false)}
 
@@ -398,11 +390,17 @@ const UserAuth = ({ isTrue }) => {
                             ></TextInput>
                         </View>
 
-                        <View style={portraitStyles.otpButtonContainer}>
+                        <TouchableOpacity activeOpacity={0.9} style={portraitStyles.otpButtonContainer} onPress={getCode} disabled={toggle === false ? true : false}>
+                            <View style={portraitStyles.otpButton}>
+                                {toggle === false ? <ActivityIndicator size={'small'} color={'#fff'} /> : <Text style={{ color: 'white' }}>Get OTP</Text>}
+                            </View>
+                        </TouchableOpacity>
+
+                        {/* <View style={portraitStyles.otpButtonContainer}>
                             <TouchableOpacity style={portraitStyles.otpButton} onPress={() => getCode()}>
                                 <Text style={{ color: 'white' }} >Get OTP</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View>
 
 

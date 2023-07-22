@@ -37,6 +37,11 @@ export default class MyOrders extends Component {
       let user = await AsyncStorage.getItem('user');
       let parsed = JSON.parse(user);
       this.setState({ data: parsed })
+
+      let token = await AsyncStorage.getItem('token');
+      let parsed2 = JSON.parse(token);
+
+      this.setState({token: parsed2})
     }
     catch (error) {
       Alert.alert(error)
@@ -46,7 +51,7 @@ export default class MyOrders extends Component {
 
     this.setState({ currentPage: this.state.currentPage + 1 })
     this.setState({ isLoading: true });
-    await axios.get(this.state.data.url + "customorderlist/index&key=" + this.state.data.key + "&token=" + this.state.data.token + "&page=" + this.state.currentPage)
+    await axios.get(this.state.data.url + "customorderlist/index&key=" + this.state.data.key + "&token=" + this.state.token.token + "&page=" + this.state.currentPage)
       .then(res => {
 
         this.setState({ all_data: res.data })
@@ -129,7 +134,7 @@ export default class MyOrders extends Component {
   render() {
     console.log(this.state.all_data);
     return (
-      <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+      <SafeAreaView style={portraitStyles.screenBackgroundTab}>
         {this.state.all_data.status == undefined ? <LoadingComponent /> :
           <ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../assets/base-texture.png')} resizeMode="cover" >
             {this.state.all_data.status == 200 ?

@@ -36,9 +36,9 @@ class Categories extends Component {
     }
   
       let resp = await axios.get(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id="+cat_id)
-    //   console.log(this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id=4")
+    //   console.log("Categories Api Call",this.state.data.url + "customsubcategories/index&key=" + this.state.data.key + "&token=" + this.state.data.token+"&category_id="+ cat_id)
       this.setState({ categories: resp.data.data })
-    //   console.log(this.state.categories)
+    //   console.log("Categories response=>",this.state.categories)
     }
 
     render() {

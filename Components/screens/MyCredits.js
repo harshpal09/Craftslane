@@ -24,12 +24,17 @@ class MyCredits extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
+
         }
         catch (error) {
             Alert.alert(error)
         }
 
-        await axios.get(this.state.data.url + 'customcheckcredit/index&key=' + this.state.data.key + '&token=' + this.state.data.token)
+        await axios.get(this.state.data.url + 'customcheckcredit/index&key=' + this.state.data.key + '&token=' + this.state.token.token)
             .then((resp) => this.setState({ all_data: resp.data })).catch((error) => console.warn(error))
         if (this.state.all_data.status == 200) {
             this.setState({ credits: this.state.all_data.body });

@@ -33,6 +33,11 @@ class TrackOrders extends Component {
                 let parsed = JSON.parse(user);
                 this.setState({ data: parsed })
 
+                let token = await AsyncStorage.getItem('token');
+                let parsed2 = JSON.parse(token);
+    
+                this.setState({token: parsed2})
+
             }
             catch (error) {
                 Alert.alert(error)
@@ -44,7 +49,7 @@ class TrackOrders extends Component {
                 headers: { 'content-type': 'application/x-www-form-urlencoded' }
             }
 
-            await axios.post(this.state.data.url + "customtrackorder/index&key=" + this.state.data.key + "&token=" + this.state.data.token, data, header).then((resp) => this.setState({ info: resp.data.body })).catch((error) => console.warn(error))
+            await axios.post(this.state.data.url + "customtrackorder/index&key=" + this.state.data.key + "&token=" + this.state.token.token, data, header).then((resp) => this.setState({ info: resp.data.body })).catch((error) => console.warn(error))
 
             this.setState({ toggle: true })
 

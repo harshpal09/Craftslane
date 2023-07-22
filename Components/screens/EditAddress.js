@@ -70,7 +70,6 @@ class EditAddress extends Component {
         country_id:'',
         isLoading:false,
         isLoadingState:false
-
     }
 
     setToggleCheckBox1(val) {
@@ -95,18 +94,23 @@ class EditAddress extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
+
             // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
 
-        
-        await axios.get(this.state.data.url+'customaddressbook/get-address&key='+this.state.data.key+'&token='+this.state.data.token+'&os_type=android'+'&address_id='+item_id).then((resp) => this.setState({prefield:resp.data.body}));
-
-        // console.warn(this.state.prefield);
+        // console.log("Edit Address URL=>",this.state.data.url+'customaddressbook/get-address&key='+this.state.data.key+'&token='+this.state.token.token+'&os_type=android'+'&address_id='+item_id)
+        await axios.get(this.state.data.url+'customaddressbook/get-address&key='+this.state.data.key+'&token='+this.state.token.token+'&os_type=android'+'&address_id='+item_id).then((resp) => this.setState({prefield:resp.data.body}));
+        console.log("Edit address Response=>", this.state.prefield )
+        // console.war]n(this.state.prefield);
         this.state.prefield.map((val)=>
-            this.setState({first_name:val.firstname,last_name:val.lastname,email:val.email,contact_number:val.telephone,address_1:val.address_1,address_2:val.address_2,company_name:val.company,postal_code:val.postcode,city:val.city,custom_field:val.custom_field,country:val.country,zone:val.zone,country_id:val.country_id,zone_id:val.zone_id}),
+            this.setState({first_name:val.firstname,last_name:val.lastname,email:val.email,contact_number:val.custom_field[2],address_1:val.address_1,address_2:val.address_2,company_name:val.company,postal_code:val.postcode,city:val.city,custom_field:val.custom_field,country:val.country,zone:val.zone,country_id:val.country_id,zone_id:val.zone_id}),
         )
         
 
@@ -141,7 +145,7 @@ class EditAddress extends Component {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
           }
 
-          await axios.post(this.state.data.url+"customaddressbook/edit&key="+this.state.data.key+"&token="+this.state.data.token,data,header).then((resp)=> this.setState({response_data:resp.data})).catch((error) => console.warn(error))
+          await axios.post(this.state.data.url+"customaddressbook/edit&key="+this.state.data.key+"&token="+this.state.token.token,data,header).then((resp)=> this.setState({response_data:resp.data})).catch((error) => console.warn(error))
           this.setState({toggle:true})
         //   console.warn(this.state.response_data)
           if (this.state.response_data.status != 200) {
@@ -347,7 +351,7 @@ class EditAddress extends Component {
                         />
                         </View>
                         <View style={portraitStyles.containLabelAndInput}>
-                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field}/>
+                            <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={this.state.custom_field[2]}/>
                         </View>
                         <TouchableOpacity activeOpacity={0.9} style={portraitStyles.logoutButtonContainer} onPress={() => this.submitFrom()} disabled={this.state.toggle == false ? true : false}>
 

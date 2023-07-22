@@ -1,15 +1,15 @@
 import { ADD_ITEM, REMOVE_ITEM ,WISHLIST_ITEM,CHECK_TOKEN} from "./ActionTypes";
 
-export const addItemToCart = data => (
+export const addItemToCart = (cartCount) => (
     {
     type: ADD_ITEM,
-    payload: data,
+    payload: cartCount,
     }
 );
-export const WishListItems = data => (
+export const addItemToWishlist = (wishlistCount) => (
     {
         type: WISHLIST_ITEM,
-        payload: data,
+        payload: wishlistCount,
     }
 );
 

@@ -31,13 +31,18 @@ class MyOrderProfile extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
+
             // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
         // console.log(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
-        let resp2 = await axios.get(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.data.token + "&order_id=" + id);
+        let resp2 = await axios.get(this.state.data.url + "customorderlist/products&key=" + this.state.data.key + '&token=' + this.state.token.token + "&order_id=" + id);
         this.setState({ cart: resp2.data.body })
 
         this.state.cart.map((data) => (
@@ -56,10 +61,10 @@ class MyOrderProfile extends Component {
         }
     }
 
-    render() {
+    render() { 
         // console.warn(this.state.products)
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab} >
+            <SafeAreaView style={portraitStyles.screenBackgroundTab} >
                 {this.state.cart.length == false ? <LoadingComponent /> :
                     // <SafeAreaView style={portraitStyles.screenBackground}>
                     <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" >

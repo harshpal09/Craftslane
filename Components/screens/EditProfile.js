@@ -57,6 +57,11 @@ class EditProfile extends Component {
         try {
             let user = await AsyncStorage.getItem('user');
             let parsed = JSON.parse(user);
+
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
             this.setState({ data: parsed })
             // console.warn(this.state.data)
         }
@@ -64,7 +69,7 @@ class EditProfile extends Component {
             Alert.alert(error)
         }
 
-        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.token.token)
             .then((resp) => this.setState({ info: resp.data.body }))
             .catch((error) => console.warn(error));
 
@@ -106,7 +111,7 @@ class EditProfile extends Component {
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-        await axios.post(this.state.data.url + "customaccountedit/index&key=" + this.state.data.key + "&token=" + this.state.data.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
+        await axios.post(this.state.data.url + "customaccountedit/index&key=" + this.state.data.key + "&token=" + this.state.token.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
         // console.warn(this.state.response_data);
         this.setState({ toggle: true })
         if (this.state.response_data.status != 200) {
@@ -160,13 +165,13 @@ class EditProfile extends Component {
                             {this.state.info.map((item, i) => (
                                 <View key={i}>
                                     <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ first_name: text })} defaultValue={item.firstname} />
+                                        <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ first_name: text })} defaultValue={item.firstname} />
                                     </View>
                                     <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ last_name: text })} defaultValue={item.lastname} />
+                                        <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ last_name: text })} defaultValue={item.lastname} />
                                     </View>
                                     <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
+                                        <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ email: text })} defaultValue={item.email} />
                                     </View>
                                     <View style={portraitStyles.containLabelAndInput}>
                                         <TextInput showSoftInputOnFocus={false} onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : this.state.dob} onChangeText={(date) => this.setState({ date: date })} />
@@ -188,10 +193,10 @@ class EditProfile extends Component {
                                         />
                                     </View>
                                     <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={item.telephone} />
+                                        <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ contact_number: text })} defaultValue={item.telephone} />
                                     </View>
                                     <View style={portraitStyles.containLabelAndInput}>
-                                        <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ gstn: text })} defaultValue={item.fax} />
+                                        <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ gstn: text })} defaultValue={item.fax} />
                                     </View>
                                 </View>
                             ))}

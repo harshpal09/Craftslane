@@ -38,6 +38,11 @@ hideAndShow1() {
       let user = await AsyncStorage.getItem('user');
       let parsed = JSON.parse(user);
       this.setState({ data: parsed })
+
+      let token = await AsyncStorage.getItem('token');
+      let parsed2 = JSON.parse(token);
+
+      this.setState({token: parsed2})
     }
     catch (error) {
       Alert.alert(error)
@@ -51,7 +56,7 @@ hideAndShow1() {
     }
 
     // console.warn(data);
-    await axios.post(this.state.data.url + 'customchangepassword/index&key=' + this.state.data.key + '&token=' + this.state.data.token + '&os_type=android', data, header)
+    await axios.post(this.state.data.url + 'customchangepassword/index&key=' + this.state.data.key + '&token=' + this.state.token.token + '&os_type=android', data, header)
       .then((resp) => this.setState({ response_data: resp.data }))
     this.setState({ toggle: true })
     // console.warn(this.state.response_data);

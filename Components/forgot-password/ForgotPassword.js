@@ -6,6 +6,7 @@ import { portraitStyles } from "../../Style/globleCss";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,6 +19,15 @@ class ForgotPassword extends Component {
     }
   }
   async forgotPassword() {
+    let parsed = {}
+    try {
+        let user = await AsyncStorage.getItem('user');
+        parsed = JSON.parse(user);
+
+    }
+    catch (error) {
+        Alert.alert(error)
+    }
 
     this.setState({ toggle: false })
 
@@ -29,7 +39,7 @@ class ForgotPassword extends Component {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
 
-    await axios.post('https://www.craftslane.com?route=api/customforgotten/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android', data, header).then((response) => this.setState({ all_data: response.data }))
+    await axios.post(parsed.url+"customforgotten/index&key="+ parsed.key, data, header).then((response) => this.setState({ all_data: response.data }))
 
     this.setState({ toggle: true })
 
@@ -72,7 +82,7 @@ class ForgotPassword extends Component {
             </View>
             <KeyboardAvoidingView behavior="padding">
               <View style={portraitStyles.containLabelAndInput}>
-                <TextInput style={portraitStyles.input} placeholder={'Enter your email'} placeholderTextColor='grey' onChangeText={(text) => this.setState({
+                <TextInput style={portraitStyles.input} placeholder={'Enter your email'} placeholderTextColor='grey' autoCapitalize="none" autoComplete="none" autoCorrect="none" onChangeText={(text) => this.setState({
                   email: text
                 })} />
               </View>

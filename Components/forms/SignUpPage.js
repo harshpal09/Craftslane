@@ -84,19 +84,49 @@ class SignUpPage extends Component {
         // this.shouldComponentUpdate();
     }
     async getData() {
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customcountry/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android').then((resp) => this.setState({ countries: resp.data.body }));
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
+        await axios.get(parsed.url + "customcountry/index&key=" + parsed.key).then((resp) => this.setState({ countries: resp.data.body }));
         this.setState({ isLoading: false });
         this.setState({ isLoadingState: false });
 
     }
     async selectCountry(idx) {
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
         this.setState({ s_country: idx.country_id });
 
-        await axios.get('https://demo.craftslane.com/index.php?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
+        await axios.get(parsed.url + "customzone/index&key=" + parsed.key+ '&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
 
 
     }
     async submitFrom() {
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
         // this.state.toggleCheckBox1 == true && this.state.toggleCheckBox2 == true? this.setState({agree:1}) : this.setState({agree:0});
         if (this.state.toggleCheckBox1 == true && this.state.toggleCheckBox2 == true) {
             this.setState({agree:1})
@@ -126,7 +156,7 @@ class SignUpPage extends Component {
                 headers: { 'content-type': 'application/x-www-form-urlencoded' }
             }
 
-            await axios.post('https://demo.craftslane.com/index.php?route=api/customsignup/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android', data, header).then((resp) => this.setState({ response_data: resp.data }))
+            await axios.post(parsed.url + "customsignup/index&key=" + parsed.key, data, header).then((resp) => this.setState({ response_data: resp.data }))
               console.warn(this.state.response_data);
             this.setState({ toggle: true })
             if (this.state.response_data.status != 200) {
@@ -163,11 +193,21 @@ class SignUpPage extends Component {
         
     }
 
-    termAndConditions(val) {
+    termAndConditions = async(val) => {
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
         if (val == "terms")
-            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=5');
+            return Linking.openURL(parsed.url+'information/information&information_id=5');
         else
-            return Linking.openURL('https://craftslane.com/index.php?route=information/information&information_id=3');
+            return Linking.openURL(parsed.url+'information/information&information_id=3');
     }
     onRefresh() {
         this.getData();
@@ -196,10 +236,10 @@ class SignUpPage extends Component {
                                 <Text style={portraitStyles.text}>Visiting us for the first time?{'\n'}Please enter your Email Address & Password to Create an Account and Join In!</Text>
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ first_name: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="First Name" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ first_name: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ last_name: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Last Name" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ last_name: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
                                 <TextInput showSoftInputOnFocus={false} onPressIn={() => this.setState({ open: true })} style={portraitStyles.input} placeholder="Date of Birth" placeholderTextColor={'grey'} defaultValue={this.state.flag ? JSON.stringify(this.state.date).substring(1, 11) : ""} onChangeText={(date) => this.setState({ date: date })} />
@@ -221,23 +261,23 @@ class SignUpPage extends Component {
                                 />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Company Name (If Applicable)" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ company_name: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Company Name (If Applicable)" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ company_name: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} maxLength={15}  onChangeText={(text) => this.setState({ gstn: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="GSTN (If Applicable)" placeholderTextColor={'grey'} maxLength={15} autoCapitalize='none' autoComplete='none' autoCorrect='none'  onChangeText={(text) => this.setState({ gstn: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'}  maxLength={10}  onChangeText={(text) => this.setState({ contact_number: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Contact Number" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none'  maxLength={10}  onChangeText={(text) => this.setState({ contact_number: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ email: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Email" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ email: text })} />
                             </View>
 
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="City" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ city: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="City" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ city: text })} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ postal_code: text })} />
+                                <TextInput style={portraitStyles.input} placeholder="Postal Code" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ postal_code: text })} />
                             </View>
                             <KeyboardAvoidingView style={portraitStyles.containLabelAndInput}>
                                 <SelectCountry
@@ -306,11 +346,11 @@ class SignUpPage extends Component {
 
 
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show1} placeholder="Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ password: text })} />
+                                <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show1} placeholder="Password" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ password: text })} />
                                 <FontAwesome name={this.state.hide_and_show_icon_name1} size={20} style={portraitStyles.passwordEyeIcon} color={'grey'} onPress={() => this.hideAndShow()} />
                             </View>
                             <View style={portraitStyles.containLabelAndInput}>
-                                <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show2} placeholder="Confirm Password" placeholderTextColor={'grey'} onChangeText={(text) => this.setState({ confirm_password: text })} />
+                                <TextInput style={portraitStyles.input} secureTextEntry={this.state.hide_and_show2} placeholder="Confirm Password" placeholderTextColor={'grey'} autoCapitalize='none' autoComplete='none' autoCorrect='none' onChangeText={(text) => this.setState({ confirm_password: text })} />
                                 <FontAwesome name={this.state.hide_and_show_icon_name2} size={20} style={portraitStyles.passwordEyeIcon} color={'grey'} onPress={() => this.hideAndShow1()} />
                             </View>
                             <View style={portraitStyles.termsAndConditionContainer}>

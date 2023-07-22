@@ -6,21 +6,21 @@ import { portraitStyles } from '../../Style/globleCss';
 class Success extends Component {
     render() {
         return (
-            <SafeAreaView style={portraitStyles.screenBackground}>
+            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
                 <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
-                <ScrollView style={portraitStyles.container} showsVerticalScrollIndicator={false}>
+                <View style={portraitStyles.forgotSuccessContainer}>
                     <View style={portraitStyles.icon}>
-                        <MaterialCommunityIcons name="check-decagram-outline" color={'#B48D56'} size={150} />
+                        <MaterialCommunityIcons name="check-decagram-outline" color={'#B48D56'} size={180} />
                     </View>
                     <View style={portraitStyles.welcomeContainer}>
-                        <Text style={portraitStyles.text}>  An email with a password reset link has been sent to your email address.    </Text>
+                        <Text style={portraitStyles.successMessageText}>  An email with a password reset link has been sent to your email address.    </Text>
                     </View>
                     <View style={portraitStyles.buttonContainer}>
                         <TouchableOpacity style={portraitStyles.button} onPress={() => this.props.navigation.navigate('login')}>
                             <Text style={portraitStyles.buttonText} >Go to LoginPage</Text>
                         </TouchableOpacity>
                     </View>
-                </ScrollView>
+                </View>
                 </ImageBackground>
             </SafeAreaView>
 

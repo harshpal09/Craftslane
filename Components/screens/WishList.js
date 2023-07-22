@@ -11,10 +11,9 @@ import { showMessage } from 'react-native-flash-message';
 import LoadingComponent from './LoadingComponent';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkToken } from '../redux/Actions';
-import { State } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import renderIf from './renderIf';
+import { addItemToWishlist } from '../../Components/redux/Actions';
 
 export default function WishList() {
   const [all_Data, setAll_Data] = useState({});
@@ -59,12 +58,8 @@ export default function WishList() {
       await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed2.token)
       .then((resp) => {
 
-        console.log(resp.data)
-        // const values = {
-        //   cart_items: item.cart_items,
-        //   wishlist_items : Array.isArray(resp.data.body) ? resp.data.body.length : 0
-        // }
-        // dispatch(addItemToCart(values)),
+        console.log("Get Wishlist Api response=>",resp.data)
+        dispatch(addItemToWishlist(resp.data.total)); 
         setAll_Data(resp.data)
       }).catch((error)=>{
         console.log('Error in parsing=>',error)
@@ -115,15 +110,11 @@ export default function WishList() {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
 
-    console.log("Delete Wishlist Item url=>",parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android')
+    console.log("Delete Wishlist Item url=>",parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android',d,header)
     await axios.post(parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header).
       then((response) => {
-        console.log(response.data)
-        // const values = {
-        //   cart_items: item.cart_items,
-        //   wishlist_items : Array.isArray(response.data.body) ? response.data.body.length : 0
-        // }
-        // dispatch(addItemToCart(values)),
+        console.log("Delete wishlist response",response.data)
+        dispatch(addItemToWishlist(response.data.total)); 
         setAll_Data(response.data)
       })
 
@@ -203,9 +194,9 @@ export default function WishList() {
 
         // {tokenAvailable && (
         <View>
-          {console.log("Token is  available")}
+          {/* {console.log("Token is  available")} */}
           {all_Data.status == undefined ? <LoadingComponent /> :
-            <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" style={{ width: '100%', height: '100%' }} >
+            <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover" style={portraitStyles.backgroundImg} >
               <ScrollView showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl
                   refreshing={refreshing}
@@ -323,9 +314,21 @@ const UserAuth = ({ }) => {
     }
     // console.log(data)
     // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
-    await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
+    let resp = await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
 
-    navigation.navigate('otp', { mobile: mobile + "" })
+    if (resp.data.status == 200) {
+      setModalVisible(false)
+      navigation.navigate('otp', { mobile: mobile + "" })
+  } else {
+          Alert.alert('Alert ', resp.data.success, [
+              {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+              },
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ]);
+  }
 
   }
 

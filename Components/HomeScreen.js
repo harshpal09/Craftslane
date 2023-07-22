@@ -8,8 +8,10 @@ import ImageLazyLoading from "react-native-image-lazy-loading";
 import LoadingComponent from "./screens/LoadingComponent";
 import SearchFilter from './SearchFilter'
 import { LogBox } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { addItemToWishlist } from './redux/Actions';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from './redux/Actions';
+// import { addItemToCart } from './redux/Actions';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
@@ -20,11 +22,16 @@ export default function HomeScreen({ navigation }) {
   const [search, setSearch] = useState([]);
   const [input, setInput] = useState("");
   const images = [
-    'https://cdn.pixabay.com/photo/2017/08/18/16/38/paper-2655579_1280.jpg',
-    'https://cdn.pixabay.com/photo/2017/07/23/16/01/nature-2531761_1280.jpg',
-    'https://cdn.pixabay.com/photo/2018/06/07/09/01/emotions-3459666_1280.jpg'
+    require('../assets/banner_images/banner2.png'),
+    require('../assets/banner_images/banner3.png'),
+    require('../assets/banner_images/banner1.jpeg')
   ]
   const [imgActive, setimgActive] = useState(0);
+  const dispatch = useDispatch();
+  const tokenAvailable = useSelector(
+    (state) => state.tokenAvailable
+  );
+
 
   useEffect(() => {
 
@@ -65,7 +72,8 @@ export default function HomeScreen({ navigation }) {
 
 
   getData = async () => {
-
+    
+   
     let parsed = {};
 
     try {
@@ -80,9 +88,28 @@ export default function HomeScreen({ navigation }) {
     }
 
     let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
-    console.log("home url=>",parsed.url + "customhome/index&key=" + parsed.key)
-    // console.log(resp.data)
     setData(resp.data.data)
+
+    // if (tokenAvailable) {
+    //   console.log("Home screen get data")
+    //   await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed.token).then((resp) => {
+    //     console.log(resp.data)
+    //     dispatch(addItemToWishlist(resp.data.total));
+    //   })
+
+    //   await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed.token + '&os_type=android')
+    //     .then((resp2) => {
+    //       dispatch(addItemToCart(resp2.data.total_products))
+    //     }).catch(function (error) {
+    //       console.log("post error: " + error);
+    //     });
+
+
+    //   }else{
+    //     dispatch(addItemToWishlist(0));
+    //   }
+   
+    
 
 
   }
@@ -129,8 +156,9 @@ export default function HomeScreen({ navigation }) {
               <Text style={portraitStyles.headerText}>Categories</Text>
             </View>
 
-            <View>
+            {/* <View style={{alignItems:'center',justifyContent:'center',padding:5,width:'100%'}}> */}
               <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
+                {/* <View style={{alignItems:'center',justifyContent:'space-evenly',backgroundColor:'red',padding:5,width:Dimensions.get('screen').width}}> */}
                 {alldata.map((data, idx) => (
                   <View style={portraitStyles.categoryImageContainer} key={idx}>
                     {data.categories.map((item, ind) => {
@@ -150,8 +178,9 @@ export default function HomeScreen({ navigation }) {
                     })}
                   </View>
                 ))}
+                {/* </View> */}
               </ScrollView>
-            </View>
+            {/* </View> */}
 
             <View style={{ width: "100%",  }}>
               <View style={portraitStyles.wrap}>
@@ -169,7 +198,7 @@ export default function HomeScreen({ navigation }) {
                         key={e}
                         resizeMethod="auto"
                         style={portraitStyles.wrap}
-                        source={{ uri: e }}
+                        source={ e}
                       />
                     )
                   }
@@ -196,12 +225,12 @@ export default function HomeScreen({ navigation }) {
             <View>
               <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
                 {alldata.map((data, idx) => (
-                  <View style={portraitStyles.categoryImageContainer} key={idx}>
+                  <View style={portraitStyles.newArrivalImageContainer} key={idx}>
                     {data.new_arrivals.map((item, ind) => {
                       return (
                         <View style={portraitStyles.imageTextContainer} key={ind} >
                           <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "", id: item.id })} style={portraitStyles.imageContainer}>
-                            <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
+                            <ImageLazyLoading style={portraitStyles.newArrivalImage} source={{ uri: item.image }} />
                           </TouchableOpacity>
                           <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "", id: item.id })} style={portraitStyles.textContainer}>
                             <Text

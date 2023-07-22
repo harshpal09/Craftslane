@@ -110,6 +110,15 @@ class MainNavigation extends Component {
            
           }}
         />
+        <Stack.Screen name="login" component={TabRoutes} 
+          options={{
+            headerShown: false,
+            //  headerTitle: 'For',
+             headerTintColor: '#B48D56',
+             headerTitleStyle: { color: 'black'}
+           
+          }}
+        />
         <Stack.Screen name="success" component={Success} options={{ headerShown: true }} />
 
         <Stack.Screen name="logout" component={LogOut}

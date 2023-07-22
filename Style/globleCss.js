@@ -56,6 +56,10 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'green', 
     // paddingBottom:'33%',
   },
+  backgroundImg:{
+    width: Dimensions.get("screen").width,
+    height: '100%'
+  },
   splashLogo: {
     width: 300,
     height: 200,
@@ -64,6 +68,14 @@ export const portraitStyles = StyleSheet.create({
     height: Dimensions.get("screen").height,
     width: Dimensions.get("screen").width,
     paddingBottom:80,
+    // backgroundColor:'green'
+  },
+  forgotSuccessContainer:{
+    height: Dimensions.get("screen").height,
+    width: Dimensions.get("screen").width,
+    paddingBottom:80,
+    justifyContent: 'center',
+    // alignItems: 'center'
   },
   flatListContainer: {
     // height: Dimensions.get("screen").height,
@@ -258,7 +270,7 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'lightgreen'
   },
   hyperlinkText: {
-    color: '#B48D56' ,fontStyle:'italic',textDecorationLine:'underline',fontSize:15,
+    color: '#B48D56' ,fontStyle:'italic', textDecorationLine:'underline',fontSize:15,
     paddingTop: 10
     
   },
@@ -471,6 +483,14 @@ export const portraitStyles = StyleSheet.create({
     width: '100%',
     marginVertical: 5,
   },
+  successMessageText:{
+    fontSize: 18,
+    fontFamily: 'Baskervville-Italic',
+    textAlign:'center',
+    color: '#525355',
+    width: '100%',
+    marginVertical: 5,
+  },
   normal2text: {
     fontSize: 16,
     fontFamily: 'Baskervville-Italic',
@@ -547,7 +567,7 @@ export const portraitStyles = StyleSheet.create({
 
   carosalSlide: {
     paddingVertical: 10,
-    width: '100%',
+    // width: '100%',
     // backgroundColor:'lightgreen',
   },
 
@@ -555,6 +575,16 @@ export const portraitStyles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
+    width: Dimensions.get('screen').width,
+    justifyContent:'space-around',
+    // backgroundColor:'grey',
+  },
+  newArrivalImageContainer:{
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    // width: Dimensions.get('screen').width,
+    // justifyContent:'space-around',
     // backgroundColor:'grey',
   },
   imageTextContainer: {
@@ -586,7 +616,9 @@ export const portraitStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: 150,
-    marginHorizontal: 2
+    // height: 100,
+    marginHorizontal: 2,
+    // backgroundColor: 'red'
   },
 
 
@@ -594,6 +626,12 @@ export const portraitStyles = StyleSheet.create({
     width: 95,
     height: 95,
     borderRadius: 50,
+    // backgroundColor:'red'
+  },
+  newArrivalImage:{
+    width: 95,
+    height: 95,
+    borderRadius: 10,
   },
 
   categoryType: {
@@ -713,6 +751,10 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor: 'yellow'
 
   },
+
+  separator:{
+      height: 18
+  },
   
   productImageContainer: {
     height: 150,
@@ -742,7 +784,7 @@ export const portraitStyles = StyleSheet.create({
     // marginVertical: 2,
     marginHorizontal:5,
     alignItems:'center',
-    padding: 5,
+    padding: 10,
   },
   addButton: {
     backgroundColor: '#B48D56',
@@ -811,7 +853,7 @@ export const portraitStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width:'100%',
-    justifyContent: "space-evenly",
+    justifyContent: 'flex-start',
     // padding:20,
     // backgroundColor:'green'
   },
@@ -870,7 +912,7 @@ export const portraitStyles = StyleSheet.create({
   homeAccentImage: {
     backgroundColor:"transparent",
     width: '100%',
-    height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.7 : Dimensions.get("screen").height/2.4,
+    height:DeviceInfo.isTablet() ? Dimensions.get("screen").height/1.7 : Dimensions.get("screen").height/2.26,
   },
   homeAccentTextContainer: {
     // backgroundColor:'skyblue',
@@ -984,6 +1026,12 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical: 'center',
     lineHeight: 30
   },
+  incButton: {
+    color: '#3d3d3d',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    lineHeight: 30
+  },
   decPress: {
     borderWidth: 2,
     borderColor: '#CEBCA3',
@@ -1016,6 +1064,7 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical:'center',
     color: '#6d6d6d',
     fontSize:11,
+    width : "60%",
     fontFamily: 'Georgia',
     fontStyle:'italic',
   },
@@ -1070,7 +1119,7 @@ export const portraitStyles = StyleSheet.create({
     width:'100%',
     backgroundColor: '#F3EADC',
     // backgroundColor: 'red',
-    // marginVertical: 7,
+    marginVertical: 7,
     // marginHorizontal: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -1111,7 +1160,7 @@ export const portraitStyles = StyleSheet.create({
     color: 'black'
   },
   accordianText: {
-    // backgroundColor:'white',
+    // backgroundColor:'red',
     color: '#3d3d3d',
     marginHorizontal: 13,
     marginVertical: 5
@@ -1151,6 +1200,17 @@ export const portraitStyles = StyleSheet.create({
     borderColor: '#EAD3B9',
     textAlignVertical: 'center',
     color: '#6D6D6D'
+    
+  },
+  notifySuccessText:{
+    fontStyle:'italic',
+    margin: 10,
+    // marginBottom:120,
+    borderWidth: 1.5,
+    padding:10,
+    borderColor: 'green',
+    textAlignVertical: 'center',
+    color: 'green'
     
   },
 //-------------------------------------------------------end homeaccents page ----------------------------------------------------------------------
@@ -1197,6 +1257,11 @@ cartImage: {
   width: Dimensions.get("screen").width/4,
   height: Dimensions.get("screen").height/8.3,
   borderRadius: 6,
+},
+loadingImage: {
+  // backgroundColor: 'red',
+  width:100,
+  height: 100,
 },
 contentContainer: {
   // backgroundColor:'grey',
@@ -1418,6 +1483,18 @@ decBtn: {
   borderWidth: 1,
   borderColor: '#3d3d3d',
   width: 35,
+  height: 35,
+  backgroundColor: '#FFFFFF',
+  borderRadius: 5,
+  // borderBottomLeftRadius: 40,
+  // borderTopLeftRadius: 40,
+
+},
+incBtn: {
+  borderWidth: 1,
+  borderColor: '#3d3d3d',
+  width: 35,
+  height: 35,
   backgroundColor: '#FFFFFF',
   borderRadius: 5,
   // borderBottomLeftRadius: 40,
@@ -1732,6 +1809,7 @@ cartIncDecContainer: {
   height: Dimensions.get("screen").height/7.3,
   paddingVertical: 10,
   paddingHorizontal: 5,
+  marginLeft:10,
   justifyContent:'center',
   alignItems:'center',
   backgroundColor:'lightgrey',

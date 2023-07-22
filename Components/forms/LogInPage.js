@@ -7,7 +7,6 @@ import {
   Image,
   TextInput,
   Alert,
-  Pressable,
   ImageBackground,
   TouchableOpacity,
   SafeAreaView,
@@ -19,7 +18,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
@@ -79,7 +77,7 @@ const LogInPage = ({ navigation }) => {
           titleStyle: { fontSize: 18 }
         });
       } else {
-        console.log("Error message ")
+        // console.log("Error message ")
         setToken(response.data.token);
         console.log("Error message ")
         AsyncStorage.setItem('token', JSON.stringify({ token: response.data.token, os_type: 'android' }));

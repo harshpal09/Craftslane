@@ -53,7 +53,7 @@ class ProfileScreen extends Component {
         console.log("Account Url=>",this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.token.token)
         await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.token.token)
 
-            .then((resp) => {this.setState({ info: resp.data.body }),console.log(resp.data)})
+            .then((resp) => {this.setState({ info: resp.data.body }),console.log("Account screen data=>",resp.data)})
             .catch((error) => console.log(error));
         this.setState({ refreshing: false })
         // console.warn(this.state.data);

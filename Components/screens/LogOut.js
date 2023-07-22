@@ -5,6 +5,8 @@ import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTokenAvailability } from '../../Components/redux/Actions';
+import { addItemToCart } from '../../Components/redux/Actions';
+import { addItemToWishlist } from '../../Components/redux/Actions';
 
 const LogOut = ({ navigation }) => {
   const [animating, setAnimating] = useState(true);
@@ -34,6 +36,8 @@ const LogOut = ({ navigation }) => {
     await axios.get(parsed.url+ "customlogout/index&key="+parsed.key+"&token="+parse.token)
 
     await AsyncStorage.removeItem('token');
+    dispatch(addItemToWishlist(0));
+    dispatch(addItemToCart(0));
     dispatch(setTokenAvailability(false));
    //  console.log("Token deleted");
     navigation.jumpTo('Home');

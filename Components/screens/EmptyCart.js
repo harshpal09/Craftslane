@@ -5,7 +5,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 
 export default class EmptyCart extends Component {
+
   render() {
+    console.log("Empty cart component")
     return (
       <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
         <View style={{  justifyContent: 'center', alignItems: 'center' }}>

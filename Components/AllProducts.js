@@ -35,6 +35,7 @@ export default class AllProducts extends PureComponent {
       isTraySelect: false,
       cat_id: 0,
       product: "",
+      diff:0,
       isSearch: false,
       order_by: undefined,
       onChange:"",
@@ -84,7 +85,7 @@ export default class AllProducts extends PureComponent {
 
     this.setState({ isLoading: true });
 
-    // console.log(this.state.data.url + "customadvsearch/index&key=" + this.state.data.key + "&token=" + this.state.data.token + "&category_id=" + this.state.cat_id + "&title=" + this.state.product + "&page=" + this.state.resultPage+"&order="+this.state.order_by)
+    console.log(this.state.data.url + "customadvsearch/index&key=" + this.state.data.key + "&token=" + this.state.data.token + "&category_id=" + this.state.cat_id + "&title=" + this.state.product + "&page=" + this.state.resultPage+"&order="+this.state.order_by)
     let res = await axios.get(this.state.data.url + "customadvsearch/index&key=" + this.state.data.key + "&token=" + this.state.data.token + "&category_id=" + this.state.cat_id + "&title=" + this.state.product + "&page=" + this.state.resultPage+"&order="+this.state.order_by)
       .then(res => {
 
@@ -93,10 +94,14 @@ export default class AllProducts extends PureComponent {
 
 
       })
+      this.setState({diff:this.state.all_data.products.length })
 
     if (this.state.all_data.status == 200) {
 
-      console.log(this.state.all_data.status)
+      console.log(this.state.all_data.status);
+      
+      // console.log("Diff value =>",this.state.diff);
+
       this.setState({ result: this.state.result.concat(this.state.all_data.products) })
 
     }
@@ -169,9 +174,10 @@ export default class AllProducts extends PureComponent {
 
   renderItem = ({ item }) => {
     return (
-
-      <TouchableOpacity activeOpacity={0.9} style={portraitStyles.cartProductContainer} onPress={() => this.props.navigation.push('homeaccent', { id: item.order_id })}  >
+      
+      <TouchableOpacity activeOpacity={0.9} style={portraitStyles.cartProductContainer} onPress={() => this.props.navigation.push('homeaccent', { cat: "", id: item.id })}  >
         <View style={portraitStyles.cartImageContainer} >
+          {/* {console.log(item)} */}
 
           <ImageLazyLoading style={portraitStyles.cartImage} source={{ uri: item.image }} />
 
@@ -302,10 +308,14 @@ export default class AllProducts extends PureComponent {
                   keyExtractor={item => item.id + Math.random()}
                   ListFooterComponent={this.renderLoader()}
                   showsVerticalScrollIndicator={false}
-                  onEndReached={() => this.state.product ? this.searchProduct(true) : this.getUsers()}
+                  onEndReached={() => {
+                    console.log("on end reach") 
+                  if(  this.state.diff >= 10){ this.state.product ? this.searchProduct(true) : this.getUsers()}}}
                   onEndReachedThreshold={0}
                   extraData={this.state.onChange}
-                  refreshControl={<RefreshControl refreshing={false} onRefresh={() => this.onRefresh()} />}
+                  refreshControl={<RefreshControl refreshing={false} onRefresh={() => { 
+                    console.log("on refresh") 
+                    if (this.state.diff >= 10) this.onRefresh()}} />}
                 />
               </View>
 

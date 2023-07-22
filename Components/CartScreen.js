@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput,ActivityIndicator, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, Alert, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, Alert, RefreshControl } from 'react-native';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
@@ -14,12 +14,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Modal from "react-native-modal";
 import renderIf from './screens/renderIf';
+import { addItemToCart } from './redux/Actions';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { showMessage } from 'react-native-flash-message';
+import { useIsFocused } from "@react-navigation/native";
 
 export default function CartScreen({ navigation }) {
 
 
   const [data, setData] = useState({});
-  // const [data, setAllData] = useState(1);
+  const [apply_spinner, setApplySpinner] = useState(undefined);
+  const [coupon_code_sign, setCouponCodeSign] = useState("+");
+  const [card_code_sign, setCardCodeSign] = useState("+");
   const [cart, setCart] = useState([]);
   const [cart_total, setCartTotal] = useState([]);
   const [refreshing, setRefresh] = useState(false);
@@ -29,16 +35,21 @@ export default function CartScreen({ navigation }) {
   const tokenAvailable = useSelector(
     (state) => state.tokenAvailable
   );
+  const isFocused = useIsFocused();
 
   const item = useSelector(i => i);
 
   // console.log(item)
   useEffect(() => {
+    console.log("Use Effect")
 
-    getdata();
+    if (isFocused) {
+      getdata();
+    }
 
 
-  }, [])
+
+  }, [isFocused])
 
 
 
@@ -49,33 +60,26 @@ export default function CartScreen({ navigation }) {
     let user = await AsyncStorage.getItem('user');
     parsed = JSON.parse(user);
 
-    if (tokenAvailable) {
-      try {
-        let token = await AsyncStorage.getItem('token');
-        parsed2 = JSON.parse(token);
-      }
-
-      catch (error) {
-        Alert.alert(error)
-      }
+    // if (tokenAvailable) {
+    try {
+      let token = await AsyncStorage.getItem('token');
+      parsed2 = JSON.parse(token);
     }
+
+    catch (error) {
+      Alert.alert(error)
+    }
+    // }
 
     console.log("Get Cart url=>", parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed2.token + '&os_type=android')
     await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed2.token + '&os_type=android')
       .then((resp2) => {
 
-        // console.log("Data get by Api=>",resp2.data)
-        // const values = {
-        //   cart_items: resp2.data.total_cart,
-        //   wishlist_items: item.wishlist_items
-        // }
-        // console.log(resp2.data)
+        console.log("Get cart Api response=>", resp2.data)
+        dispatch(addItemToCart(resp2.data.total_products));
         setCart(resp2.data.products),
           setCartTotal(resp2.data.totals),
           setData(resp2.data)
-        // console.log("Cart Total=>",cart_total)
-
-
       }
       ).catch(function (error) {
         console.log("post error: " + error);
@@ -86,19 +90,20 @@ export default function CartScreen({ navigation }) {
 
   }
 
-  deleteConfirmation = (id) => {
+  deleteConfirmation = (id, cart_id) => {
     Alert.alert(
       'Delete',
       'Do you really want to delete this product from cart?',
       [{ text: "Not Now" },
-      { text: "Delete", onPress: () => this.deleteCart(id) }
+      { text: "Delete", onPress: () => this.deleteCart(id, cart_id) }
       ],
       { cancelable: false }
     )
   }
 
 
-  deleteCart = async (product_id) => {
+  deleteCart = async (product_id, cart_id) => {
+    // console.log("cart id=>", cart_id)
     setOverlay(true);
     let parsed = {};
     let parsed2 = {};
@@ -117,7 +122,8 @@ export default function CartScreen({ navigation }) {
     }
 
     const d = {
-      product_id: product_id
+      product_id: product_id,
+      cart_id: cart_id
     }
 
     const header = {
@@ -127,16 +133,15 @@ export default function CartScreen({ navigation }) {
     console.log("Delete Url =>", parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
     await axios.post(parsed.url + "customcart/remove&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header).
       then((response) => {
-        console.log(response.data)
-        const values = {
-          cart_items: response.data.total_cart,
-          wishlist_items: item.wishlist_items
-        }
-        // dispatch(addItemToCart(values)),
+        console.log("Delete cart response=>", response.data)
+        dispatch(addItemToCart(response.data.total_products)),
 
+
+
+          setData(response.data)
         setCart(response.data.products),
-          setCartTotal(response.data),
-          setLength(response.data.cart)
+          setCartTotal(response.data.totals)
+        // setLength(response.data.cart)
       })
     setOverlay(false)
 
@@ -161,9 +166,9 @@ export default function CartScreen({ navigation }) {
     catch (error) {
       Alert.alert(error)
     }
-    console.log("Key in storage=>", parsed)
+    // console.log("Key in storage=>", parsed)
     const d = {
-      quantity: quantity + 1,
+      quantity: parseInt(quantity) + 1,
       product_id: product_id
     }
 
@@ -172,33 +177,16 @@ export default function CartScreen({ navigation }) {
     const header = {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
-    console.log(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android')
+    console.log("Increase Cart Url=>", parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
     await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
       .then((response) => {
 
-        // const values = {
-        //   cart_items: response.data.total_cart,
-        //   wishlist_items: item.wishlist_items
-        // }
-        // dispatch(addItemToCart(values)),
-        console.log("On increasing cart items=>", response.data)
+        console.log("On increasing cart response=>", response.data)
         setCart(response.data.products),
-          console.log("On increasing quantity=>", cart)
-        // setCartTotal(response.data),
-        // console.log("CArt Total=>",cart_total)
-        // setLength(response.data.cart),
+          dispatch(addItemToCart(response.data.total_products)),
 
 
-        // showMessage({
-        //   message: 'Cart updated successfully',
-        //   type: 'success',
-        //   color: 'white',
-        //   icon: props => <MaterialIcons name="done-outline" size={20} color={'white'} {...props} />,
-        //   backgroundColor: 'green',
-        //   titleStyle: { fontSize: 18 }
-        // })
-
-        setOverlay(false);
+          setOverlay(false);
       })
 
 
@@ -240,18 +228,15 @@ export default function CartScreen({ navigation }) {
 
       let resp = await axios.post(parsed.url + "customcart/edit&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
         .then((response) => {
-          console.log(response.data)
-          const values = {
-            cart_items: response.data.total_cart,
-            wishlist_items: item.wishlist_items
-          }
-          // dispatch(addItemToCart(values)),
+          console.log("Decrease cart item response=>", response.data)
+          dispatch(addItemToCart(response.data.total_products)),
+            // dispatch(addItemToCart(values)),
 
-          setCart(response.data.products),
-            setCartTotal(response.data),
-            setLength(response.data.cart)
+            setCart(response.data.products),
+            setCartTotal(response.data.totals),
+            // setLength(response.data.cart)
 
-          setOverlay(false);
+            setOverlay(false);
         })
 
 
@@ -261,7 +246,7 @@ export default function CartScreen({ navigation }) {
   }
 
   _onRefresh = () => {
-    console.log("On refresh")
+    // console.log("On refresh")
 
     getdata();
     setRefresh(true)
@@ -292,20 +277,34 @@ export default function CartScreen({ navigation }) {
     console.log("Validate URL=>", parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed2.token + "&get_error=1")
     await axios.get(parsed.url + "customcart/products&key=" + parsed.key + '&token=' + parsed2.token + "&get_error=1")
       .then((resp2) => {
-        // console.log("error_warning=>" ,resp2.data.error_warning)
-        // console.log("error_oops=>",resp2.data.error_oops)
-        // console.log("error_option =>",resp2.data.error_option)
+        console.log("Validate api response=>", resp2.data)
+
         setToggle(true);
+
+        const errorMessage =
+          resp2.data.error_warning ||
+          resp2.data.error_oops ||
+          resp2.data.error_option;
+
         if (resp2.data.error_warning == "" && resp2.data.error_oops == "" && resp2.data.error_option == "") {
           getdata();
           navigation.navigate('Checkout')
         }
         else {
-          getdata();
+          // console.log("dkjhgfwjhfkjdfhk");
+          // console.log(resp2.data.error_warning)
+          showMessage({
+            message: errorMessage,
+            duration: 4000,
+            type: 'danger',
+            color: 'white',
+            icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
+            titleStyle: { fontSize: 18 }
+          })
         }
       })
 
-      // setToggle(true);
+    // setToggle(true);
   }
 
 
@@ -319,9 +318,9 @@ export default function CartScreen({ navigation }) {
         :
         <View>
 
-          {data.total_products == undefined ? <EmptyCart /> : <View>
+          {data.total_products == 0 ? <EmptyCart /> : <View>
             {cart.length == false ? <LoadingComponent /> :
-              <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover"  >
+              <ImageBackground source={require('../assets/base-texture.png')} resizeMode="cover" style={portraitStyles.backgroundImg}  >
                 <ScrollView showsVerticalScrollIndicator={false}
                   refreshControl={<RefreshControl
                     refreshing={refreshing}
@@ -346,15 +345,27 @@ export default function CartScreen({ navigation }) {
                             <Text style={portraitStyles.cartProductTitle}>{item.name}</Text>
                           </View>
 
-                          {renderIf(item.option.length > 0)(
-                            <View>
-                              {item.option.map((op, i) => (
-                                <View style={portraitStyles.cartTextContainer}>
-                                  <Text style={portraitStyles.cartModelText}> {op.name}: {op.value}</Text>
-                                </View>
-                              ))}
-                            </View>
-                          )}
+                          <View style={{ display: 'flex', flexDirection: 'row' }}>
+                            {renderIf(item.option.length > 0)(
+                              <View>
+                                {item.option.map((op, i) => (
+                                  <View style={portraitStyles.cartTextContainer}>
+                                    <Text style={portraitStyles.cartModelText}> {op.name}: {op.value}</Text>
+                                  </View>
+                                ))}
+                              </View>
+                            )}
+
+                            {renderIf(!item.stock)(
+                              <View>
+                                <Text style={{ color: 'red', fontSize: 18 }}>***</Text>
+                              </View>
+                            )}
+                          </View>
+
+
+
+
 
                           <View style={portraitStyles.cartTextContainer}>
                             <Text style={portraitStyles.cartModelText}> Unit Price: {item.price}</Text>
@@ -381,14 +392,14 @@ export default function CartScreen({ navigation }) {
                             {renderIf(!item.stock)(
                               <View style={{ width: 100 }}>
                                 {item.product_stock >= 1 ?
-                                  <Text style={{ color: 'red', fontSize: 12, fontStyle:'italic' }}>Oops! We have only {item.product_stock >= 1 ? item.product_stock : ""} unit left in stock </Text>
+                                  <Text style={{ color: 'red', fontSize: 12, fontStyle: 'italic' }}>Oops! We have only {item.product_stock >= 1 ? item.product_stock : ""} unit left in stock </Text>
                                   :
-                                  <Text style={{ color: 'red', fontSize: 12,fontStyle:'italic' }}>Oops!We don't have this in the stock at the present time</Text>}
+                                  <Text style={{ color: 'red', fontSize: 12, fontStyle: 'italic' }}>Oops!We don't have this in the stock at the present time</Text>}
                               </View>
                             )}
 
                             <TouchableOpacity style={portraitStyles.refDelButton}>
-                              <FontAwesome name="trash" size={26} color={'grey'} onPress={() => this.deleteConfirmation(item.product_id)} />
+                              <FontAwesome name="trash" size={26} color={'grey'} onPress={() => this.deleteConfirmation(item.product_id, item.cart_id)} />
                             </TouchableOpacity>
                           </View>
 
@@ -424,6 +435,67 @@ export default function CartScreen({ navigation }) {
                     </TouchableOpacity>
                   </View>
 
+                  {/* <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }} >
+                    <View style={{ borderColor: "#bba890", borderTopWidth: 1, width: '90%', paddingVertical: 20 }}>
+                      <TouchableOpacity activeOpacity={0.9} style={portraitStyles.shippingPolicyContainer} onPress={() => {
+                        //  coupon_code_sign == "-" ? setCouponCodeSign("+"): setCouponCodeSign("-");
+                        if (coupon_code_sign == "+" && card_code_sign == "-") {
+                          setCardCodeSign("+");
+                          setCouponCodeSign("-");
+                        }
+                        else if (coupon_code_sign == "-") {
+                          setCouponCodeSign("+");
+                        }
+                        else if (coupon_code_sign == "+") {
+                          setCouponCodeSign("-");
+                        }
+                      }
+                      }
+                      >
+                        <Text style={portraitStyles.overViewText}>Coupon Code</Text>
+                        <Text style={portraitStyles.pText}>{coupon_code_sign}</Text>
+                      </TouchableOpacity>
+                      {renderIf(coupon_code_sign == "-")(
+                        <View >
+                          <View style={portraitStyles.containLabelAndInput}>
+                            <TextInput style={portraitStyles.input} placeholder="Enter Code" placeholderTextColor={'grey'} autoCapitalize="none" onChangeText={(text) => { setUserMail(text) }} />
+                          </View>
+                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.buttonContainer} onPress={() => { }} disabled={apply_spinner === false ? true : false} >
+                            <View style={portraitStyles.button} >
+                              {apply_spinner === false ? <ActivityIndicator size={'small'} color={'#fff'} /> : <Text style={portraitStyles.buttonText}>Apply</Text>}
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                      <TouchableOpacity activeOpacity={0.9} style={portraitStyles.shippingPolicyContainer} onPress={() => {
+                        if (card_code_sign == "+" && coupon_code_sign == "-") {
+                          setCouponCodeSign("+");
+                          setCardCodeSign("-");
+                        }
+                        else if (card_code_sign == "-") {
+                          setCardCodeSign("+");
+                        }
+                        else if (card_code_sign == "+") {
+                          setCardCodeSign("-");
+                        }
+                      }}>
+                        <Text style={portraitStyles.overViewText}>E-Gift Card Code</Text>
+                        <Text style={portraitStyles.pText}>{card_code_sign}</Text>
+                      </TouchableOpacity>
+                      {renderIf(card_code_sign == "-")(
+                        <View >
+                          <View style={portraitStyles.containLabelAndInput}>
+                            <TextInput style={portraitStyles.input} placeholder="Enter Code" placeholderTextColor={'grey'} autoCapitalize="none" onChangeText={(text) => { setUserMail(text) }} />
+                          </View>
+                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.buttonContainer} onPress={() => { }} disabled={apply_spinner === false ? true : false} >
+                            <View style={portraitStyles.button} >
+                              {apply_spinner === false ? <ActivityIndicator size={'small'} color={'#fff'} /> : <Text style={portraitStyles.buttonText}>Apply</Text>}
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    </View>
+                  </View> */}
 
 
 
@@ -496,9 +568,21 @@ const UserAuth = ({ }) => {
     }
     // console.log(data)
     // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
-    await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
+    let resp = await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
 
-    navigation.navigate('otp', { mobile: mobile + "" })
+    if (resp.data.status == 200) {
+      setModalVisible(false)
+      navigation.navigate('otp', { mobile: mobile + "" })
+    } else {
+      Alert.alert('Alert ', resp.data.success, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    }
 
   }
 

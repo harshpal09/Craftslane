@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity, Alert, Dimensions, Keyboard } from 'react-native';
 import axios from 'axios';
+import { showMessage } from 'react-native-flash-message';
+import { useDispatch } from 'react-redux';
+import { setTokenAvailability } from './redux/Actions';
 import { useNavigation } from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OTPScreen = ({ route }) => {
@@ -12,6 +16,7 @@ const OTPScreen = ({ route }) => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const otpInputRefs = useRef([]);
   const [token, setToken] = useState('');
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const OTP_LENGTH = 4;
@@ -50,15 +55,11 @@ const OTPScreen = ({ route }) => {
   const handleVerifyOTP = async () => {
 
     const { mobile } = route.params;
-    console.log("Entered mobile number",mobile);
+ 
 
     const enteredOTP = otp.join('');
     let parsed = {}
 
-    // const data = {
-    //   otp: enteredOTP,
-    //   mobile: mobile
-    // }
 
     try {
       let user = await AsyncStorage.getItem('user');
@@ -69,18 +70,36 @@ const OTPScreen = ({ route }) => {
       Alert.alert(error)
     }
 
-    // console.log(data)
-    // console.log("Verify OTP url=>", parsed.url + "customlogin/validate_otp&key=" + parsed.key)
-    await axios.get(parsed.url + "customlogin/validate_otp&key=" + parsed.key+"&mobile=" +mobile).then((r)=> console.log(r.data))
+    await axios.get(parsed.url + "customlogin/validate_otp&key=" + parsed.key+"&mobile=" +mobile+"&otp="+enteredOTP).then((r)=> {
+      console.log("Api response=>", r.data)
+      
+      if(r.data.status == 200){
+    
+        AsyncStorage.setItem('token', JSON.stringify({ token: r.data.token, os_type: 'android' }));
+        dispatch(setTokenAvailability(true));
 
-    // console.log("token generated =>", token)
+        navigation.navigate('product')
+      }else{
+        showMessage({
+          message: r.data.message,
+          duration: 4000,
+          type: 'danger',
+          color: 'white',
+          icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
+          titleStyle: { fontSize: 18 }
+      })
+
+      }
+
+    })
+
+   
 
     
   };
 
   useEffect(() => {
-    // console.log("token generated =>", token);
-  
+   
     if (token !== '') {
       console.log('token created', token);
       setIsOTPVerified(true);
@@ -88,14 +107,7 @@ const OTPScreen = ({ route }) => {
       Keyboard.dismiss();
       
       setTimeout(async () => {
-        // const storedData = await AsyncStorage.getItem('user');
-        // let userData = {};
-  
-        // if (storedData) {
-        //   userData = JSON.parse(storedData);
-        // }
-  
-        // userData.token = token; 
+      
         
         await AsyncStorage.setItem('token', JSON.stringify(token)); 
         const retrievedData = await AsyncStorage.getItem('token'); 
@@ -111,7 +123,7 @@ const OTPScreen = ({ route }) => {
       console.log('Token is null or undefined');
       console.log('token not created');
       setIsOTPVerified(false);
-      // setErrorMessage('Please enter the OTP!');
+      
       Keyboard.dismiss();
     }
   }, [token]);
@@ -128,10 +140,7 @@ const OTPScreen = ({ route }) => {
     console.log(mobile);
 
     let parsed = {}
-    // const data = {
-    //   mobile: mobile,
-
-    // }
+    
 
     try {
       let user = await AsyncStorage.getItem('user');
@@ -141,7 +150,7 @@ const OTPScreen = ({ route }) => {
     catch (error) {
       Alert.alert(error)
     }
-    // console.log(data)
+   
     console.log("Resend OTP url=>", parsed.url + "customlogin/send_otp&key=" + parsed.key+"&mobile="+mobile)
     await axios.get(parsed.url + "customlogin/resend_otp&key=" + parsed.key+"&mobile="+mobile).then((response) =>
 

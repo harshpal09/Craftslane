@@ -47,12 +47,17 @@ class AddressBook extends Component {
             let user = await AsyncStorage.getItem('user');
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
+
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
             // console.warn(this.state.data)
         }
         catch (error) {
             Alert.alert(error)
         }
-        await axios.get(this.state.data.url + "customaddressbook/get-addresses&key=" + this.state.data.key + "&token=" + this.state.data.token)
+        await axios.get(this.state.data.url + "customaddressbook/get-addresses&key=" + this.state.data.key + "&token=" + this.state.token.token)
             .then((resp) => this.setState({ all_data: resp.data }))
             .catch((error) => console.warn(error));
         if (this.state.all_data.status == 200) {
@@ -82,7 +87,7 @@ class AddressBook extends Component {
         }
 
 
-        await axios.post(this.state.data.url + "customaddressbook/delete&key=" + this.state.data.key + "&token=" + this.state.data.token + '&os_type=android', d, header)
+        await axios.post(this.state.data.url + "customaddressbook/delete&key=" + this.state.data.key + "&token=" + this.state.token.token + '&os_type=android', d, header)
             .then((response) => {
                 this.setState({ all_data: response.data })
             })
@@ -135,7 +140,7 @@ class AddressBook extends Component {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
 
-        await axios.post(this.state.data.url + 'customaddressbook/updateDefaultAddress&key=' + this.state.data.key + '&token=' + this.state.data.token + '&os_type=android', d, header)
+        await axios.post(this.state.data.url + 'customaddressbook/updateDefaultAddress&key=' + this.state.data.key + '&token=' + this.state.token.token + '&os_type=android', d, header)
             .then((response) => {
                 this.setState({ all_data: response.data })
             })
@@ -161,9 +166,9 @@ class AddressBook extends Component {
 
 
     render() {
-        // console.log(this.state.all_data);
+        console.log(this.state.all_data);
         return (
-            <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
+            <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 {
                     this.state.all_data.status == undefined ? <LoadingComponent /> :
                         <ImageBackground source={require('../../assets/base-texture.png')} resizeMode="cover"  >
@@ -190,7 +195,7 @@ class AddressBook extends Component {
                                                 </View> */}
                                                 <TouchableOpacity style={{ width: '100%', paddingHorizontal: 30, paddingVertical: 10, display: 'flex', flexDirection: 'row', backgroundColor: '' }} onPress={() => this.makeDefault(item.address_id)}>
                                                     <MaterialIcons name={this.state.toggle == item.address_id || item.default == 1 ? 'radio-button-on' : 'radio-button-off'} size={25} color={"#B48D56"} />
-                                                    <Text style={{ color: 'black', textAlignVertical: 'center', textAlign: 'center', paddingHorizontal: 10 }}>Make Default</Text>
+                                                    <Text style={{ color: 'black', textAlignVertical: 'center', textAlign: 'center', paddingHorizontal: 10,paddingVertical:4 }}>Make Default</Text>
                                                 </TouchableOpacity>
                                                 <View style={{width:"90%"}}>
                                                     <Text style={portraitStyles.addressHeaderText}>{item.firstname} {item.lastname} </Text>

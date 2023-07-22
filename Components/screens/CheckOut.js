@@ -33,6 +33,8 @@ class CheckOut extends Component {
   }
  
   this.setState({webView: this.state.data.url+"checkout/customerLogin&token="+this.state.token.token}) 
+  console.log("Checkout url=>", this.state.data.url+"checkout/customerLogin&token="+this.state.token.token)
+  
  
 
   }

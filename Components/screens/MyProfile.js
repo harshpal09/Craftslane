@@ -34,10 +34,15 @@ class MyProfile extends Component {
         this.getdata();
     }
     async getdata() {
+        let parsed2 = {}
         this.setState({ refreshing: true });
         try {
             let user = await AsyncStorage.getItem('user');
             let parsed = JSON.parse(user);
+
+            let token = await AsyncStorage.getItem('token');
+            parsed2 = JSON.parse(token);
+
             this.setState({ data: parsed })
 
             // console.warn(this.state.data) 
@@ -46,7 +51,7 @@ class MyProfile extends Component {
             Alert.alert(error)
         }
 
-        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + this.state.data.token)
+        await axios.get(this.state.data.url + "customaccountinfo/index&key=" + this.state.data.key + "&token=" + parsed2.token)
             .then((resp) => this.setState({ info: resp.data.body }))
             .catch((error) => console.warn(error));
         this.setState({ refreshing: false })

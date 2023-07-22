@@ -95,9 +95,9 @@ class AddAddress extends Component {
     }
 
     onPressRadioButton(rba) {
-        // console.log(rba)
+        console.log(rba)
 
-        rba.map((data)=>( data.label == 'Yes' ? this.setState({radio: data.selected})  : ""))
+        rba.map((data,i)=>( data.label == 'Yes' ? this.setState({radio: data.selected})  : ""))
         // console.log(this.state.radio)
     }
 
@@ -120,6 +120,11 @@ class AddAddress extends Component {
             let parsed = JSON.parse(user);
             this.setState({ data: parsed })
 
+            let token = await AsyncStorage.getItem('token');
+            let parsed2 = JSON.parse(token);
+
+            this.setState({token: parsed2})
+
             // console.warn(this.state.data)
         }
         catch (error) {
@@ -137,9 +142,19 @@ class AddAddress extends Component {
         
     }
     async selectCountry(idx) {
-        console.warn({s_country:idx.countries_id});
+        let parsed = {}
+        try {
+            let user = await AsyncStorage.getItem('user');
+            parsed = JSON.parse(user);
+
+        }
+        catch (error) {
+            Alert.alert(error)
+        }
+
+        // console.warn({s_country:idx.countries_id});
         this.setState({ s_country: idx });
-        await axios.get('https://www.craftslane.com?route=api/customzone/index&key=Afp7hVxPE5PBTWTcr3vvS7kmyEhSxLg2sDARRTrb7R5ZSOuOQxvYqXk7acN6KElEJ3X0BERWRl0MFqa5NlTtoPC7VLLZIzciuXBaoZJtFWXVhXS3GluDUzvFf4TaLP0jyhcIvnArvaKr341HgX4Aubjbm1IDUJzlfBBb03ohbl3zGEvwdNiqUuS8oFTgCaMQhhoFNr2AkRtR0nkA43xkg2YcKHZxmHAejSic4E0fh7nvBIn2hppUGw7jowfX1l2q&os_type=android&country_id=' + idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
+        await axios.get(parsed.url + "customzone/index&key=" + parsed.key+ '&country_id='+ idx.country_id).then((resp) => this.setState({ zones: resp.data.body }));
         // console.log(this.state.zones);
         
     }
@@ -156,13 +171,13 @@ class AddAddress extends Component {
             'zone_id': this.state.s_state.zone_id,
             'country_id': this.state.s_state.country_id,
             'contact_number': this.state.contact_number,
-            'default_address': 0,
+            'default_address': 1,
         }
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
 
-        await axios.post(this.state.data.url + "customaddressbook/add&key=" + this.state.data.key + "&token=" + this.state.data.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
+        await axios.post(this.state.data.url + "customaddressbook/add&key=" + this.state.data.key + "&token=" + this.state.token.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
         this.setState({ toggle: true })
         // console.warn(this.state.response_data)
         if (this.state.response_data.status != 200) {
@@ -203,7 +218,7 @@ class AddAddress extends Component {
         this.setState({isLoadingState:true});
     }
     render() {
-        // console.log(this.state.radio);
+        // console.log("radio=>",this.state.radio);
         return (
             <SafeAreaView style={portraitStyles.screenBackgroundTab}>
                 <KeyboardAvoidingView>
@@ -261,7 +276,7 @@ class AddAddress extends Component {
                                 // console.log(e),
                                 this.selectCountry(e);
                             }} 
-                            keyboardAvoiding={false}
+                            keyboardAvoiding={true}
                             activeColor='#d4b58a'
                             flatListProps={{
                                 ListEmptyComponent:<EmptyList />,

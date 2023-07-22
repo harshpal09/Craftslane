@@ -11,21 +11,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTokenAvailability } from '../Components/redux/Actions';
 import { useIsFocused } from '@react-navigation/native';
 import renderIf from './screens/renderIf';
-
+ 
 
 const Tab = createBottomTabNavigator();
 
 const TabRoutes = () => {
-  // const [tokenAvailable, setTokenAvailable] = useState(false);
-  //   const [showModal, setShowModal] = useState(false);
-  //   const [tabKey, setTabKey] = useState('Home');
+  
   const isFocused = useIsFocused();
 
   const dispatch = useDispatch();
   const tokenAvailable = useSelector(
     (state) => state.tokenAvailable
   );
-  // console.log("Getting token state from redux =>",tokenAvailable)
+
+  const wishlist_items = useSelector(
+    (state) => state.wishlistCount
+  );
+  
+  const cart_items = useSelector(
+    (state) => state.cartCount
+  );
+  // console.log("Wishlist count =>",wishlist_items)
 
   useEffect(() => {
     const checkTokenAvailability = async () => {
@@ -33,19 +39,19 @@ const TabRoutes = () => {
 
       if (!isToken) {
         dispatch(setTokenAvailability(false));
-        console.log("Token Unavailable =>",tokenAvailable)
+        // console.log("Token Unavailable =>",tokenAvailable)
       } else {
         dispatch(setTokenAvailability(true));
-        console.log("Token Available =>",tokenAvailable)
+        // console.log("Token Available =>",tokenAvailable)
       }
     };
 
     checkTokenAvailability();
-  }, []);
+  }, []); 
 
 
 
- console.log("Tab route=>",tokenAvailable)
+//  console.log("Tab route=>",tokenAvailable)
 
   return (
     <View style={{ flex: 1 }}>
@@ -82,6 +88,7 @@ const TabRoutes = () => {
                   name={iconName}
                   size={25}
                   color={focused ? '#B48D56' : '#666666'}
+                  
                 />
               );
             } else if (route.name === 'Account') {
@@ -117,8 +124,12 @@ const TabRoutes = () => {
         })}
       >
         <Tab.Screen name="Home" component={AuthNavigator} />
-        <Tab.Screen name="Cart" component={CartScreen} />
-        <Tab.Screen name="Favourite" component={WishList} />
+        <Tab.Screen name="Cart" component={CartScreen} options={{
+          tabBarBadge: cart_items > 0 ? cart_items : null,
+        }} />
+        <Tab.Screen name="Favourite" component={WishList} options={{
+            tabBarBadge: wishlist_items >0? wishlist_items: null,
+          }}/>
         {renderIf(tokenAvailable)(
           <Fragment>
            <Tab.Screen name="Account" component={ProfileScreen} />
