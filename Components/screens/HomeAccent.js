@@ -15,8 +15,7 @@ import Modal from "react-native-modal";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown, SelectCountry } from 'react-native-element-dropdown';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-
+import { addItemToWishlist } from '../redux/Actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Axios } from 'axios';
 import axios from 'axios';
@@ -494,6 +493,9 @@ const HomeAccent = ({ route, navigation }) => {
       liked ? setLiked(false) : setLiked(true);
       let user = await AsyncStorage.getItem('user');
       let parsed = JSON.parse(user);
+
+      let token = await AsyncStorage.getItem('token');
+      let parsed2 = JSON.parse(token);
       setOverlay(true);
       // console.log("asdfghjk")
       const d = {
@@ -503,12 +505,12 @@ const HomeAccent = ({ route, navigation }) => {
       const header = {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
       }
-      console.log("url = ", parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios")
-      await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed.token + "&os_type=ios", d, header).
+      console.log("url = ", parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios")
+      await axios.post(parsed.url + 'customwishlist/add&key=' + parsed.key + '&token=' + parsed2.token + "&os_type=ios", d, header).
         then((response) => {
 
           console.log("zxcvnm=>", response.data)
-          // dispatch(addItemToCart(values))
+          dispatch(addItemToWishlist(response.data.total));
         })
       setOverlay(false);
     }
@@ -531,7 +533,7 @@ const HomeAccent = ({ route, navigation }) => {
               >
                 <View style={portraitStyles.modalContainer}>
 
-                  <View style={{ paddingTop: 20 }}>
+                  <View style={{ padding: 20 }}>
                     <Text style={portraitStyles.loginWelcomeText}>Welcome to Craftslane</Text>
                   </View>
 
@@ -540,7 +542,7 @@ const HomeAccent = ({ route, navigation }) => {
                     <Text style={portraitStyles.closeIcon}>X</Text>
                   </TouchableOpacity>
 
-                  <View style={{ padding: 10 }}>
+                  <View style={{ paddingBottom: 20 }}>
                     <Text style={portraitStyles.mobileMessage}>Please enter your mobile number</Text>
                   </View>
 
@@ -548,7 +550,7 @@ const HomeAccent = ({ route, navigation }) => {
 
                     <View style={portraitStyles.mobileFieldContainer}>
                       <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
-                      <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} autoCapitalize='none' autoComplete='none' autoCorrect='none' placeholder='Enter mobile number'
+                      <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} autoCapitalize='none' autoComplete='none' autoCorrect='none' placeholder='Enter mobile number' keyboardType='numeric'
                         onChangeText={(text) => setNumber(text)}
                       ></TextInput>
                     </View>
@@ -568,18 +570,18 @@ const HomeAccent = ({ route, navigation }) => {
 
 
 
-                  <View style={{ padding: 15 }}>
+                  <View style={{ padding: 15, marginTop: 10 }}>
                     <Text style={{ fontSize: 18 }}>OR</Text>
                   </View>
 
 
 
-                  <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('Login', setModalVisible(false))}>
+                  <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
 
                     <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
                   </TouchableOpacity>
 
-                  <View style={{ padding: 5 }}>
+                  <View style={{ padding: 15 }}>
                     <Text style={{ fontSize: 18, padding: 5 }}>OR</Text>
                   </View>
 

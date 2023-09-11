@@ -38,31 +38,31 @@ export default function WishList() {
   const getdata = async () => {
 
     let parsed = {}
-    let parsed2={}
-   
+    let parsed2 = {}
+
 
     // if (tokenAvailable) {
-      try {
-        let user = await AsyncStorage.getItem('user');
-        parsed = JSON.parse(user); 
+    try {
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
 
-        let token = await AsyncStorage.getItem('token');
-         parsed2 = JSON.parse(token);
-      }
+      let token = await AsyncStorage.getItem('token');
+      parsed2 = JSON.parse(token);
+    }
 
-      catch (error) {
-        Alert.alert(error)
-      }
-      
-      console.log("Get Wishlist Url=>",parsed.url + "customwishlist/index&key=" + parsed.key+ "&token=" + parsed2.token )
-      await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed2.token)
+    catch (error) {
+      Alert.alert(error)
+    }
+
+    console.log("Get Wishlist Url=>", parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed2.token)
+    await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed2.token)
       .then((resp) => {
 
-        console.log("Get Wishlist Api response=>",resp.data)
-        dispatch(addItemToWishlist(resp.data.total)); 
+        console.log("Get Wishlist Api response=>", resp.data)
+        dispatch(addItemToWishlist(resp.data.total));
         setAll_Data(resp.data)
-      }).catch((error)=>{
-        console.log('Error in parsing=>',error)
+      }).catch((error) => {
+        console.log('Error in parsing=>', error)
       })
 
 
@@ -84,23 +84,23 @@ export default function WishList() {
     setOverlay(true)
 
     let parsed = {}
-    let parsed2={}
-   
+    let parsed2 = {}
 
-      try {
 
-        let user = await AsyncStorage.getItem('user');
-        parsed = JSON.parse(user);
+    try {
 
-        let token = await AsyncStorage.getItem('token');
-         parsed2 = JSON.parse(token);
-      }
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
 
-      catch (error) {
-        Alert.alert(error)
-      }
+      let token = await AsyncStorage.getItem('token');
+      parsed2 = JSON.parse(token);
+    }
 
-  
+    catch (error) {
+      Alert.alert(error)
+    }
+
+
 
     const d = {
       product_id: product_id
@@ -110,17 +110,17 @@ export default function WishList() {
       headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }
 
-    console.log("Delete Wishlist Item url=>",parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android',d,header)
+    console.log("Delete Wishlist Item url=>", parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
     await axios.post(parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header).
       then((response) => {
-        console.log("Delete wishlist response",response.data)
-        dispatch(addItemToWishlist(response.data.total)); 
+        console.log("Delete wishlist response", response.data)
+        dispatch(addItemToWishlist(response.data.total));
         setAll_Data(response.data)
       })
 
     setOverlay(false)
-  
-}
+
+  }
 
   deleteConfirmation = (id) => {
     setOverlay(true);
@@ -140,22 +140,22 @@ export default function WishList() {
     setOverlay(true);
 
     let parsed = {}
-    let parsed2={}
-   
+    let parsed2 = {}
 
-   
-      try {
 
-        let user = await AsyncStorage.getItem('user');
-        parsed = JSON.parse(user); 
 
-        let token = await AsyncStorage.getItem('token');
-         parsed2 = JSON.parse(token);
-      }
+    try {
 
-      catch (error) {
-        Alert.alert(error)
-      }
+      let user = await AsyncStorage.getItem('user');
+      parsed = JSON.parse(user);
+
+      let token = await AsyncStorage.getItem('token');
+      parsed2 = JSON.parse(token);
+    }
+
+    catch (error) {
+      Alert.alert(error)
+    }
 
     const d = {
       product_id: id
@@ -180,8 +180,8 @@ export default function WishList() {
       })
     setOverlay(false);
 
-  
-}
+
+  }
 
 
 
@@ -228,7 +228,7 @@ export default function WishList() {
                                 <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
                               </View>
                               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                                <MaterialCommunityIcons name='cart-variant' color={'grey'} size={26} onPress={() =>navigation.navigate("homeaccent",{cat: "",id:item.product_id})} />
+                                <MaterialCommunityIcons name='cart-variant' color={'grey'} size={26} onPress={() => navigation.navigate("homeaccent", { cat: "", id: item.product_id })} />
                               </TouchableOpacity>
                               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton} onPress={() => deleteConfirmation(item.product_id)}>
                                 <FontAwesome name="trash-o" size={26} color={'grey'} />
@@ -319,16 +319,16 @@ const UserAuth = ({ }) => {
     if (resp.data.status == 200) {
       setModalVisible(false)
       navigation.navigate('otp', { mobile: mobile + "" })
-  } else {
-          Alert.alert('Alert ', resp.data.success, [
-              {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
-              },
-              { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ]);
-  }
+    } else {
+      Alert.alert('Alert ', resp.data.success, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    }
 
   }
 
@@ -342,13 +342,13 @@ const UserAuth = ({ }) => {
     <View style={{ flex: 1 }}>
 
 
-      <Modal isVisible={showModel}
+<Modal isVisible={showModel}
         // onBackdropPress={() => setModalVisible(false)}
         style={{ width: '100%', marginLeft: 0, marginBottom: 0 }}
       >
         <View style={portraitStyles.modalContainer}>
 
-          <View style={{ paddingTop: 20 }}>
+          <View style={{ padding: 20}}>
             <Text style={portraitStyles.loginWelcomeText}>Welcome to Craftslane</Text>
           </View>
 
@@ -357,7 +357,7 @@ const UserAuth = ({ }) => {
             <Text style={portraitStyles.closeIcon}>X</Text>
           </TouchableOpacity>
 
-          <View style={{ padding: 10 }}>
+          <View style={{paddingBottom:20  }}>
             <Text style={portraitStyles.mobileMessage}>Please enter your mobile number</Text>
           </View>
 
@@ -365,7 +365,7 @@ const UserAuth = ({ }) => {
 
             <View style={portraitStyles.mobileFieldContainer}>
               <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
-              <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'
+              <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number' keyboardType='numeric'
                 onChangeText={(text) => setNumber(text)}
               ></TextInput>
             </View>
@@ -379,17 +379,17 @@ const UserAuth = ({ }) => {
 
 
 
-          <View style={{ padding: 15 }}>
+          <View style={{ padding: 15, marginTop:10 }}>
             <Text style={{ fontSize: 18 }}>OR</Text>
           </View>
 
 
-          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('Login', setModalVisible(false))}>
+          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
             <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
           </TouchableOpacity>
 
-          <View style={{ padding: 5 }}>
-            <Text style={{ fontSize: 18, padding: 5 }}>OR</Text>
+          <View style={{ padding: 15,}}>
+            <Text style={{ fontSize: 18 }}>OR</Text>
           </View>
 
           <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>

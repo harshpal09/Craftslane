@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet , Button } from 'react-native';
 import LogInPage from '../forms/LogInPage';
 import SignUpPage from '../forms/SignUpPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -110,12 +110,20 @@ class MainNavigation extends Component {
            
           }}
         />
-        <Stack.Screen name="login" component={TabRoutes} 
+        <Stack.Screen name="login" component={LogInPage} 
           options={{
-            headerShown: false,
-            //  headerTitle: 'For',
+            // headerShown: false,
+             headerTitle: 'Login',
              headerTintColor: '#B48D56',
-             headerTitleStyle: { color: 'black'}
+             headerTitleStyle: { color: 'black'},
+            //  headerRight: () => (
+            //   <Button
+            //     onPress={() => alert('This is a button!')}
+            //     title="Info"
+            //     color="#fff"
+            //   />
+            // ),
+
            
           }}
         />

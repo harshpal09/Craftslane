@@ -72,8 +72,8 @@ export default function HomeScreen({ navigation }) {
 
 
   getData = async () => {
-    
-   
+
+
     let parsed = {};
 
     try {
@@ -108,8 +108,8 @@ export default function HomeScreen({ navigation }) {
     //   }else{
     //     dispatch(addItemToWishlist(0));
     //   }
-   
-    
+
+
 
 
   }
@@ -136,6 +136,13 @@ export default function HomeScreen({ navigation }) {
             onRefresh={() => _onRefresh()}
           />}>
 
+            <View style={{justifyContent:'center',alignItems:'center',paddingTop: 10}}>
+              <Image
+                source={require('../assets/Craftslane.png')}
+              />
+
+            </View>
+
 
             <View style={portraitStyles.searchBar}>
 
@@ -153,36 +160,36 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
 
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>Categories</Text>
+              <Text style={portraitStyles.headerText}>What are you Shopping for ?</Text>
             </View>
 
             {/* <View style={{alignItems:'center',justifyContent:'center',padding:5,width:'100%'}}> */}
-              <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
-                {/* <View style={{alignItems:'center',justifyContent:'space-evenly',backgroundColor:'red',padding:5,width:Dimensions.get('screen').width}}> */}
-                {alldata.map((data, idx) => (
-                  <View style={portraitStyles.categoryImageContainer} key={idx}>
-                    {data.categories.map((item, ind) => {
-                      return (
-                        <View style={portraitStyles.imageTextContainer} key={ind} >
-                          {/* {console.log(item.title)} */}
-                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('categories', { cat_id: item.id })} style={portraitStyles.imageContainer}>
-                            <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
-                          </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={0.9} style={portraitStyles.textContainer} onPress={() => navigation.navigate('categories', { cat_id: item.id })}>
-                            <Text
-                              style={portraitStyles.categoryType}
-                            >{item.title}</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )
-                    })}
-                  </View>
-                ))}
-                {/* </View> */}
-              </ScrollView>
+            <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
+              {/* <View style={{alignItems:'center',justifyContent:'space-evenly',backgroundColor:'red',padding:5,width:Dimensions.get('screen').width}}> */}
+              {alldata.map((data, idx) => (
+                <View style={portraitStyles.categoryImageContainer} key={idx}>
+                  {data.categories.map((item, ind) => {
+                    return (
+                      <View style={portraitStyles.imageTextContainer} key={ind} >
+                        {/* {console.log(item.title)} */}
+                        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('categories', { cat_id: item.id })} style={portraitStyles.imageContainer}>
+                          <ImageLazyLoading style={portraitStyles.categoryImage} source={{ uri: item.image }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.9} style={portraitStyles.textContainer} onPress={() => navigation.navigate('categories', { cat_id: item.id })}>
+                          <Text
+                            style={portraitStyles.categoryType}
+                          >{item.title}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )
+                  })}
+                </View>
+              ))}
+              {/* </View> */}
+            </ScrollView>
             {/* </View> */}
 
-            <View style={{ width: "100%",  }}>
+            <View style={{ width: "100%", }}>
               <View style={portraitStyles.wrap}>
                 <ScrollView onScroll={({ nativeEvent }) =>
                   onchange(nativeEvent)}
@@ -198,7 +205,7 @@ export default function HomeScreen({ navigation }) {
                         key={e}
                         resizeMethod="auto"
                         style={portraitStyles.wrap}
-                        source={ e}
+                        source={e}
                       />
                     )
                   }
@@ -218,7 +225,7 @@ export default function HomeScreen({ navigation }) {
             </View>
 
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>New Arrivals</Text>
+              <Text style={portraitStyles.headerText}>Explore our fresh additions</Text>
               <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'new_arrivals' })}>See All</Text>
             </View>
 
@@ -249,7 +256,7 @@ export default function HomeScreen({ navigation }) {
 
 
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>Popular Trends</Text>
+              <Text style={portraitStyles.headerText}>Trending now</Text>
               <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'popular_trends' })}>See All</Text>
             </View>
 

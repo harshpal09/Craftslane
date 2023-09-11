@@ -368,7 +368,7 @@ const UserAuth = ({ isTrue }) => {
             >
                 <View style={portraitStyles.modalContainer}>
 
-                    <View style={{ paddingTop: 20 }}>
+                    <View style={{ padding: 20 }}>
                         <Text style={portraitStyles.loginWelcomeText}>Welcome to Craftslane</Text>
                     </View>
 
@@ -377,7 +377,7 @@ const UserAuth = ({ isTrue }) => {
                         <Text style={portraitStyles.closeIcon}>X</Text>
                     </TouchableOpacity>
 
-                    <View style={{ padding: 10 }}>
+                    <View style={{ paddingBottom: 20 }}>
                         <Text style={portraitStyles.mobileMessage}>Please enter your mobile number</Text>
                     </View>
 
@@ -385,7 +385,7 @@ const UserAuth = ({ isTrue }) => {
 
                         <View style={portraitStyles.mobileFieldContainer}>
                             <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
-                            <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'
+                            <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number' keyboardType='numeric'
                                 onChangeText={(text) => setNumber(text)}
                             ></TextInput>
                         </View>
@@ -405,19 +405,19 @@ const UserAuth = ({ isTrue }) => {
 
 
 
-                    <View style={{ padding: 15 }}>
+                    <View style={{ padding: 15, marginTop:10 }}>
                         <Text style={{ fontSize: 18 }}>OR</Text>
                     </View>
 
 
 
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('Login', setModalVisible(false))}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
 
                         <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
                     </TouchableOpacity>
 
-                    <View style={{ padding: 5 }}>
-                        <Text style={{ fontSize: 18, padding: 5 }}>OR</Text>
+                    <View style={{ padding: 15 }}>
+                        <Text style={{ fontSize: 18}}>OR</Text>
                     </View>
 
                     <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', dispatch(checkToken(false)))}>

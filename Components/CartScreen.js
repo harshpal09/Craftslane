@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, Alert, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, Alert, RefreshControl,KeyboardAvoidingView } from 'react-native';
 import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
@@ -595,14 +595,14 @@ const UserAuth = ({ }) => {
   return (
     <View style={{ flex: 1 }}>
 
-
+{/* <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}> */}
       <Modal isVisible={showModel}
         // onBackdropPress={() => setModalVisible(false)}
         style={{ width: '100%', marginLeft: 0, marginBottom: 0 }}
       >
         <View style={portraitStyles.modalContainer}>
 
-          <View style={{ paddingTop: 20 }}>
+          <View style={{ padding: 20}}>
             <Text style={portraitStyles.loginWelcomeText}>Welcome to Craftslane</Text>
           </View>
 
@@ -611,7 +611,7 @@ const UserAuth = ({ }) => {
             <Text style={portraitStyles.closeIcon}>X</Text>
           </TouchableOpacity>
 
-          <View style={{ padding: 10 }}>
+          <View style={{paddingBottom:20  }}>
             <Text style={portraitStyles.mobileMessage}>Please enter your mobile number</Text>
           </View>
 
@@ -619,7 +619,7 @@ const UserAuth = ({ }) => {
 
             <View style={portraitStyles.mobileFieldContainer}>
               <Text style={{ fontSize: 18, padding: 10 }}>+91</Text>
-              <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number'
+              <TextInput style={{ fontSize: 18, padding: 8, width: '70%' }} placeholder='Enter mobile number' keyboardType='numeric'
                 onChangeText={(text) => setNumber(text)}
               ></TextInput>
             </View>
@@ -633,17 +633,17 @@ const UserAuth = ({ }) => {
 
 
 
-          <View style={{ padding: 15 }}>
+          <View style={{ padding: 15, marginTop:10 }}>
             <Text style={{ fontSize: 18 }}>OR</Text>
           </View>
 
 
-          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 5 }} onPress={() => navigation.navigate('Login', setModalVisible(false))}>
+          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
             <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
           </TouchableOpacity>
 
-          <View style={{ padding: 5 }}>
-            <Text style={{ fontSize: 18, padding: 5 }}>OR</Text>
+          <View style={{ padding: 15,}}>
+            <Text style={{ fontSize: 18 }}>OR</Text>
           </View>
 
           <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>
@@ -653,6 +653,7 @@ const UserAuth = ({ }) => {
           {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}
         </View>
       </Modal>
+      {/* </KeyboardAvoidingView> */}
 
       {renderIf(true)(
         <View style={portraitStyles.screenBackgroundStackTab}>

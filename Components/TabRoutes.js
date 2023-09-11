@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTokenAvailability } from '../Components/redux/Actions';
 import { useIsFocused } from '@react-navigation/native';
 import renderIf from './screens/renderIf';
+import ModalComponent from './ModalComponent';
  
 
 const Tab = createBottomTabNavigator();
@@ -139,7 +140,7 @@ const TabRoutes = () => {
 
        { renderIf(!tokenAvailable)(
     
-          <Tab.Screen name="Login" component={LogInPage} />
+          <Tab.Screen name="Login" component={ModalComponent} />
        )}
        
        

@@ -155,7 +155,7 @@ class SignUpPage extends Component {
             const header = {
                 headers: { 'content-type': 'application/x-www-form-urlencoded' }
             }
-
+            // console.log("Sign Up url=>",parsed.url + "customsignup/index&key=" + parsed.key, data, header)
             await axios.post(parsed.url + "customsignup/index&key=" + parsed.key, data, header).then((resp) => this.setState({ response_data: resp.data }))
               console.warn(this.state.response_data);
             this.setState({ toggle: true })

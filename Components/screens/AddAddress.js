@@ -176,7 +176,7 @@ class AddAddress extends Component {
         const header = {
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-
+        // console.log("Add address url =>",this.state.data.url + "customaddressbook/add&key=" + this.state.data.key + "&token=" + this.state.token.token)
         await axios.post(this.state.data.url + "customaddressbook/add&key=" + this.state.data.key + "&token=" + this.state.token.token, data, header).then((resp) => this.setState({ response_data: resp.data })).catch((error) => console.warn(error))
         this.setState({ toggle: true })
         // console.warn(this.state.response_data)

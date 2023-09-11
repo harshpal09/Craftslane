@@ -78,7 +78,7 @@ const OTPScreen = ({ route }) => {
         AsyncStorage.setItem('token', JSON.stringify({ token: r.data.token, os_type: 'android' }));
         dispatch(setTokenAvailability(true));
 
-        navigation.navigate('product')
+        navigation.navigate('home')
       }else{
         showMessage({
           message: r.data.message,
@@ -114,7 +114,7 @@ const OTPScreen = ({ route }) => {
 
       console.log('Retrieved Data:',retrievedData );
   
-        navigation.navigate('product');
+        navigation.navigate('home');
       }, 1000);
     }
 

@@ -530,7 +530,7 @@ export const portraitStyles = StyleSheet.create({
 
   searchBar: {
     margin: 20,
-    backgroundColor: '#F2F3F2',
+    backgroundColor: '#FFFAEC',
     // backgroundColor:'lightgreen',
     height: 50,
     justifyContent: 'center',
@@ -626,7 +626,9 @@ export const portraitStyles = StyleSheet.create({
     width: 95,
     height: 95,
     borderRadius: 50,
-    // backgroundColor:'red'
+    // backgroundColor:'red',
+    borderColor: '#849e3c',
+    borderWidth: 3
   },
   newArrivalImage:{
     width: 95,
@@ -780,7 +782,7 @@ export const portraitStyles = StyleSheet.create({
     // height: 40,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     // marginVertical: 2,
     marginHorizontal:5,
     alignItems:'center',
@@ -797,7 +799,7 @@ export const portraitStyles = StyleSheet.create({
   },
   priceText: {
     fontSize: 14,
-    // fontWeight: 'bold',
+    // backgroundColor: 'yellow',
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
@@ -1997,7 +1999,7 @@ creditTableRow:
  modalContainer:{
   flex: 1,
   backgroundColor: 'white', 
-  height: Dimensions.get('screen').height/ 2.3,
+  height: Dimensions.get('screen').height/ 1.5,
   position: 'absolute', 
   alignItems: 'center',
   bottom: 0,
@@ -2006,7 +2008,7 @@ creditTableRow:
   width: '100%'
  },
  loginWelcomeText:{
-  fontSize: 24,
+  fontSize: 26,
   fontWeight: 'bold', 
   fontFamily: 'Baskervville-Regular' 
  },
@@ -2022,7 +2024,7 @@ creditTableRow:
   color: '#333'
  },
  mobileMessage:{
-  fontSize: 18, 
+  fontSize: 20, 
   color: 'grey', 
   fontFamily: 'Baskervville-Regular' 
  }, 

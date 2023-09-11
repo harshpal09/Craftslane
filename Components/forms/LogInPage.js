@@ -82,7 +82,7 @@ const LogInPage = ({ navigation }) => {
         console.log("Error message ")
         AsyncStorage.setItem('token', JSON.stringify({ token: response.data.token, os_type: 'android' }));
         dispatch(setTokenAvailability(true));
-        navigation.jumpTo('Home');
+        navigation.navigate('Home');
       }
     });
     } else {
@@ -121,7 +121,7 @@ const LogInPage = ({ navigation }) => {
         setToken(response_data.token);
         AsyncStorage.setItem('token', JSON.stringify({ token: response_data.token, os_type: 'android' }));
         dispatch(setTokenAvailability(true));
-        navigation.jumpTo('Home');
+        navigation.navigate('Home');
       }
     });
     }
