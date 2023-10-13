@@ -567,8 +567,6 @@ export const portraitStyles = StyleSheet.create({
 
   carosalSlide: {
     paddingVertical: 10,
-    // width: '100%',
-    // backgroundColor:'lightgreen',
   },
 
   categoryImageContainer: {
@@ -583,9 +581,12 @@ export const portraitStyles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
-    // width: Dimensions.get('screen').width,
-    // justifyContent:'space-around',
-    // backgroundColor:'grey',
+    
+  },
+  carouselImageContainer:{
+    display: 'flex',
+    flexDirection: 'row',
+   flexWrap: 'nowrap',
   },
   imageTextContainer: {
 
@@ -599,10 +600,43 @@ export const portraitStyles = StyleSheet.create({
     width: 96,
     // backgroundColor:'red'
   },
+  carouselImageTextContainer: {
+  
+    display: 'flex',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    margin: 3,
+  
+  },
+
+  personalizedImageTextContainer: {
+
+    // justifyContent: 'center',
+    // alignContent:'space-around',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 3,
+    // height: 160,
+    width: 110,
+    // backgroundColor:'red'
+  },
+
   imageContainer: {
     height: 96,
     width: 96,
-    // backgroundColor:'black', 
+    // backgroundColor:'yellow', 
+  },
+
+  personalizedImageContainer: {
+    height: 120,
+    width: 110,
+    // backgroundColor:'yellow', 
+  },
+  productCarouselContainer: {
+    height: 96,
+    width: 96,
+    // backgroundColor:'yellow', 
   },
   textContainer: {
     justifyContent: 'center',
@@ -633,6 +667,11 @@ export const portraitStyles = StyleSheet.create({
   newArrivalImage:{
     width: 95,
     height: 95,
+    borderRadius: 10,
+  },
+  personalisedImage:{
+    height: 120,
+    width: 110,
     borderRadius: 10,
   },
 
@@ -749,7 +788,7 @@ export const portraitStyles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 0.5,
     // borderTopWidth:0,
-    borderColor: '#706c62',
+    borderColor: '#dedcd7',
     // backgroundColor: 'yellow'
 
   },
@@ -775,40 +814,41 @@ export const portraitStyles = StyleSheet.create({
     // backgroundColor:'#f2ebd5',
    
   },
-  
+  priceTextContainer:{
+    // backgroundColor:'red',
+    //  flex:1, 
+    marginRight:5,
+    maxWidth: 100
+  },
   priceContainer: {
     // backgroundColor:'blue',
     width: 150,
-    // height: 40,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    // marginVertical: 2,
+    flexWrap:'nowrap',
+    justifyContent: 'center',
     marginHorizontal:5,
     alignItems:'center',
-    padding: 10,
   },
   addButton: {
-    backgroundColor: '#B48D56',
+    // backgroundColor: '#B48D56',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     padding:5,
-    // height: 30,
-    // width: 30,
   },
   priceText: {
-    fontSize: 14,
-    // backgroundColor: 'yellow',
+    fontSize: 16,
+    fontFamily: 'Baskervville-Regular',
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
     // textDecorationLine: 'line-through',
-    fontFamily: "Helvetica"
+    // fontFamily: "Helvetica"
   },
   discountPrice: {
-    fontSize: 14,
-    // fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Baskervville-Regular',
     color: 'black',
     textAlign:'center',
     textAlignVertical:'center',
@@ -859,13 +899,37 @@ export const portraitStyles = StyleSheet.create({
     // padding:20,
     // backgroundColor:'green'
   },
+
+  productOptionParentcontainer:{
+    display: 'flex',
+    flexDirection: 'row',
+    width:'100%',
+    justifyContent: 'flex-start',
+    // padding:20,
+    // backgroundColor:'green'
+  },
   optionIcon:{
-    width:20,
-    height:20,
+    width:24,
+    height:24,
   },
   optionText:{
     fontFamily: 'Baskervville-Italic',
-    fontSize:DeviceInfo.isTablet() ? 11:8,
+    fontSize:11,
+    color:"#6d6d6d",
+    padding:5,
+    textAlignVertical:'center',
+    textAlign:'center'
+  },
+
+  productOptionIcon:{
+    width:23,
+    height:23,
+    // backgroundColor: 'red',
+    paddingRight: 10
+  },
+  productOptionText:{
+    fontFamily: 'Baskervville-Italic',
+    fontSize:DeviceInfo.isTablet() ? 11:11,
     color:"#6d6d6d",
     padding:5,
     textAlignVertical:'center',
@@ -875,7 +939,15 @@ export const portraitStyles = StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     padding:5,
-    // backgroundColor:'red'
+    
+  },
+  productOptionContainer:{
+    display:'flex',
+    flexDirection:'row',
+    padding:10,
+    // backgroundColor:'green',
+    
+    flex: 1
   },
   productProfileContainer: {
     // backgroundColor: 'red',
@@ -924,8 +996,9 @@ export const portraitStyles = StyleSheet.create({
   homeAccentText: {
     // backgroundColor:'white',
     width: '100%',
-    fontSize: 14,
+    fontSize: 16,
     padding:3,
+    // fontWeight:'bold',
     fontFamily: 'Georgia',
     marginLeft: 0,
     textAlignVertical: 'center',
@@ -939,8 +1012,8 @@ export const portraitStyles = StyleSheet.create({
     padding: 3,
     fontFamily: 'Georgia',
     textAlignVertical: 'center',
-    color: '#801426',
-    fontWeight: '500',
+    color: 'black',
+    // fontWeight: '500',
   },
   trayStyleContainer: {
     width: '100%',
@@ -1174,7 +1247,16 @@ export const portraitStyles = StyleSheet.create({
   loadingScreen: {
     // backgroundColor: '#f2ebd5',
     // backgroundColor:'skyblue',
-    // height: Dimensions.get("screen").height,
+    // height: '50%',
+    // width: Dimensions.get("screen").width,
+    justifyContent:'center',
+    alignItems: 'center',
+  },
+
+  carouselLoadingScreen:{
+    // backgroundColor: '#f2ebd5',
+    // backgroundColor:'skyblue',
+    height: '75%',
     // width: Dimensions.get("screen").width,
     justifyContent:'center',
     alignItems: 'center',
@@ -1235,7 +1317,7 @@ cartProductContainer: {
   // backgroundColor:'blue',
   // marginHorizontal:15,
   justifyContent:'space-between',
-  // alignItems:'center',
+  alignItems:'center',
   marginVertical: 5,
   width: '100%',
   display: 'flex',
@@ -1516,8 +1598,8 @@ decBtnFade: {
 incDecField: {
   borderColor: '#780000',
   width: 30,
-  fontSize: 16,
-  fontWeight: 'bold',
+  fontSize: 14,
+  // fontWeight: 'bold',
   height: 35,
   lineHeight: 35,
   textAlign: 'center',
@@ -1528,7 +1610,7 @@ incDecFieldFade: {
   borderColor: '#780000',
   width: 30,
   fontSize: 16,
-  fontWeight: 'bold',
+  // fontWeight: 'bold',
   height: 35,
   lineHeight: 35,
   textAlign: 'center',

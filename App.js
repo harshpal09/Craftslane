@@ -42,11 +42,7 @@ const AppWrapper = () => {
   let tokenAvailable = useSelector(
     (state) => state.tokenAvailable
   );
-  // console.log("App.js main1 token check=>",tokenAvailable)
-  // useEffect(() => {
-  //   console.log("App.js useeffect token check=>",tokenAvailable)
-  //   getdata();
-  // }, [])
+ 
 
   setTimeout(() => { SplashScreen.hide();
     getdata();

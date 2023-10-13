@@ -31,7 +31,7 @@ class MainNavigation extends Component {
            headerShown: true, 
            headerTintColor: '#B48D56',
            headerTitle: 'Verify OTP',
-           headerTitleStyle: { color: 'black'}
+           headerTitleStyle: { color: 'black'} 
         }} />
 
         <Stack.Screen name="signup" component={SignUpPage} options={{ 

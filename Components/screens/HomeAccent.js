@@ -5,8 +5,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import ImageLazyLoading from "react-native-image-lazy-loading";
 import DatePicker from 'react-native-date-picker';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import UiOrientation from '../UiOrientation';
-import Icon from 'react-native-ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { showMessage } from 'react-native-flash-message';
 import FavouriteScreen from '../FavouriteScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -90,6 +89,8 @@ const HomeAccent = ({ route, navigation }) => {
   const [show_notify_message, setShowNotifyMessage] = useState(false);
   const [options_require_yes_lenght, setOptionRequireYesLength] = useState(0);
   const [options_require, setOptionsRequire] = useState({})
+  const [error , setError] = useState("");
+  const [refrenceCode , setIsReferenceCode] = useState(false);
 
   const tokenAvailable = useSelector(
     (state) => state.tokenAvailable
@@ -126,7 +127,7 @@ const HomeAccent = ({ route, navigation }) => {
 
     setCatId(parseInt(b));
     setProductId(id)
-    // console.log("Profile Page url=>",parsed.url + "customproductprofile/index&key=" + parsed.key + "&product_id=" + id)
+    console.log("Profile Page url=>",parsed.url + "customproductprofile/index&key=" + parsed.key + "&product_id=" + id)
     await axios.get(parsed.url + "customproductprofile/index&key=" + parsed.key + "&token=" + parsed.token + "&product_id=" + id)
       .then((resp) => {
         setItem(resp.data);
@@ -145,6 +146,13 @@ const HomeAccent = ({ route, navigation }) => {
 
 
         if (resp.data.body.options_require_yes != undefined) {
+          if(resp.data.body.view_type == "7"){
+            setIsReferenceCode(true);
+            setProductOptionValue(resp.data.body.options_require_yes.length > 0 ? resp.data.body.options_require_yes[1].product_option_value : []);
+          setProductOptionValue2(resp.data.body.options_require_yes.length > 1 ? resp.data.body.options_require_yes[2].product_option_value : []);
+          setProductOptionValue3(resp.data.body.options_require_yes.length > 2 ? resp.data.body.options_require_yes[3].product_option_value : []);
+
+          }
           setProductOptionValue(resp.data.body.options_require_yes.length > 0 ? resp.data.body.options_require_yes[0].product_option_value : []);
           setProductOptionValue2(resp.data.body.options_require_yes.length > 1 ? resp.data.body.options_require_yes[1].product_option_value : []);
           setProductOptionValue3(resp.data.body.options_require_yes.length > 2 ? resp.data.body.options_require_yes[2].product_option_value : []);
@@ -409,7 +417,20 @@ const HomeAccent = ({ route, navigation }) => {
         catch (error) {
           Alert.alert(error)
         }
-       
+        // if(toggle && (send_data.name == undefined || send_data.name =="" || send_data.date == undefined || send_data.date =="") ){
+        //   send_data.name == undefined || send_data.name ==""? setError("Please provide the personalized name") : setError("Please provide the personalized date");
+
+        //   showMessage({
+        //     message: error,
+        //     duration: 4000,
+        //     type: 'danger',
+        //     color: 'white',
+        //     icon: props => <MaterialIcons name="error" size={20} color={'white'} {...props} />,
+        //     titleStyle: { fontSize: 18 }
+        //   })
+
+        //   return;
+        // }       
 
         const d = {
           product_id: id,
@@ -420,7 +441,7 @@ const HomeAccent = ({ route, navigation }) => {
         const header = {
           headers: { 'content-type': 'application/x-www-form-urlencoded' }
         }
-
+        // console.log("sand data =>",send_data);
         console.log("Add to cart url=>", parsed.url + "customcart/add&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
         await axios.post(parsed.url + "customcart/add&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
           .then((response) => {
@@ -578,7 +599,7 @@ const HomeAccent = ({ route, navigation }) => {
 
                   <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
 
-                    <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
                   </TouchableOpacity>
 
                   <View style={{ padding: 15 }}>
@@ -586,7 +607,7 @@ const HomeAccent = ({ route, navigation }) => {
                   </View>
 
                   <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>
-                    <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
+                    <Text style={{ fontSize: 18,fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
                   </TouchableOpacity>
 
                   {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}
@@ -640,6 +661,13 @@ const HomeAccent = ({ route, navigation }) => {
 
                 </View>
               </View>
+
+              {refrenceCode ? <View>
+                <Text>Please enter Reference Code</Text>
+                <TextInput style={{height: 40, backgroundColor:'red'}}/>
+                </View>
+                : <></>}
+
               {body.options_require_yes != undefined && body.options_require_yes.length == 2 && options.length > 0 ?
                 <View style={{ padding: 10 }}>
                   <SelectCountry
@@ -654,7 +682,7 @@ const HomeAccent = ({ route, navigation }) => {
                     valueField="product_option_value_id"
                     labelField="name"
                     imageField="image"
-                    placeholder={"Select a " + body.options_require_yes[0].name}
+                    placeholder={"Select a " + body.options_require_yes[body.view_type == "7" ? 1:0].name}
                     searchPlaceholder="Search..."
                     onChange={item => {
                       setIsSelectColor(false)
@@ -917,15 +945,15 @@ const HomeAccent = ({ route, navigation }) => {
                   <Text style={portraitStyles.buttonText}>Add to Cart</Text>
                 </Pressable>
                 <Pressable onPress={() => addToWishlist(product_id)}>
-                  <MaterialCommunityIcons
-                    name={liked ? "heart" : "heart-outline"}
+                  <EvilIcons
+                    name="heart"
                     size={32}
                     color={liked ? "red" : "black"}
                   />
                 </Pressable>
                 <TouchableOpacity onPress={() => shareProduct()}>
-                  <MaterialCommunityIcons
-                    name="share-variant"
+                  <EvilIcons
+                    name="share-google"
                     size={32}
                     color="black"
                   />

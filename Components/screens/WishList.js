@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, SafeAreaView, Image, Alert, ScrollView, ImageBackground, TouchableOpacity, RefreshControl } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { portraitStyles } from '../../Style/globleCss';
 import axios from 'axios';
@@ -58,7 +58,7 @@ export default function WishList() {
     await axios.get(parsed.url + "customwishlist/index&key=" + parsed.key + "&token=" + parsed2.token)
       .then((resp) => {
 
-        console.log("Get Wishlist Api response=>", resp.data)
+        // console.log("Get Wishlist Api response=>", resp.data)
         dispatch(addItemToWishlist(resp.data.total));
         setAll_Data(resp.data)
       }).catch((error) => {
@@ -113,7 +113,7 @@ export default function WishList() {
     console.log("Delete Wishlist Item url=>", parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header)
     await axios.post(parsed.url + "customwishlist/delete&key=" + parsed.key + "&token=" + parsed2.token + '&os_type=android', d, header).
       then((response) => {
-        console.log("Delete wishlist response", response.data)
+        // console.log("Delete wishlist response", response.data)
         dispatch(addItemToWishlist(response.data.total));
         setAll_Data(response.data)
       })
@@ -228,10 +228,11 @@ export default function WishList() {
                                 <Text style={portraitStyles.wishlistPriceText} >Unit Price: {item.price}</Text>
                               </View>
                               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton}>
-                                <MaterialCommunityIcons name='cart-variant' color={'grey'} size={26} onPress={() => navigation.navigate("homeaccent", { cat: "", id: item.product_id })} />
+                              <Image
+                        source={require('../../assets/images/black-cart.png')} style={{width:22, height:22}} onPress={() => navigation.navigate("homeaccent", { cat: "", id: item.product_id })} />
                               </TouchableOpacity>
                               <TouchableOpacity activeOpacity={0.9} style={portraitStyles.refDelButton} onPress={() => deleteConfirmation(item.product_id)}>
-                                <FontAwesome name="trash-o" size={26} color={'grey'} />
+                                <EvilIcons name="trash" size={28} color={'grey'} />
                               </TouchableOpacity>
                             </View>
                           </View>
@@ -314,7 +315,7 @@ const UserAuth = ({ }) => {
     }
     // console.log(data)
     // console.log("Send OTP url=>",parsed.url + "customlogin/send_otp&key=" + parsed.key)
-    let resp = await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
+    // let resp = await axios.get(parsed.url + "customlogin/send_otp&key=" + parsed.key + "&mobile=" + mobile)
 
     if (resp.data.status == 200) {
       setModalVisible(false)
@@ -385,7 +386,7 @@ const UserAuth = ({ }) => {
 
 
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
+            <Text style={{ fontSize: 18,  fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
           </TouchableOpacity>
 
           <View style={{ padding: 15,}}>
@@ -393,7 +394,7 @@ const UserAuth = ({ }) => {
           </View>
 
           <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
+            <Text style={{ fontSize: 18, fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
           </TouchableOpacity>
 
           {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}

@@ -5,7 +5,7 @@ import { portraitStyles } from "../Style/globleCss";
 import axios from 'axios';
 import { DataTable } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import EmptyCart from './screens/EmptyCart';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import ImageLazyLoading from "react-native-image-lazy-loading";
@@ -399,7 +399,7 @@ export default function CartScreen({ navigation }) {
                             )}
 
                             <TouchableOpacity style={portraitStyles.refDelButton}>
-                              <FontAwesome name="trash" size={26} color={'grey'} onPress={() => this.deleteConfirmation(item.product_id, item.cart_id)} />
+                              <EvilIcons name="trash" size={28} color={'grey'} onPress={() => this.deleteConfirmation(item.product_id, item.cart_id)} />
                             </TouchableOpacity>
                           </View>
 
@@ -418,8 +418,8 @@ export default function CartScreen({ navigation }) {
 
                       {cart_total.map((item, k) => (
                         <DataTable.Row style={portraitStyles.tableRow} key={k}>
-                          <DataTable.Cell >{item.title}</DataTable.Cell>
-                          <DataTable.Cell textStyle={{ fontSize: 16, fontWeight: 'bold' }} style={{ justifyContent: 'center' }}>{item.text}</DataTable.Cell>
+                          <DataTable.Cell textStyle={{ fontSize: 14 }} >{item.title}</DataTable.Cell>
+                          <DataTable.Cell textStyle={{ fontSize: 14 }} style={{ justifyContent: 'center' }}>{item.text}</DataTable.Cell>
                         </DataTable.Row>
                       ))}
                     </DataTable>
@@ -639,7 +639,7 @@ const UserAuth = ({ }) => {
 
 
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
+            <Text style={{ fontSize: 18,  fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
           </TouchableOpacity>
 
           <View style={{ padding: 15,}}>
@@ -647,7 +647,7 @@ const UserAuth = ({ }) => {
           </View>
 
           <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
+            <Text style={{ fontSize: 18, fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
           </TouchableOpacity>
 
           {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}

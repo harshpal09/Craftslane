@@ -127,9 +127,13 @@ const TabRoutes = () => {
         <Tab.Screen name="Home" component={AuthNavigator} />
         <Tab.Screen name="Cart" component={CartScreen} options={{
           tabBarBadge: cart_items > 0 ? cart_items : null,
+          headerShown: true, 
+            headerTitle: 'Shopping Cart',
         }} />
         <Tab.Screen name="Favourite" component={WishList} options={{
             tabBarBadge: wishlist_items >0? wishlist_items: null,
+            headerShown: true, 
+            headerTitle: 'Favourite',
           }}/>
         {renderIf(tokenAvailable)(
           <Fragment>

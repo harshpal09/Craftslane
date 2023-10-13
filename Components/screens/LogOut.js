@@ -40,7 +40,12 @@ const LogOut = ({ navigation }) => {
     dispatch(addItemToCart(0));
     dispatch(setTokenAvailability(false));
    //  console.log("Token deleted");
-    navigation.jumpTo('Home');
+    // navigation.jumpTo('Home');
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
   };
 
   useEffect(() => {

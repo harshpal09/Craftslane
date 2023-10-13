@@ -88,7 +88,9 @@ export default function HomeScreen({ navigation }) {
     }
 
     let resp = await axios.get(parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
+    // console.log("Home Screen Url=>",parsed.url + "customhome/index&key=" + parsed.key + "&token=" + parsed.token)
     setData(resp.data.data)
+    // console.log("Home data =>", resp.data)
 
     // if (tokenAvailable) {
     //   console.log("Home screen get data")
@@ -225,7 +227,36 @@ export default function HomeScreen({ navigation }) {
             </View>
 
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>Explore our fresh additions</Text>
+              <Text style={portraitStyles.headerText}>Personalized Gifts & Favours</Text>
+              <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'personalized' })}>See All</Text>
+            </View>
+
+            <View>
+              <ScrollView horizontal={true} style={portraitStyles.carosalSlide} showsHorizontalScrollIndicator={false}>
+                {alldata.map((data, idx) => (
+                  <View style={portraitStyles.newArrivalImageContainer} key={idx}>
+                    {data.personalized.map((item, ind) => {
+                      return (
+                        <View style={portraitStyles.personalizedImageTextContainer} key={ind} >
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "", id: item.id })} style={portraitStyles.personalizedImageContainer}>
+                            <ImageLazyLoading style={portraitStyles.personalisedImage} source={{ uri: item.image }} />
+                          </TouchableOpacity>
+                          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('homeaccent', { cat: "", id: item.id })} style={portraitStyles.textContainer}>
+                            <Text
+                              style={portraitStyles.categoryType}
+                              onPress={() => navigation.navigate('categories')}
+                            >{item.title}</Text>
+                          </TouchableOpacity>
+                        </View>
+                      )
+                    })}
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View style={portraitStyles.headerTextContainer}>
+              <Text style={portraitStyles.headerText}>Explore our Fresh Additions</Text>
               <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'new_arrivals' })}>See All</Text>
             </View>
 
@@ -253,10 +284,9 @@ export default function HomeScreen({ navigation }) {
               </ScrollView>
             </View>
 
-
-
+          
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>Trending now</Text>
+              <Text style={portraitStyles.headerText}>Trending Now</Text>
               <Text style={portraitStyles.allText} onPress={() => navigation.navigate('allProducts', { order_by: 'popular_trends' })}>See All</Text>
             </View>
 
@@ -280,7 +310,7 @@ export default function HomeScreen({ navigation }) {
               ))}
             </View>
             <View style={portraitStyles.headerTextContainer}>
-              <Text style={portraitStyles.headerText}>Follow on Facebook & Instagram</Text>
+              <Text style={portraitStyles.headerText}>Follow us on Facebook & Instagram</Text>
             </View>
 
             {alldata.map((item, idx) => (

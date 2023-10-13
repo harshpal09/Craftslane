@@ -126,7 +126,7 @@ export default function ModalComponent() {
 
 
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }} onPress={() => navigation.navigate('login', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
+            <Text style={{ fontSize: 18, fontWeight: '400', fontFamily: 'Georgia' }}>Login with mobile/email and password</Text>
           </TouchableOpacity>
 
           <View style={{ padding: 15,}}>
@@ -134,7 +134,7 @@ export default function ModalComponent() {
           </View>
 
           <TouchableOpacity style={{ padding: 5 }} onPress={() => navigation.navigate('signup', setModalVisible(false))}>
-            <Text style={{ fontSize: 18, color: '#B48D56', fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
+            <Text style={{ fontSize: 18, fontWeight: '400', fontFamily: 'Georgia', }}>New Sign up</Text>
           </TouchableOpacity>
 
           {/* <Button title="Hide modal" onPress={() => { dispatch(checkToken(false)) }} /> */}
