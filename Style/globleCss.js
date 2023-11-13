@@ -1004,6 +1004,18 @@ export const portraitStyles = StyleSheet.create({
     textAlignVertical: 'center',
     color: 'black',
   },
+  personalizeText:{
+    // fontFamily: 'Georgia',
+    fontSize: 12,
+    padding:1,
+    letterSpacing:1
+  },
+  customerCareText:{
+    // fontFamily: 'Georgia',
+    fontSize: 12,
+    padding:1, 
+    textDecorationLine: 'underline'
+  },
   productProfilePrice: {
     // backgroundColor:'red',
     width: '100%',

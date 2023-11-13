@@ -416,6 +416,7 @@ export default class AllProducts extends PureComponent {
                   </SafeAreaView>,
                 )}
                 <FlatList
+                  
                   data={
                     this.state.onChange ? this.state.result : this.state.users
                   }
@@ -424,13 +425,15 @@ export default class AllProducts extends PureComponent {
                   ListFooterComponent={this.renderLoader()}
                   showsVerticalScrollIndicator={false}
                   onEndReached={() => {
-                    console.log('on end reach');
+                    // console.log('on end reach');
                     // if (this.state.diff >= 10) {
                     //   this.state.product
                     //     ? this.searchProduct(true)
                          this.getUsers();
                     // }
                   }}
+                
+                  
                   onEndReachedThreshold={0}
                   extraData={this.state.onChange}
                   refreshControl={
@@ -524,3 +527,4 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
+

@@ -41,6 +41,10 @@ import LoadingComponent from './LoadingComponent';
 import CarouselLoading from './CarouselLoading';
 
 export default function Product({route, navigation}) {
+
+  const {item_name, index, item_id, parent_category_id} = route.params;
+
+
   const [categories, setCategories] = useState([]);
   const [item, setItems] = useState([]);
   const [name, setName] = useState('');
@@ -49,9 +53,9 @@ export default function Product({route, navigation}) {
   const [page, setPage] = useState(1);
   const [toggle, setToggle] = useState(false);
   const [allData, setAllData] = useState([]);
-  const [subCategoryId, setSubCategoryId] = useState(undefined);
+  const [subCategoryId, setSubCategoryId] = useState(item_id);
   const [chidiya, setChidiya] = useState(false);
-  // const [parent_category_id, setParentCategoryId] = useState(undefined);
+  const [isFirstTime, setFirstTime] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -61,11 +65,9 @@ export default function Product({route, navigation}) {
   const [showUserAuth, setShowUserAuth] = useState(false);
   const [diff, setDiff] = useState(0);
 
-  const {item_name, index, item_id, parent_category_id} = route.params;
   const [index_carousel, setIndexCarousel] = useState(index);
-  // console.log('Index value =>', index);
-  const badge_value = useSelector(i => i);
 
+  const badge_value = useSelector(i => i);
   const horizontalScrollviewRef = useRef(null);
 
   const scrollToHorizontalComponent = () => {
@@ -79,15 +81,28 @@ export default function Product({route, navigation}) {
     }
   };
 
-  useEffect(() => {
-    setSubCategoryId(item_id);
-    checkToken();
-  }, []);
+  // console.log("inside main pre fetch");
+
 
   useEffect(() => {
-    getdata(1);
+    // console.log("inside useeffect 1st pre fetch");
+    checkToken();
+    setIsLoading(true)
     carouselData();
+    // console.log("inside useeffect 1st post fetch");
+ 
+  }, []);
+  
+  useEffect(() => {
+
+   setChidiya(true);
+    getdata(1);
+
   }, [subCategoryId]);
+  useEffect(() => {
+    getdata(1);
+  }, [page])
+  
 
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -117,7 +132,7 @@ export default function Product({route, navigation}) {
 
   const carouselData = async () => {
     let parsed = {};
-
+    console.log("inside carouselData pre fetch");
     try {
       let user = await AsyncStorage.getItem('user');
       parsed = JSON.parse(user);
@@ -133,7 +148,7 @@ export default function Product({route, navigation}) {
         parsed.token +
         '&category_id=' +
         parent_category_id,
-    );
+    )
     // console.log(
     //   'Carousel Api Url =>',
     //   parsed.url +
@@ -146,21 +161,24 @@ export default function Product({route, navigation}) {
     // );
 
     setAllData(resp.data.data);
-    scrollToHorizontalComponent();
+    // if(isFirstTime){
+      // console.log("inside carouselData post fetch");
+    //  setTimeout(()=> scrollToHorizontalComponent(),500);
+      
+    
+    // }
+    setIsLoading(false)
+    setFirstTime(false)
   };
 
-  getdata = async p => {
-    // console.log("Chidiya =>", chidiya)
-    setChidiya(true);
-    setIsLoading(true);
+  const getdata = async () => {
+    // console.log("inside getdata pre fetch");
 
     let parsed = {};
-    setToggle(true);
+    
     const {item_name, item_id, parent_category_id} = route.params;
     setCatId(item_id);
     setName(item_name);
-
-    // console.log('Get data function Id =>', subCategoryId);
 
     try {
       let user = await AsyncStorage.getItem('user');
@@ -169,7 +187,7 @@ export default function Product({route, navigation}) {
       Alert.alert(error);
     }
 
-    console.log("Category Products calling url=>",parsed.url + "categoryproducts/index&cat_id=" + subCategoryId + "&key=" + parsed.key + "&page=" + p + "&limit=" + 10 )
+    // console.log("Category Products calling url=>",parsed.url + "categoryproducts/index&cat_id=" + subCategoryId + "&key=" + parsed.key + "&page=" + page + "&limit=" + 10 )
     let r = await axios.get(
       parsed.url +
         'categoryproducts/index&cat_id=' +
@@ -177,14 +195,15 @@ export default function Product({route, navigation}) {
         '&key=' +
         parsed.key +
         '&page=' +
-        p +
+        page +
         '&limit=' +
         10,
     );
     setIsLoading(false);
     // console.log("Product Page Response =>",r.data)
-
     setData(r.data);
+    // console.log("inside getdata post fetch");
+
 
     if (response_data.success == 0) {
       showMessage({
@@ -198,16 +217,16 @@ export default function Product({route, navigation}) {
         titleStyle: {fontSize: 18},
       });
     } else {
-      setDiff(r.data.categories.length);
-
+      // setDiff(r.data.categories.length);
+      console.log("lenght =>",item.length," page=>",page)
       if (subCategoryId != item_id) {
         setItems(r.data.categories);
       } else {
         setItems(item.concat(r.data.categories));
       }
     }
-    setPage(p);
-    setToggle(false);
+    // setPage(p);
+    // setToggle(false);
     setChidiya(false);
     // console.log("Chidiya =>", chidiya)
   };
@@ -348,9 +367,11 @@ export default function Product({route, navigation}) {
   };
 
   const memoizedValue = useMemo(() => renderItem, [item]);
+  console.log("inside main postr fetch",subCategoryId);
+
   return (
     <SafeAreaView style={portraitStyles.screenBackgroundStackTab}>
-      {item.length == false ? (
+      {isLoading ? (
         <LoadingComponent />
       ) : (
         <ImageBackground
@@ -360,6 +381,7 @@ export default function Product({route, navigation}) {
             <ScrollView
               ref={horizontalScrollviewRef}
               horizontal={true}
+              onLayout={()=>scrollToHorizontalComponent()}
               style={portraitStyles.carosalSlide}
               showsHorizontalScrollIndicator={false}>
               {allData.map((data, idx) => (
@@ -382,6 +404,7 @@ export default function Product({route, navigation}) {
                           <TouchableOpacity
                             activeOpacity={0.9}
                             onPress={() => {
+                              
                               setSubCategoryId(sub_item.id),
                                 setIndexCarousel(sub_idx);
                             }}
@@ -417,15 +440,6 @@ export default function Product({route, navigation}) {
               ))}
             </ScrollView>
           </View>
-          {/* <View>
-            <Button  title='harsh' onPress={()=> scrollToHorizontalComponent()}/>
-          </View> */}
-
-          {/* <View style={portraitStyles.categoryHeaderContainer} >
-                        <Text style={portraitStyles.productHeaderText}>{name}</Text>
-              </View>
-              
-              <View style={portraitStyles.underline}></View> */}
 
           {chidiya ? (
             <CarouselLoading />
@@ -440,16 +454,19 @@ export default function Product({route, navigation}) {
                 justifyContent: 'space-evenly',
               }}
               onEndReached={() => {
-                if (diff >= 10) {
-                  getdata(page + 1), console.log('end');
-                }
+                // if (diff >= 10) {
+                  // setIsLoading(true)
+                 setPage(page+1);
+                // }
               }}
               refreshControl={
                 <RefreshControl
-                  refreshing={false}
+                  refreshing={isLoading}
                   onRefresh={() => {
                     if (diff >= 10) {
-                      getdata(), console.log('refresh pull  ');
+                      // setIsLoading(true)
+                      // getdata(), 
+                      console.log('refresh pull  ');
                     }
                   }}
                 />
