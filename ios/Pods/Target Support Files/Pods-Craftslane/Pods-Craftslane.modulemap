@@ -1,0 +1,6 @@
+module Pods_Craftslane {
+  umbrella header "Pods-Craftslane-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "react-native-image-base64",
+  "version": "0.1.4",
+  "summary": "Convert image to base64",
+  "homepage": "https://github.com/Snapp-FidMe/react-native-img-to-base64",
+  "license": "MIT",
+  "authors": "Snapp",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/Snapp-FidMe/react-native-img-to-base64",
+    "tag": "V0.1.4"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
